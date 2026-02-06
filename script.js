@@ -726,3 +726,4 @@ const stopDeskPrices = {
   "57 - El M'Ghair": 600,
   "58 - El Meniaa": 600
 };
+
