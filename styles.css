@@ -729,3 +729,28 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ========== QUANTITÉ DU PRODUIT ========== */
+.product-quantity {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #f8f9fa;
+  color: #27ae60;
+  display: inline-block;
+  width: 100%;
+}
+
+.product-quantity.out-of-stock {
+  background-color: #ffebee;
+  color: #e74c3c;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
