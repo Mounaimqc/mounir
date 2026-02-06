@@ -20,9 +20,29 @@
                     <div class="contact-info">
                         <span class="tlf">📞 0669 46 99 56</span> 
                     </div>
-                    <a href="tracking.html" style="width: 179px; height: 40px; color: white; text-decoration: none; padding: 10px 15px; margin-right: 10px;  border: #121212 solid 1px; background-color: white">
-                        <p style="text-align: center; margin-bottom: auto; size:20px;">📦 Suivi Commande</p>
-                    </a>
+                   <a href="tracking.html" 
+   style="
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     width: 179px; 
+     height: 40px; 
+     color: #2c3e50; 
+     text-decoration: none; 
+     padding: 0 15px; 
+     margin-right: 10px; 
+     border: 2px solid #3498db; 
+     background-color: white;
+     border-radius: 5px;
+     font-weight: bold;
+     font-size: 16px;
+     transition: all 0.3s ease;
+     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+   "
+   onmouseover="this.style.backgroundColor='#3498db'; this.style.color='white'; this.style.boxShadow='0 4px 8px rgba(52, 152, 219, 0.3)';"
+   onmouseout="this.style.backgroundColor='white'; this.style.color='#2c3e50'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
+  📦 Suivi Commande
+</a>
                     <button class="cart-btn" id="cartBtn">
                         🛒 Panier <span class="cart-count" id="cartCount">0</span>
                     </button>
@@ -188,6 +208,7 @@
     <script type="module" src="script.js"></script>
 </body>
 </html>
+
 
 
 
