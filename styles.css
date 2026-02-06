@@ -180,7 +180,8 @@ header {
   transition: transform 0.3s ease;
 }
 .product-image img {
-  width:10px;
+  width:5px;
+  height:80px;
 }
 
 .product-image:hover {
@@ -853,6 +854,7 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
 
 
 
