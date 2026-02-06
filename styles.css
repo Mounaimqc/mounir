@@ -189,7 +189,7 @@ header {
     height: 200px;
     object-fit: cover;
     background-color: #ecf0f1;
-    display:block;
+
 }
 
 .product-info {
@@ -864,6 +864,7 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
 
 
 
