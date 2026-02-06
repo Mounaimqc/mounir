@@ -187,7 +187,7 @@ header {
 .product-image {
     width: 100%;
     height: 180px;
-    object-fit: cover;
+    /*object-fit: cover;*/
     background-color: #ecf0f1;
 }
 
@@ -863,6 +863,7 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
 
 
 
