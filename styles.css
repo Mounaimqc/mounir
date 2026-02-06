@@ -81,8 +81,8 @@ header {
 }
 
 .cart-btn {
-  background-color: #2980b9;
-  color: white;
+  background-color: transparent;
+  color: black;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
@@ -754,3 +754,4 @@ footer {
   cursor: not-allowed;
   opacity: 0.6;
 }
+
