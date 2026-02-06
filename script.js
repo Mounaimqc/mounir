@@ -27,48 +27,108 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
-async function loadProductsFromFirebase() {
-  try {
-    console.log("📦 Chargement des produits depuis Firebase...");
-    
-    const productsRef = collection(db, "produits");
-    const productsQuery = query(productsRef);
-    const querySnapshot = await getDocs(productsQuery);
-    
-    products = [];
-    querySnapshot.forEach(doc => {
-      console.log("📄 Produit trouvé:", doc.id, doc.data());
-      products.push({
-        id: doc.id,
-        ...doc.data()
-      });
-    });
-    
-    console.log(`✅ ${products.length} produits chargés`);
-    
-    if (products.length === 0) {
-      console.warn("⚠️ Aucun produit trouvé dans la base de données!");
-      document.getElementById('productsGrid').innerHTML = `
-        <p style="text-align:center;color:#e74c3c; padding: 40px;">
-          ⚠️ Aucun produit disponible pour le moment.<br>
-          Veuillez contacter l'administrateur.
-        </p>
-      `;
-    } else {
-      loadProducts();
-    }
-  } catch (error) {
-    console.error("❌ Erreur chargement produits:", error);
-    document.getElementById('productsGrid').innerHTML = `
-      <p style="text-align:center;color:red; padding: 40px;">
-        ❌ Erreur de chargement des produits.<br>
-        Vérifiez votre connexion internet.
+// ========== AFFICHAGE DES PRODUITS ==========
+function loadProducts(filteredProducts = null) {
+  const grid = document.getElementById('productsGrid');
+  if (!grid) return;
+  
+  const productsToDisplay = filteredProducts || products;
+  grid.innerHTML = '';
+  
+  if (productsToDisplay.length === 0) {
+    grid.innerHTML = `
+      <p style="text-align:center;color:#7f8c8d; padding: 40px;">
+        Aucun produit trouvé.
       </p>
     `;
+    return;
   }
-}
-
-// ========== AFFICHAGE DES PRODUITS ==========
+  
+  productsToDisplay.forEach(product => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    
+    // ✅ عند الضغط على الكارت كله (ما عدا زر "Ajouter")
+    card.addEventListener('click', (e) => {
+      // لا تفتح المودال إذا ضغط على زر "Ajouter"
+      if (e.target.classList.contains('add-to-cart-btn')) {
+        return;
+      }
+      openProductDetail(product.id);
+    });
+    
+    const img = document.createElement('img');
+    img.src = product.image || 'image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+    img.alt = product.name;
+    img.className = 'product-image';
+    img.style.cssText = `
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      display: block;
+    `;
+    img.onerror = function() {
+      this.src = 'image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+      this.style.height = '200px';
+      this.style.objectFit = 'contain';
+    };
+    
+    // ✅ جعل الصورة قابلة للضغط لفتح المودال
+    img.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openProductDetail(product.id);
+    });
+    
+    const info = document.createElement('div');
+    info.className = 'product-info';
+    
+    // ✅ عرض جزء من الوصف فقط (50 حرف)
+    const shortDescription = truncateDescription(product.description || '', 50);
+    
+    // ✅ عرض الكمية
+    let quantityHTML = '';
+    const quantity = product.quantity || 0;
+    
+    if (quantity > 0) {
+      quantityHTML = `<span class="product-quantity">${quantity} en stock</span>`;
+    } else {
+      quantityHTML = `<span class="product-quantity out-of-stock">Rupture de stock</span>`;
+    }
+    
+    info.innerHTML = `
+      <h3 class="product-name">${product.name || 'Produit sans nom'}</h3>
+      <p class="product-category">${product.category || 'Catégorie inconnue'}</p>
+      <p class="product-description">${shortDescription}</p>
+      ${quantityHTML}
+      <div class="product-footer">
+        <span class="product-price">${(product.price || 0).toFixed(2)} DA</span>
+        <button class="add-to-cart-btn" data-product-id="${product.id}">
+          ${quantity > 0 ? 'Ajouter' : 'Indisponible'}
+        </button>
+      </div>
+    `;
+    
+    card.appendChild(img);
+    card.appendChild(info);
+    grid.appendChild(card);
+  });
+  
+  // ✅ إضافة مستمع للأحداث لكل أزرار "Ajouter"
+  document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const productId = btn.getAttribute('data-product-id');
+      addToCart(productId);
+    });
+  });
+  
+  // Animation scroll
+  setTimeout(() => {
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.classList.add('visible');
+    });
+  }, 100);
+}// ========== AFFICHAGE DES PRODUITS ==========
 function loadProducts(filteredProducts = null) {
   const grid = document.getElementById('productsGrid');
   if (!grid) return;
@@ -819,3 +879,4 @@ const stopDeskPrices = {
   "57 - El M'Ghair": 600,
   "58 - El Meniaa": 600
 };
+
