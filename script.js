@@ -1,5 +1,5 @@
 // ========== IMPORT FIREBASE ==========
-import { collection, getDocs, addDoc, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs, addDoc, query, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
 
 // ========== VARIABLES GLOBALES ==========
@@ -98,7 +98,7 @@ function loadProducts(filteredProducts = null) {
     });
     
     const img = document.createElement('img');
-    img.src = product.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+    img.src = product.image || 'image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
     img.alt = product.name;
     img.className = 'product-image';
     img.style.cssText = `
@@ -108,7 +108,7 @@ function loadProducts(filteredProducts = null) {
       display: block;
     `;
     img.onerror = function() {
-      this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+      this.src = 'image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
       this.style.height = '200px';
       this.style.objectFit = 'contain';
     };
@@ -192,7 +192,7 @@ function openProductDetail(productId) {
   
   // ✅ عرض الصورة
   const detailImage = document.getElementById('detailImage');
-  detailImage.src = product.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+  detailImage.src = product.image || 'image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
   
   // ✅ عرض الاسم
   document.getElementById('detailName').textContent = product.name || 'Produit sans nom';
@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// ✅ ENVOI À FIREBASE
+// ✅ ENVOI À FIREBASE + تقليل الكمية
 async function submitOrderForm() {
   const form = document.getElementById('orderForm');
   const orderType = form.orderType.value;
@@ -534,28 +534,63 @@ async function submitOrderForm() {
   
   try {
     console.log("📤 Envoi de la commande à Firebase...");
+    
+    // ✅ حفظ الطلب في قاعدة البيانات
     await addDoc(collection(db, "commandes"), commande);
     
+    // ✅ تقليل الكمية من المنتجات في قاعدة البيانات
+    console.log("🔄 Mise à jour des quantités des produits...");
+    await updateProductsQuantities(cart);
+    
+    // ✅ تحديث المنتجات المحلية
+    await loadProductsFromFirebase();
+    
+    // ✅ إغلاق المودال وإظهار رسالة النجاح
     document.getElementById('orderFormModal').classList.remove('active');
     document.getElementById('confirmModal').classList.add('active');
     document.getElementById('orderNumber').textContent = orderNumber;
     
-    // ✅ تحديث الكمية في قاعدة البيانات (يمكن إضافته لاحقاً)
-    
-    // Vider le panier
+    // ✅ إفراغ السلة
     cart = [];
     saveCartToStorage();
     updateCartCount();
     
-    // Réinitialiser le formulaire
+    // ✅ إعادة تعيين النموذج
     form.reset();
     document.getElementById('shippingPrice').textContent = '0 DA';
     
-    showNotification('Commande envoyée avec succès!', 'success');
-    console.log("✅ Commande envoyée avec succès!");
+    showNotification('Commande envoyée avec succès! Quantités mises à jour.', 'success');
+    console.log("✅ Commande envoyée avec succès et quantités mises à jour!");
   } catch (error) {
     console.error("❌ Erreur Firebase:", error);
     alert("Erreur lors de l'envoi. Vérifiez votre connexion.");
+  }
+}
+
+// ✅ دالة لتقليل الكمية من المنتجات في قاعدة البيانات
+async function updateProductsQuantities(cartItems) {
+  for (const item of cartItems) {
+    try {
+      const productRef = doc(db, "produits", item.id);
+      const productDoc = await getDoc(productRef);
+      
+      if (productDoc.exists()) {
+        const currentQuantity = productDoc.data().quantity || 0;
+        const newQuantity = currentQuantity - item.quantity;
+        
+        // ✅ التأكد من أن الكمية لا تصبح سالبة
+        if (newQuantity >= 0) {
+          await updateDoc(productRef, {
+            quantity: newQuantity
+          });
+          console.log(`✅ Quantité du produit "${item.name}" mise à jour: ${currentQuantity} → ${newQuantity}`);
+        } else {
+          console.warn(`⚠️ Quantité insuffisante pour "${item.name}". Stock actuel: ${currentQuantity}`);
+        }
+      }
+    } catch (error) {
+      console.error(`❌ Erreur mise à jour quantité pour "${item.name}":`, error);
+    }
   }
 }
 
