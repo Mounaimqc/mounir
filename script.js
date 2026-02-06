@@ -26,6 +26,48 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
+async function loadProductsFromFirebase() {
+  try {
+    console.log("📦 Chargement des produits depuis Firebase...");
+    
+    const productsRef = collection(db, "produits");
+    const productsQuery = query(productsRef);
+    const querySnapshot = await getDocs(productsQuery);
+    
+    products = [];
+    querySnapshot.forEach(doc => {
+      console.log("📄 Produit trouvé:", doc.id, doc.data());
+      products.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    console.log(`✅ ${products.length} produits chargés`);
+    
+    if (products.length === 0) {
+      console.warn("⚠️ Aucun produit trouvé dans la base de données!");
+      document.getElementById('productsGrid').innerHTML = `
+        <p style="text-align:center;color:#e74c3c; padding: 40px;">
+          ⚠️ Aucun produit disponible pour le moment.<br>
+          Veuillez contacter l'administrateur.
+        </p>
+      `;
+    } else {
+      loadProducts();
+    }
+  } catch (error) {
+    console.error("❌ Erreur chargement produits:", error);
+    document.getElementById('productsGrid').innerHTML = `
+      <p style="text-align:center;color:red; padding: 40px;">
+        ❌ Erreur de chargement des produits.<br>
+        Vérifiez votre connexion internet.
+      </p>
+    `;
+  }
+}
+
 // ========== AFFICHAGE DES PRODUITS ==========
 function loadProducts(filteredProducts = null) {
   const grid = document.getElementById('productsGrid');
@@ -138,110 +180,6 @@ function openProductDetail(productId) {
   document.getElementById('detailCategory').textContent = product.category || 'Catégorie inconnue';
   
   // ✅ عرض الوصف الكامل بتنسيق أفضل
-  const description = product.description || 'Pas de description disponible.';
-  document.getElementById('detailDescription').innerHTML = `
-    <strong>Description:</strong><br>
-    <span style="font-size: 16px; line-height: 1.6; color: #34495e;">
-      ${description.replace(/\n/g, '<br>')}
-    </span>
-  `;
-  
-  // ✅ عرض السعر
-  document.getElementById('detailPrice').textContent = (product.price || 0).toFixed(2);
-  
-  // ✅ فتح المودال
-  document.getElementById('productDetailModal').classList.add('active');
-  
-  console.log(`📦 Détails du produit "${product.name}" affichés`);
-}
-
-// ========== AFFICHAGE DES PRODUITS ==========
-function loadProducts(filteredProducts = null) {
-  const grid = document.getElementById('productsGrid');
-  if (!grid) return;
-  
-  const productsToDisplay = filteredProducts || products;
-  grid.innerHTML = '';
-  
-  if (productsToDisplay.length === 0) {
-    grid.innerHTML = `
-      <p style="text-align:center;color:#7f8c8d; padding: 40px;">
-        Aucun produit trouvé.
-      </p>
-    `;
-    return;
-  }
-  
-  productsToDisplay.forEach(product => {
-    const card = document.createElement('div');
-    card.className = 'product-card';
-    
-    // ✅ عند الضغط على الكارت كله، افتح المودال
-    card.addEventListener('click', (e) => {
-      // لا تفتح المودال إذا ضغط على زر "Ajouter"
-      if (e.target.classList.contains('add-to-cart-btn')) {
-        return;
-      }
-      openProductDetail(product.id);
-    });
-    
-    const img = document.createElement('img');
-    img.src = product.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
-    img.alt = product.name;
-    img.className = 'product-image';
-    img.onerror = function() {
-      this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
-    };
-    
-    // ✅ جعل الصورة قابلة للضغط لفتح المودال
-    img.addEventListener('click', (e) => {
-      e.stopPropagation();
-      openProductDetail(product.id);
-    });
-    
-    const info = document.createElement('div');
-    info.className = 'product-info';
-    info.innerHTML = `
-      <h3 class="product-name">${product.name || 'Produit sans nom'}</h3>
-      <p class="product-category">${product.category || 'Catégorie inconnue'}</p>
-      <p class="product-description">${product.description || ''}</p>
-      <div class="product-footer">
-        <span class="product-price">${(product.price || 0).toFixed(2)} DA</span>
-        <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">Ajouter</button>
-      </div>
-    `;
-    
-    card.appendChild(img);
-    card.appendChild(info);
-    grid.appendChild(card);
-  });
-  
-  // Animation scroll
-  setTimeout(() => {
-    document.querySelectorAll('.product-card').forEach(card => {
-      card.classList.add('visible');
-    });
-  }, 100);
-}
-
-// ========== MODAL DÉTAIL PRODUIT ==========
-function openProductDetail(productId) {
-  const product = products.find(p => p.id === productId);
-  if (!product) return;
-  
-  currentProductId = productId;
-  
-  // ✅ عرض الصورة
-  const detailImage = document.getElementById('detailImage');
-  detailImage.src = product.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
-  
-  // ✅ عرض الاسم
-  document.getElementById('detailName').textContent = product.name || 'Produit sans nom';
-  
-  // ✅ عرض الفئة
-  document.getElementById('detailCategory').textContent = product.category || 'Catégorie inconnue';
-  
-  // ✅ عرض الوصف الكامل (بخط أكبر وأفضل تنسيق)
   const description = product.description || 'Pas de description disponible.';
   document.getElementById('detailDescription').innerHTML = `
     <strong>Description:</strong><br>
@@ -788,4 +726,3 @@ const stopDeskPrices = {
   "57 - El M'Ghair": 600,
   "58 - El Meniaa": 600
 };
-
