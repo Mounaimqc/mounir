@@ -101,8 +101,16 @@ function loadProducts(filteredProducts = null) {
     img.src = product.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
     img.alt = product.name;
     img.className = 'product-image';
+    img.style.cssText = `
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      display: block;
+    `;
     img.onerror = function() {
       this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+      this.style.height = '200px';
+      this.style.objectFit = 'contain';
     };
     
     // ✅ جعل الصورة قابلة للضغط لفتح المودال
@@ -117,13 +125,26 @@ function loadProducts(filteredProducts = null) {
     // ✅ عرض جزء من الوصف فقط (50 حرف)
     const shortDescription = truncateDescription(product.description || '', 50);
     
+    // ✅ عرض الكمية
+    let quantityHTML = '';
+    const quantity = product.quantity || 0;
+    
+    if (quantity > 0) {
+      quantityHTML = `<span class="product-quantity">${quantity} en stock</span>`;
+    } else {
+      quantityHTML = `<span class="product-quantity out-of-stock">Rupture de stock</span>`;
+    }
+    
     info.innerHTML = `
       <h3 class="product-name">${product.name || 'Produit sans nom'}</h3>
       <p class="product-category">${product.category || 'Catégorie inconnue'}</p>
       <p class="product-description">${shortDescription}</p>
+      ${quantityHTML}
       <div class="product-footer">
         <span class="product-price">${(product.price || 0).toFixed(2)} DA</span>
-        <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">Ajouter</button>
+        <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">
+          ${quantity > 0 ? 'Ajouter' : 'Indisponible'}
+        </button>
       </div>
     `;
     
@@ -179,6 +200,15 @@ function openProductDetail(productId) {
   // ✅ عرض الفئة
   document.getElementById('detailCategory').textContent = product.category || 'Catégorie inconnue';
   
+  // ✅ عرض الكمية في المودال
+  const quantity = product.quantity || 0;
+  let quantityText = '';
+  if (quantity > 0) {
+    quantityText = `<span style="color: #27ae60; font-weight: bold;">${quantity} en stock</span>`;
+  } else {
+    quantityText = `<span style="color: #e74c3c; font-weight: bold;">Rupture de stock</span>`;
+  }
+  
   // ✅ عرض الوصف الكامل بتنسيق أفضل
   const description = product.description || 'Pas de description disponible.';
   document.getElementById('detailDescription').innerHTML = `
@@ -186,6 +216,9 @@ function openProductDetail(productId) {
     <span style="font-size: 16px; line-height: 1.6; color: #34495e;">
       ${description.replace(/\n/g, '<br>')}
     </span>
+    <br><br>
+    <strong>Quantité:</strong><br>
+    ${quantityText}
   `;
   
   // ✅ عرض السعر
@@ -202,8 +235,20 @@ function addToCart(productId) {
   const product = products.find(p => p.id === productId);
   if (!product) return;
   
+  // ✅ التحقق من الكمية قبل الإضافة
+  const quantity = product.quantity || 0;
+  if (quantity <= 0) {
+    showNotification('Produit indisponible - rupture de stock!', 'error');
+    return;
+  }
+  
   const existingItem = cart.find(item => item.id === productId);
   if (existingItem) {
+    // ✅ التحقق من الكمية المتبقية
+    if (existingItem.quantity >= quantity) {
+      showNotification('Quantité maximale atteinte!', 'error');
+      return;
+    }
     existingItem.quantity += 1;
   } else {
     cart.push({ ...product, quantity: 1 });
@@ -211,7 +256,7 @@ function addToCart(productId) {
   
   saveCartToStorage();
   updateCartCount();
-  showNotification(`${product.name} ajouté au panier!`);
+  showNotification(`${product.name} ajouté au panier!`, 'success');
 }
 
 function updateQuantity(productId, change) {
@@ -221,6 +266,15 @@ function updateQuantity(productId, change) {
     if (item.quantity <= 0) {
       removeFromCart(productId);
     } else {
+      // ✅ التحقق من الكمية المتبقية في المخزن
+      const product = products.find(p => p.id === productId);
+      const maxQuantity = product.quantity || 0;
+      
+      if (item.quantity > maxQuantity) {
+        item.quantity = maxQuantity;
+        showNotification('Quantité maximale atteinte!', 'error');
+      }
+      
       saveCartToStorage();
       displayCart();
     }
@@ -486,6 +540,8 @@ async function submitOrderForm() {
     document.getElementById('confirmModal').classList.add('active');
     document.getElementById('orderNumber').textContent = orderNumber;
     
+    // ✅ تحديث الكمية في قاعدة البيانات (يمكن إضافته لاحقاً)
+    
     // Vider le panier
     cart = [];
     saveCartToStorage();
@@ -495,7 +551,7 @@ async function submitOrderForm() {
     form.reset();
     document.getElementById('shippingPrice').textContent = '0 DA';
     
-    showNotification('Commande envoyée avec succès!');
+    showNotification('Commande envoyée avec succès!', 'success');
     console.log("✅ Commande envoyée avec succès!");
   } catch (error) {
     console.error("❌ Erreur Firebase:", error);
@@ -504,13 +560,15 @@ async function submitOrderForm() {
 }
 
 // ========== NOTIFICATIONS ==========
-function showNotification(message) {
+function showNotification(message, type = 'success') {
   const notif = document.createElement('div');
+  const bgColor = type === 'success' ? '#27ae60' : '#e74c3c';
+  
   notif.style.cssText = `
     position: fixed; 
     top: 20px; 
     right: 20px; 
-    background: #27ae60; 
+    background: ${bgColor}; 
     color: white; 
     padding: 15px 25px; 
     border-radius: 5px; 
@@ -726,4 +784,3 @@ const stopDeskPrices = {
   "57 - El M'Ghair": 600,
   "58 - El Meniaa": 600
 };
-
