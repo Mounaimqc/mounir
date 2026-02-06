@@ -175,7 +175,7 @@ header {
   width: 100%;
   height: 200px;
   object-fit: contain;  /* من cover إلى contain */
-  background-color: #ecf0f1;
+  background-color: transparent;
   display: block;
 }
 
@@ -849,6 +849,7 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
 
 
 
