@@ -1,5 +1,5 @@
 // ========== IMPORT FIREBASE ==========
-import { collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { collection, getDocs, addDoc, query } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
 
 // ========== VARIABLES GLOBALES ==========
@@ -9,6 +9,7 @@ let currentProductId = null;
 
 // ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', function () {
+  console.log("🚀 Application démarrée...");
   loadProductsFromFirebase();
   setupEventListeners();
   loadCartFromStorage();
@@ -28,19 +29,41 @@ document.addEventListener('DOMContentLoaded', function () {
 // ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
 async function loadProductsFromFirebase() {
   try {
-    const querySnapshot = await getDocs(collection(db, "produits"));
+    console.log("📦 Chargement des produits depuis Firebase...");
+    
+    const productsRef = collection(db, "produits");
+    const productsQuery = query(productsRef);
+    const querySnapshot = await getDocs(productsQuery);
+    
     products = [];
     querySnapshot.forEach(doc => {
+      console.log("📄 Produit trouvé:", doc.id, doc.data());
       products.push({
         id: doc.id,
         ...doc.data()
       });
     });
-    loadProducts();
+    
+    console.log(`✅ ${products.length} produits chargés`);
+    
+    if (products.length === 0) {
+      console.warn("⚠️ Aucun produit trouvé dans la base de données!");
+      document.getElementById('productsGrid').innerHTML = `
+        <p style="text-align:center;color:#e74c3c; padding: 40px;">
+          ⚠️ Aucun produit disponible pour le moment.<br>
+          Veuillez contacter l'administrateur.
+        </p>
+      `;
+    } else {
+      loadProducts();
+    }
   } catch (error) {
-    console.error("Erreur chargement produits:", error);
+    console.error("❌ Erreur chargement produits:", error);
     document.getElementById('productsGrid').innerHTML = `
-      <p style="text-align:center;color:red;">❌ Erreur de chargement des produits.</p>
+      <p style="text-align:center;color:red; padding: 40px;">
+        ❌ Erreur de chargement des produits.<br>
+        Vérifiez votre connexion internet.
+      </p>
     `;
   }
 }
@@ -55,7 +78,9 @@ function loadProducts(filteredProducts = null) {
   
   if (productsToDisplay.length === 0) {
     grid.innerHTML = `
-      <p style="text-align:center;color:#7f8c8d;">Aucun produit trouvé.</p>
+      <p style="text-align:center;color:#7f8c8d; padding: 40px;">
+        Aucun produit trouvé.
+      </p>
     `;
     return;
   }
@@ -76,8 +101,8 @@ function loadProducts(filteredProducts = null) {
     const info = document.createElement('div');
     info.className = 'product-info';
     info.innerHTML = `
-      <h3 class="product-name">${product.name}</h3>
-      <p class="product-category">${product.category}</p>
+      <h3 class="product-name">${product.name || 'Produit sans nom'}</h3>
+      <p class="product-category">${product.category || 'Catégorie inconnue'}</p>
       <p class="product-description">${product.description || ''}</p>
       <div class="product-footer">
         <span class="product-price">${(product.price || 0).toFixed(2)} DA</span>
@@ -104,9 +129,9 @@ function openProductDetail(productId) {
   if (!product) return;
   
   currentProductId = productId;
-  document.getElementById('detailImage').src = product.image;
-  document.getElementById('detailName').textContent = product.name;
-  document.getElementById('detailCategory').textContent = product.category;
+  document.getElementById('detailImage').src = product.image || 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="250" height="200"%3E%3Crect fill="%23ddd" width="250" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" font-family="Arial" font-size="16" fill="%23666"%3EImage non disponible%3C/text%3E%3C/svg%3E';
+  document.getElementById('detailName').textContent = product.name || 'Produit sans nom';
+  document.getElementById('detailCategory').textContent = product.category || 'Catégorie inconnue';
   document.getElementById('detailDescription').textContent = product.description || 'Pas de description.';
   document.getElementById('detailPrice').textContent = (product.price || 0).toFixed(2);
   document.getElementById('productDetailModal').classList.add('active');
@@ -381,6 +406,7 @@ async function submitOrderForm() {
   };
   
   try {
+    console.log("📤 Envoi de la commande à Firebase...");
     await addDoc(collection(db, "commandes"), commande);
     
     document.getElementById('orderFormModal').classList.remove('active');
@@ -397,8 +423,9 @@ async function submitOrderForm() {
     document.getElementById('shippingPrice').textContent = '0 DA';
     
     showNotification('Commande envoyée avec succès!');
+    console.log("✅ Commande envoyée avec succès!");
   } catch (error) {
-    console.error("Erreur Firebase:", error);
+    console.error("❌ Erreur Firebase:", error);
     alert("Erreur lors de l'envoi. Vérifiez votre connexion.");
   }
 }
@@ -477,152 +504,18 @@ const wilayasData = {
   "32 - El Bayadh": ["El Bayadh", "Ain El Orak", "Bougtoub", "Brézina", "Chellala", "El Abiodh Sidi Cheikh", "El Bnoud", "Ghassoul", "Kef El Ahmar", "Rogassa", "Sidi Slimane", "Stitten"],
   "33 - Illizi": ["Illizi", "Bordj Omar Driss", "Djanet", "Debdeb", "El Borma", "In Amenas", "In Guezzam", "In Salah", "Tin Zaouatine"],
   "34 - Bordj Bou Arréridj": ["Bordj Bou Arréridj", "Ain Taghrout", "Belimour", "Bir Kasdali", "Bordj Ghdir", "Bordj Zemmoura", "Colla", "El Achir", "El Anser", "El Hamadia", "El Main", "El M'hir", "Ghilassa", "Haraza", "Hasnaoua", "Ksour", "Mansourah", "Medjana", "Ouled Brahem", "Ouled Dahmane", "Ouled Sidi Brahim", "Ras El Oued", "Righa", "Taglait", "Teniet En Nasr"],
-  "35 - Boumerdès": ["Boumerdès", "Ammal", "Baghlia", "Bordj Menaiel", "Boudouaou", "Boudouaou El Bahri", "Chabet El Ameur", "Dellys", "Isser", "Khemis El Khechna", "Legata", "Naciria", "Ouled Aissa", "Ouled Fayet", "Si Mustapha", "Souk El Had", "Thénia"],
-  "36 - El Tarf": ["El Tarf", "Ain Kercha", "Ben M'Hidi", "Besbes", "Bouhadjar", "Boutheldja", "Dréan", "El Kala", "Lac des Oiseaux", "Souarekh"],
-  "37 - Tindouf": ["Tindouf", "Aouinet Bel Egrâ", "Fenoughil", "Oum El Assel"],
-  "38 - Tissemsilt": ["Tissemsilt", "Ammari", "Belaassel Bouzegza", "Beni Chaib", "Boucaid", "Bouhatem", "Boukhanafis", "Khemisti", "Lazharia", "Layoune", "Maacem", "Sidi Abed", "Sidi Boutouchent", "Sidi Lantri", "Tamalaht", "Theniet El Had"],
-  "39 - El Oued": ["El Oued", "Bayadha", "Debila", "El Ogla", "Guemar", "Hassi Khelifa", "Magrane", "Mih Ouensa", "Oued Souf", "Reguiba", "Robbah", "Taleb Larbi", "Trifaoui"],
-  "40 - Khenchela": ["Khenchela", "Ain Touila", "Babar", "Bouhmama", "Chechar", "El Hamma", "El Mahmal", "El Mahres", "El Ouenza", "Hammam Essalihine", "Kais", "Ouled Rechache", "Remila", "Yabous"],
-  "41 - Souk Ahras": ["Souk Ahras", "Ain Zana", "Bir Bouhouche", "Heddada", "Khedara", "M'Daourouch", "Mechroha", "Merahna", "Ouled Driss", "Oum El Adhaïm", "Sedrata", "Taoura", "Zouabi"],
-  "42 - Tipaza": ["Tipaza", "Ahmar El Ain", "Bou Ismail", "Cherchell", "Damous", "Fouka", "Gouraya", "Hadjout", "Koléa", "Menaceur", "Nador", "Sidi Amar", "Sidi Ghiles", "Sidi Rached", "Sidi Semiane", "Tipasa"],
-  "43 - Mila": ["Mila", "Ain Beida", "Ain Mellouk", "Chelghoum Laid", "El Ayadi Barbes", "El Barka", "El Eulma", "Ferdjioua", "Grarem Gouga", "Hamala", "Oued Athmania", "Oued Endja", "Oued Seguen", "Rouached", "Sidi Khelifa", "Tassadane Haddada", "Teleghma", "Terrai Bainen", "Yahia Beniguecha"],
-  "44 - Aïn Defla": ["Aïn Defla", "Arib", "Bathia", "Belaas", "Bir Ould Khelifa", "Birbal", "Birhoum", "Boumedfaa", "Djelida", "Djemaa Ouled Cheikh", "El Amra", "El Attaf", "El Hassania", "El Maine", "Hammam Righa", "Hoceinia", "Khemis Miliana", "Miliana", "Oued Chorfa", "Oued Djemaa", "Rouina", "Tarik Ibn Ziad", "Tiberkanine", "Zeddine"],
-  "45 - Naâma": ["Naâma", "Ain Ben Khelil", "Ain Sefra", "Asla", "Djeniene Bourezg", "El Bier", "Makmen Ben Amer", "Mecheria", "Moghrar", "Sfissifa", "Tiout"],
-  "46 - Aïn Témouchent": ["Aïn Témouchent", "Ain Kihel", "Aoubellil", "Beni Saf", "Bouzedjar", "El Amria", "El Malah", "Hammam Bouhadjar", "Hassasna", "Oued Berkeche", "Oued Sabah", "Sidi Ben Adda", "Sidi Boumediene", "Sidi Ourial", "Terga", "Tlemcen"],
-  "47 - Ghardaïa": ["Ghardaïa", "Berriane", "Bounoura", "Dhayet Bendhahoua", "El Atteuf", "El Guerrara", "El Meniaa", "Metlili", "Sebseb", "Zelfana"],
-  "48 - Relizane": ["Relizane", "Ain Rahma", "Ain Tarek", "Ammi Moussa", "Belassel Bouzegza", "Beni Dergoun", "Beni Zentis", "Djidiouia", "El Hamadna", "El Matmar", "El Ouldja", "Had Echkalla", "Hamri", "Kalaa", "Mazouna", "Mendes", "Oued Rhiou", "Oued Sly", "Ramka", "Sidi Khettab", "Sidi Lazreg", "Souk El Had", "Yellel"],
-  "49 - Timimoun": ["Timimoun", "Aougrout", "Bordj Badji Mokhtar", "Charouine", "Ouled Said", "Talmine", "Tinerkouk", "Touggourt"],
-  "50 - Bordj Badji Mokhtar": ["Bordj Badji Mokhtar", "Tin Zaouatine"],
-  "51 - Ouled Djellal": ["Ouled Djellal", "Chaiba", "Sidi Khaled"],
-  "52 - Béni Abbès": ["Béni Abbès", "Kerzaz", "Ouled Khodeir", "Tabelbala"],
-  "53 - In Salah": ["In Salah", "Abalessa", "Foggaret Ezzaouia", "Idles", "In Ghar", "Tazrouk"],
-  "54 - In Guezzam": ["In Guezzam", "Tin Zaouatine"],
-  "55 - Touggourt": ["Touggourt", "El Hadjira", "El Ogla", "Nezla", "Tebesbest", "Zaouia El Abidia"],
-  "56 - Djanet": ["Djanet", "Bordj Omar Driss"],
-  "57 - El M'Ghair": ["El M'Ghair", "Djamaa", "Oum Touyour", "Sidi Khellil"],
-  "58 - El Meniaa": ["El Meniaa", "Hassi Gara", "Hassi Fehal"]
-};
-
-// ========== PRIX DE LIVRAISON À DOMICILE ==========
-const shippingPrices = {
-  "01 - Adrar": 1500,
-  "02 - Chlef": 700,
-  "03 - Laghouat": 1200,
-  "04 - Oum El Bouaghi": 800,
-  "05 - Batna": 700,
-  "06 - Béjaïa": 700,
-  "07 - Biskra": 1100,
-  "08 - Béchar": 2200,
-  "09 - Blida": 700,
-  "10 - Bouira": 700,
-  "11 - Tamanrasset": 3500,
-  "12 - Tébessa": 1100,
-  "13 - Tlemcen": 900,
-  "14 - Tiaret": 900,
-  "15 - Tizi Ouzou": 700,
-  "16 - Alger": 600,
-  "17 - Djelfa": 1000,
-  "18 - Jijel": 700,
-  "19 - Sétif": 550,
-  "20 - Saïda": 900,
-  "21 - Skikda": 800,
-  "22 - Sidi Bel Abbès": 900,
-  "23 - Annaba": 700,
-  "24 - Guelma": 850,
-  "25 - Constantine": 650,
-  "26 - Médéa": 800,
-  "27 - Mostaganem": 800,
-  "28 - M'Sila": 700,
-  "29 - Mascara": 900,
-  "30 - Ouargla": 2000,
-  "31 - Oran": 700,
-  "32 - El Bayadh": 1500,
-  "33 - Illizi": 3000,
-  "34 - Bordj Bou Arréridj": 600,
-  "35 - Boumerdès": 700,
-  "36 - El Tarf": 1100,
-  "37 - Tindouf": 3500,
-  "38 - Tissemsilt": 900,
-  "39 - El Oued": 1800,
-  "40 - Khenchela": 800,
-  "41 - Souk Ahras": 1100,
-  "42 - Tipaza": 700,
-  "43 - Mila": 800,
-  "44 - Aïn Defla": 800,
-  "45 - Naâma": 1500,
-  "46 - Aïn Témouchent": 900,
-  "47 - Ghardaïa": 1800,
-  "48 - Relizane": 800,
-  "49 - Timimoun": 2500,
-  "50 - Bordj Badji Mokhtar": 3500,
-  "51 - Ouled Djellal": 1200,
-  "52 - Béni Abbès": 2500,
-  "53 - In Salah": 3000,
-  "54 - In Guezzam": 3500,
-  "55 - Touggourt": 2000,
-  "56 - Djanet": 3500,
-  "57 - El M'Ghair": 1800,
-  "58 - El Meniaa": 1800
-};
-
-// ========== PRIX DE LIVRAISON STOP DESK ==========
-const stopDeskPrices = {
-  "01 - Adrar": 600,
-  "02 - Chlef": 600,
-  "03 - Laghouat": 600,
-  "04 - Oum El Bouaghi": 800,
-  "05 - Batna": 700,
-  "06 - Béjaïa": 700,
-  "07 - Biskra": 900,
-  "08 - Béchar": 600,
-  "09 - Blida": 700,
-  "10 - Bouira": 700,
-  "11 - Tamanrasset": 600,
-  "12 - Tébessa": 850,
-  "13 - Tlemcen": 800,
-  "14 - Tiaret": 800,
-  "15 - Tizi Ouzou": 600,
-  "16 - Alger": 600,
-  "17 - Djelfa": 600,
-  "18 - Jijel": 700,
-  "19 - Sétif": 550,
-  "20 - Saïda": 900,
-  "21 - Skikda": 800,
-  "22 - Sidi Bel Abbès": 800,
-  "23 - Annaba": 600,
-  "24 - Guelma": 850,
-  "25 - Constantine": 600,
-  "26 - Médéa": 600,
-  "27 - Mostaganem": 800,
-  "28 - M'Sila": 600,
-  "29 - Mascara": 800,
-  "30 - Ouargla": 600,
-  "31 - Oran": 600,
-  "32 - El Bayadh": 600,
-  "33 - Illizi": 600,
-  "34 - Bordj Bou Arréridj": 600,
-  "35 - Boumerdès": 700,
-  "36 - El Tarf": 850,
-  "37 - Tindouf": 600,
-  "38 - Tissemsilt": 850,
-  "39 - El Oued": 600,
-  "40 - Khenchela": 600,
-  "41 - Souk Ahras": 850,
-  "42 - Tipaza": 600,
-  "43 - Mila": 600,
-  "44 - Aïn Defla": 800,
-  "45 - Naâma": 600,
-  "46 - Aïn Témouchent": 800,
-  "47 - Ghardaïa": 600,
-  "48 - Relizane": 800,
-  "49 - Timimoun": 600,
-  "50 - Bordj Badji Mokhtar": 600,
-  "51 - Ouled Djellal": 900,
-  "52 - Béni Abbès": 600,
-  "53 - In Salah": 600,
-  "54 - In Guezzam": 600,
-  "55 - Touggourt": 600,
-  "56 - Djanet": 600,
-  "57 - El M'Ghair": 600,
-  "58 - El Meniaa": 600
-};
+  "35 - Boumerdès": ["Boumerdès", "Ammal", "Baghlia", "Bordj Menaiel", "Boudouaou", "Boudouaou El Bahri", "Chabet El Ameur", "Dellys", "Isser", "Khemis El Khechna", "Legata", "Naciria", "Ouled Aissa", "Ouled Hedadj", "Ouled Moussa", "Thenia", "Tidjelabine", "Zemmouri"],
+  "36 - El Tarf": ["El Tarf", "Ain El Assel", "Berrihane", "Bouhadjar", "Boutheldja", "Dréan", "El Kala", "El Oued Souf", "Raml Souk", "Zitouna"],
+  "37 - Tindouf": ["Tindouf"],
+  "38 - Tissemsilt": ["Tissemsilt", "Amar El Amri", "Ammari", "Bordj Bou Naama", "Boucaid", "Khemisti", "Lardjem", "Lazharia", "Melaab", "Ouled Bessem", "Sidi Abed"],
+  "39 - El Oued": ["El Oued", "Bayadha", "Djamaa", "Hamraia", "M'Rara", "Reguiba", "Robbah", "Taghzout"],
+  "40 - Khenchela": ["Khenchela", "Ain Touila", "Babar", "Bouhmama", "Chechar", "El Hamma", "Ensigha", "Kaïs", "M'Sara", "Ouled Rechache", "Yabous"],
+  "41 - Souk Ahras": ["Souk Ahras", "Ain Zana", "Bir Bouhouche", "Drea", "Haddada", "M'daourouch", "Merahna", "Ouled Driss", "Oum El Adhaïm", "Taoura"],
+  "42 - Tipaza": ["Tipaza", "Aghbal", "Amizour", "Bou Ismaïl", "Cherchell", "Damous", "Djoufi", "Douaouda", "Fouka", "Gouraya", "Hadjout", "Kolea", "Menaceur", "Messelmoun", "Nedroma", "Sidi Amar"],
+  "43 - Mila": ["Mila", "Ain Beida Harriche", "Amar El Amir", "Beni Aziz", "Beni Mered", "Chebli Boubeker", "Ferdjioua", "Grarem Gouga", "Oued Endja", "Rouached"],
+  "44 - Aïn Defla": ["Aïn Defla", "Aïn Lechiekh", "Aïn Soltane", "Bordj Emir Abdelkader", "Djelida", "El Amra", "Hassi Bahbah", "Khemis", "Mekhatria", "Miliana", "Oued Chorfa", "Oued El Djemaa", "Ras El Oued", "Sidi Lakhdar"],
+  "45 - Naâma": ["Naâma", "Asla", "Djéniane Bourezg", "Mécheria", "Moghrar", "Sefiane", "Sfissifa"],
+  "46 - Aïn Témouchent": ["Aïn Témouchent", "Aghlal", "Ain Kihel", "Ain Larbaâ", "Beni Saf", "El Amria", "El Malah", "Hammam Bouhadjar", "Oulhassa Gheraba", "Remchi"],
+  "47 - Ghardaïa": ["Ghardaïa", "Berriane", "El Atteuf", "El Méniaa", "M'Zab", "Metlili"],
+  "48 - Relizane": ["Relizane", "Ain Tarik", "Ammi Moussa", "Djidiouia", "El Guettar  ", "El H'Madna", "Oued Rhiou", "Sidi M'Hamed Ben Ali", "Yellel"]
+};  
