@@ -22,127 +22,7 @@ body {
   margin: 0 auto;
   padding: 0 15px;
 }
-/* ========== قسم الفئات ========== */
-.categories-section {
-  padding: 40px 0 20px;
-  background-color: #1a1a1a;
-}
 
-.categories-section h2 {
-  font-size: clamp(1.5rem, 5vw, 2rem);
-  margin-bottom: 25px;
-  text-align: center;
-  color: white;
-}
-
-.categories-slider {
-  display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-  gap: 15px;
-  padding: 10px 15px;
-  scrollbar-width: none; /* إخفاء شريط التمرير للـ Firefox */
-}
-
-.categories-slider::-webkit-scrollbar {
-  display: none; /* إخفاء شريط التمرير للـ Chrome/Safari */
-}
-
-.category-card {
-  flex: 0 0 160px; /* عرض ثابت لكل فئة */
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  text-align: center;
-  flex-shrink: 0;
-}
-
-.category-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  background-color: #f8f9fa;
-}
-
-.category-card img {
-  width: 100%;
-  height: 140px;
-  object-fit: cover;
-  display: block;
-}
-
-.category-card h3 {
-  margin: 12px 0 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-.category-card p {
-  margin: 0 0 12px;
-  font-size: 0.85rem;
-  color: #7f8c8d;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .category-card {
-    flex: 0 0 140px;
-  }
-  
-  .category-card img {
-    height: 120px;
-  }
-}
-
-@media (max-width: 480px) {
-  .category-card {
-    flex: 0 0 120px;
-  }
-  
-  .category-card img {
-    height: 100px;
-  }
-  
-  .category-card h3 {
-    font-size: 0.9rem;
-  }
-  
-  .category-card p {
-    font-size: 0.8rem;
-  }
-}
-/* Responsive */
-@media (max-width: 768px) {
-  .category-card {
-    flex: 0 0 140px;
-  }
-  
-  .category-card img {
-    height: 120px;
-  }
-}
-
-@media (max-width: 480px) {
-  .category-card {
-    flex: 0 0 120px;
-  }
-  
-  .category-card img {
-    height: 100px;
-  }
-  
-  .category-card h3 {
-    font-size: 0.9rem;
-  }
-  
-  .category-card p {
-    font-size: 0.8rem;
-  }
-}
 /* En-tête et navigation */
 header {
   background-color: white;
@@ -203,7 +83,7 @@ header {
 .cart-btn {
   background-color: white;
   color: black;
-  font-weight: bold;
+   font-weight: bold;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
@@ -212,13 +92,14 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
-  border: #121212 solid 1px;
+    border: #121212 solid 1px;
 }
 
 .cart-btn:hover {
-  border-radius: 50px;
-  background-color: #000;
-  color: white;
+   border-radius: 50px;
+   background-color: #000;
+   color:white;
+  
 }
 
 .cart-count {
@@ -331,7 +212,7 @@ header {
   line-height: 1.4;
 }
 
-/* Quantité du produit */
+/* ========== QUANTITÉ DU PRODUIT ========== */
 .product-quantity {
   font-size: 0.9rem;
   font-weight: bold;
@@ -350,7 +231,7 @@ header {
   color: #e74c3c;
 }
 
-/* Footer du produit */
+/* ========== FOOTER DU PRODUIT ========== */
 .product-footer {
   display: flex;
   justify-content: space-between;
@@ -585,7 +466,7 @@ footer {
   font-size: 0.95rem;
 }
 
-/* Styles du formulaire de commande */
+/* ========== STYLES DU FORMULAIRE DE COMMANDE ========== */
 .order-form-content {
   max-width: 600px !important;
   max-height: 90vh;
@@ -715,46 +596,34 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 15px;
   }
-  
-  .categories-slider {
-    gap: 10px;
-  }
-  
-  .category-card {
-    flex: 0 0 140px;
-  }
-  
-  .category-card img {
-    height: 120px;
-  }
-  
+
   .filters {
     flex-direction: column;
   }
-  
+
   .search-input,
   .category-filter {
     min-width: 100%;
   }
-  
+
   .modal-content {
     padding: 20px;
   }
-  
+
   .cart-item {
     flex-direction: column;
     align-items: flex-start;
     gap: 8px;
   }
-  
+
   .form-row {
     grid-template-columns: 1fr;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .btn-cancel,
   .btn-submit {
     width: 100%;
@@ -765,50 +634,30 @@ footer {
   .products-grid {
     grid-template-columns: 1fr;
   }
-  
-  .categories-slider {
-    gap: 8px;
-  }
-  
-  .category-card {
-    flex: 0 0 120px;
-  }
-  
-  .category-card img {
-    height: 100px;
-  }
-  
-  .category-card h3 {
-    font-size: 0.9rem;
-  }
-  
-  .category-card p {
-    font-size: 0.8rem;
-  }
-  
+
   .nav-items {
     width: 100%;
     justify-content: center;
   }
-  
+
   .logo h1 {
     font-size: 1.3rem;
   }
-  
+
   .product-image {
     height: 160px;
   }
-  
+
   .product-name {
     font-size: 1rem;
   }
-  
+
   .product-price {
     font-size: 1.2rem;
   }
 }
 
-/* Modal Détails Produit */
+/* Modal تفاصيل المنتج */
 .product-detail-content {
   max-width: 800px;
   width: 90%;
@@ -851,29 +700,29 @@ footer {
   font-size: 1rem;
 }
 
-/* Responsive: Modal Détails Produit */
+/* Responsive: Modal تفاصيل المنتج */
 @media (max-width: 768px) {
   .product-detail {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  
+
   .detail-image {
     max-width: 90%;
     height: auto;
   }
-  
+
   .detail-info {
     width: 100%;
   }
-  
+
   .product-detail-content {
     padding: 15px;
   }
 }
 
-/* Scroll Animation */
+/* ========== SCROLL ANIMATION FOR PRODUCTS ========== */
 .product-card {
   opacity: 0;
   transform: translateY(30px);
@@ -884,5 +733,42 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ========== QUANTITÉ DU PRODUIT ========== */
+.product-quantity {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 4px;
+  text-align: center;
+  background-color: #f8f9fa;
+  color: #27ae60;
+  display: inline-block;
+  width: 100%;
+}
+
+.product-quantity.out-of-stock {
+  background-color: #ffebee;
+  color: #e74c3c;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #95a5a6;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
