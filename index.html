@@ -52,57 +52,45 @@
   </header>
 
   <main>
-    <!-- Section des catégories -->
- <!-- قسم الفئات -->
+   <!-- قسم الفئات -->
 <section class="categories-section">
   <div class="container">
-    <h2>الفئات</h2>
+    <h2>Catégories</h2>
     <div class="categories-slider" id="categoriesSlider">
-      <!-- بروتينات -->
-      <div class="category-card" onclick="filterByCategory('proteines')">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='140' viewBox='0 0 200 150'%3E%3Crect fill='%233498db' width='200' height='150'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20'%3EPROTÉINES%3C/text%3E%3C/svg%3E" alt="بروتينات">
-        <h3>بروتينات</h3>
-        <p>17 منتج</p>
-      </div>
-      
-      <!-- ماس غين -->
-      <div class="category-card" onclick="filterByCategory('gainer')">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='140' viewBox='0 0 200 150'%3E%3Crect fill='%23e74c3c' width='200' height='150'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20'%3EMASS%3C/text%3E%3C/svg%3E" alt="ماس غينر">
-        <h3>ماس غينر</h3>
-        <p>6 منتجات</p>
-      </div>
-      
-      <!-- حرق الدهون -->
-      <div class="category-card" onclick="filterByCategory('fatburner')">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='140' viewBox='0 0 200 150'%3E%3Crect fill='%232ecc71' width='200' height='150'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20'%3EFAT%3C/text%3E%3C/svg%3E" alt="حرق الدهون">
-        <h3>حرق الدهون</h3>
-        <p>5 منتجات</p>
-      </div>
-      
-      <!-- أحماض أمينية -->
-      <div class="category-card" onclick="filterByCategory('acide')">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='140' viewBox='0 0 200 150'%3E%3Crect fill='%239b59b6' width='200' height='150'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20'%3EACIDES%3C/text%3E%3C/svg%3E" alt="أحماض أمينية">
-        <h3>أحماض أمينية</h3>
-        <p>8 منتجات</p>
-      </div>
-      
-      <!-- كرياتين -->
-      <div class="category-card" onclick="filterByCategory('creatine')">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='140' viewBox='0 0 200 150'%3E%3Crect fill='%23f39c12' width='200' height='150'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20'%3ECREATINE%3C/text%3E%3C/svg%3E" alt="كرياتين">
-        <h3>كرياتين</h3>
-        <p>4 منتجات</p>
-      </div>
-      
-      <!-- إكسسوارات -->
-      <div class="category-card" onclick="filterByCategory('accessories')">
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='140' viewBox='0 0 200 150'%3E%3Crect fill='%231abc9c' width='200' height='150'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20'%3EACCESS%3C/text%3E%3C/svg%3E" alt="إكسسوارات">
-        <h3>إكسسوارات</h3>
-        <p>10 منتجات</p>
-      </div>
+      <!-- سيتم تحميل الفئات تلقائياً من قاعدة البيانات -->
     </div>
   </div>
 </section>
 
+<!-- قسم المنتجات -->
+<section class="products-section">
+  <div class="container">
+    <h2>Nos Produits</h2>
+    <div class="filters">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Rechercher un produit..."
+        class="search-input"
+      >
+      <select id="categoryFilter" class="category-filter">
+        <option value="">Toutes les catégories</option>
+        <option value="proteines">Protéines whey</option>
+        <option value="gainer">Masse / Gainer</option>
+        <option value="acide">Acides aminés</option>
+        <option value="fatburner">Brûleur de graisse</option>
+        <option value="creatine">Créatine</option>
+        <option value="accessories">Accessoires</option>
+      </select>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <!-- المنتجات ستظهر هنا -->
+      <p style="text-align:center; padding: 40px; color: #7f8c8d;">
+        ⏳ Chargement des produits...
+      </p>
+    </div>
+  </div>
+</section>
     <!-- Section des produits -->
     <section class="products-section">
       <div class="container">
@@ -262,4 +250,5 @@
   <script type="module" src="script.js"></script>
 </body>
 </html>
+
 
