@@ -6,6 +6,35 @@ import { db } from './firebase-config.js';
 let products = [];
 let cart = [];
 let currentProductId = null;
+// أضف هذا الكود في ملف جديد أو في وحدة تحكم المتصفح
+import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { db } from './firebase-config.js';
+
+async function fixCategories() {
+  const productsRef = collection(db, "produits");
+  const querySnapshot = await getDocs(productsRef);
+  
+  for (const docSnap of querySnapshot.docs) {
+    const data = docSnap.data();
+    let category = data.category?.toLowerCase().trim();
+    
+    // تصحيح الفئات الخاطئة
+    if (category === 'protiéne' || category === 'protéines' || category === 'protiéne whey') {
+      category = 'proteines';
+    }
+    
+    if (category !== data.category) {
+      await updateDoc(doc(db, "produits", docSnap.id), {
+        category: category
+      });
+      console.log(`✅ تم تصحيح فئة المنتج ${docSnap.id}: ${data.category} → ${category}`);
+    }
+  }
+  
+  console.log("✅ تم تصحيح جميع الفئات!");
+}
+
+fixCategories();
 
 // ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', function () {
@@ -832,6 +861,7 @@ const stopDeskPrices = {
   "52 - Béni Abbès": 600, "53 - In Salah": 600, "54 - In Guezzam": 600, "55 - Touggourt": 600,
   "56 - Djanet": 600, "57 - El M'Ghair": 600, "58 - El Meniaa": 600
 };
+
 
 
 
