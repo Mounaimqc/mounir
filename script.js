@@ -69,11 +69,12 @@ async function loadProductsFromFirebase() {
 }
 
 // ========== CHARGER LES CATÉGORIES AVEC QUANTITÉS RÉELLES ==========
+// ========== تحميل الفئات مع العدد الحقيقي للمنتجات ==========
 function loadCategories() {
   const categoriesSlider = document.getElementById('categoriesSlider');
   if (!categoriesSlider) return;
   
-  // Définir les catégories avec leurs images et noms en français
+  // تعريف الفئات مع أسماء الصور
   const categories = [
     { id: 'proteines', name: 'Protéines Whey', image: 'images/proteines.jpg' },
     { id: 'gainer', name: 'Masse / Gainer', image: 'images/gainer.jpg' },
@@ -83,7 +84,7 @@ function loadCategories() {
     { id: 'accessories', name: 'Accessoires', image: 'images/accessories.jpg' }
   ];
   
-  // Compter les produits par catégorie
+  // عدّ المنتجات في كل فئة
   const categoryCounts = {};
   products.forEach(product => {
     const category = product.category;
@@ -92,29 +93,132 @@ function loadCategories() {
     }
   });
   
-  // Créer les cartes de catégories
+  // إنشاء بطاقات الفئات
   categoriesSlider.innerHTML = '';
   
   categories.forEach(cat => {
     const count = categoryCounts[cat.id] || 0;
-    if (count === 0) return; // Ne pas afficher les catégories vides
+    if (count === 0) return; // عدم عرض الفئات الفارغة
     
     const card = document.createElement('div');
     card.className = 'category-card';
     card.setAttribute('data-category', cat.id);
+    
     card.innerHTML = `
-      <img src="${cat.image}" alt="${cat.name}">
+      <img src="${cat.image}" alt="${cat.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22140%22 viewBox=%220 0 200 150%22%3E%3Crect fill=%22%233498db%22 width=%22200%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2220%22%3E${cat.name.substring(0, 10)}%3C/text%3E%3C/svg%3E'">
       <h3>${cat.name}</h3>
       <p>${count} produit${count > 1 ? 's' : ''}</p>
     `;
     
-    // Ajouter l'événement de clic pour filtrer
+    // إضافة حدث النقر لفلترة المنتجات
     card.addEventListener('click', () => filterByCategory(cat.id));
     
     categoriesSlider.appendChild(card);
   });
   
-  console.log("✅ Catégories chargées avec quantités réelles");
+  console.log("✅ الفئات تم تحميلها مع العدد الحقيقي للمنتجات");
+}
+
+// ========== فلترة المنتجات حسب الفئة ==========
+function filterByCategory(category) {
+  console.log("🔍 فلترة حسب الفئة:", category);
+  
+  // إزالة التحديد من جميع الفئات
+  document.querySelectorAll('.category-card').forEach(card => {
+    card.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+    card.style.transform = 'none';
+  });
+  
+  // إضافة تأثير التحديد للفئة المختارة
+  const selectedCard = document.querySelector(`.category-card[data-category="${category}"]`);
+  if (selectedCard) {
+    selectedCard.style.boxShadow = '0 8px 20px rgba(52, 152, 219, 0.4)';
+    selectedCard.style.transform = 'translateY(-5px)';
+    
+    // إلغاء التحديد بعد 1.5 ثانية
+    setTimeout(() => {
+      selectedCard.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+      selectedCard.style.transform = 'none';
+    }, 1500);
+  }
+  
+  // فلترة المنتجات
+  if (category === 'all') {
+    loadProducts();
+    document.getElementById('categoryFilter').value = '';
+  } else {
+    const filtered = products.filter(product => 
+      product.category && product.category.toLowerCase() === category.toLowerCase()
+    );
+    loadProducts(filtered);
+    
+    // تحديث الفلتر في القائمة المنسدلة
+    const filterSelect = document.getElementById('categoryFilter');
+    if (filterSelect) {
+      filterSelect.value = category;
+    }
+  }
+}
+
+// ========== تعديل دالة التحميل ==========
+document.addEventListener('DOMContentLoaded', function () {
+  console.log("🚀 تطبيق بدأ...");
+  loadProductsFromFirebase();
+  setupEventListeners();
+  loadCartFromStorage();
+  
+  // ربط زر الإضافة في Modal
+  const modalBtn = document.getElementById('modalAddToCartBtn');
+  if (modalBtn) {
+    modalBtn.addEventListener('click', () => {
+      if (currentProductId) {
+        addToCart(currentProductId);
+        document.getElementById('productDetailModal').classList.remove('active');
+      }
+    });
+  }
+});
+
+// تعديل دالة تحميل المنتجات
+async function loadProductsFromFirebase() {
+  try {
+    console.log("📦 تحميل المنتجات من Firebase...");
+    const productsRef = collection(db, "produits");
+    const productsQuery = query(productsRef);
+    const querySnapshot = await getDocs(productsQuery);
+    
+    products = [];
+    querySnapshot.forEach(doc => {
+      console.log("📄 منتج تم العثور عليه:", doc.id, doc.data());
+      products.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    console.log(`✅ ${products.length} منتج تم تحميله`);
+    
+    if (products.length === 0) {
+      console.warn("⚠️ لا يوجد منتجات في قاعدة البيانات!");
+      document.getElementById('productsGrid').innerHTML = `
+        <p style="text-align:center;color:#e74c3c; padding: 40px;">
+          ⚠️ لا يوجد منتجات متاحة في الوقت الحالي.<br>
+          يرجى الاتصال بالإدارة.
+        </p>
+      `;
+    } else {
+      loadProducts();
+      loadCategories(); // ✅ تحميل الفئات مع العدد الحقيقي للمنتجات
+    }
+  } catch (error) {
+    console.error("❌ خطأ في تحميل المنتجات:", error);
+    document.getElementById('productsGrid').innerHTML = `
+      <p style="text-align:center;color:red; padding: 40px;">
+        ❌ خطأ في تحميل المنتجات.<br>
+        يرجى التحقق من اتصال الإنترنت.
+      </p>
+    `;
+  }
 }
 
 // ========== AFFICHAGE DES PRODUITS ==========
@@ -833,3 +937,4 @@ const stopDeskPrices = {
   "52 - Béni Abbès": 600, "53 - In Salah": 600, "54 - In Guezzam": 600, "55 - Touggourt": 600,
   "56 - Djanet": 600, "57 - El M'Ghair": 600, "58 - El Meniaa": 600
 };
+
