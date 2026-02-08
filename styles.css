@@ -24,6 +24,7 @@ body {
 }
 
 /* ========== Section Catégories ========== */
+/* ========== قسم الفئات ========== */
 .categories-section {
   padding: 40px 0 20px;
   background-color: #1a1a1a;
@@ -43,15 +44,15 @@ body {
   -webkit-overflow-scrolling: touch;
   gap: 15px;
   padding: 10px 15px;
-  scrollbar-width: none; /* Firefox */
+  scrollbar-width: none; /* إخفاء شريط التمرير للـ Firefox */
 }
 
 .categories-slider::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none; /* إخفاء شريط التمرير للـ Chrome/Safari */
 }
 
 .category-card {
-  flex: 0 0 160px;
+  flex: 0 0 160px; /* عرض ثابت لكل فئة */
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -88,6 +89,34 @@ body {
   color: #7f8c8d;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .category-card {
+    flex: 0 0 140px;
+  }
+  
+  .category-card img {
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .category-card {
+    flex: 0 0 120px;
+  }
+  
+  .category-card img {
+    height: 100px;
+  }
+  
+  .category-card h3 {
+    font-size: 0.9rem;
+  }
+  
+  .category-card p {
+    font-size: 0.8rem;
+  }
+}
 /* En-tête et navigation */
 header {
   background-color: white;
@@ -829,3 +858,4 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
