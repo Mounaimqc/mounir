@@ -25,8 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-
-// ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
 async function loadProductsFromFirebase() {
   try {
     console.log("📦 Chargement des produits depuis Firebase...");
@@ -67,7 +65,6 @@ async function loadProductsFromFirebase() {
     `;
   }
 }
-
 // ========== CHARGER LES CATÉGORIES AVEC QUANTITÉS RÉELLES ==========
 function loadCategories() {
   const categoriesSlider = document.getElementById('categoriesSlider');
@@ -835,5 +832,6 @@ const stopDeskPrices = {
   "52 - Béni Abbès": 600, "53 - In Salah": 600, "54 - In Guezzam": 600, "55 - Touggourt": 600,
   "56 - Djanet": 600, "57 - El M'Ghair": 600, "58 - El Meniaa": 600
 };
+
 
 
