@@ -76,7 +76,7 @@ function loadCategories() {
   
   // تعريف الفئات مع أسماء الصور
   const categories = [
-    { id: 'proteines', name: 'Protéines Whey', image: 'images/proteines.jpg' },
+    { id: 'proteines', name: 'Protéines Whey', image: 'images/proteines.png' },
     { id: 'gainer', name: 'Masse / Gainer', image: 'images/gainer.jpg' },
     { id: 'fatburner', name: 'Brûleur de Graisse', image: 'images/fatburner.jpg' },
     { id: 'acide', name: 'Acides Aminés', image: 'images/acide.jpg' },
@@ -937,4 +937,5 @@ const stopDeskPrices = {
   "52 - Béni Abbès": 600, "53 - In Salah": 600, "54 - In Guezzam": 600, "55 - Touggourt": 600,
   "56 - Djanet": 600, "57 - El M'Ghair": 600, "58 - El Meniaa": 600
 };
+
 
