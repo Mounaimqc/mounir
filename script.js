@@ -6,35 +6,6 @@ import { db } from './firebase-config.js';
 let products = [];
 let cart = [];
 let currentProductId = null;
-// أضف هذا الكود في ملف جديد أو في وحدة تحكم المتصفح
-import { collection, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { db } from './firebase-config.js';
-
-async function fixCategories() {
-  const productsRef = collection(db, "produits");
-  const querySnapshot = await getDocs(productsRef);
-  
-  for (const docSnap of querySnapshot.docs) {
-    const data = docSnap.data();
-    let category = data.category?.toLowerCase().trim();
-    
-    // تصحيح الفئات الخاطئة
-    if (category === 'protiéne' || category === 'protéines' || category === 'protiéne whey') {
-      category = 'proteines';
-    }
-    
-    if (category !== data.category) {
-      await updateDoc(doc(db, "produits", docSnap.id), {
-        category: category
-      });
-      console.log(`✅ تم تصحيح فئة المنتج ${docSnap.id}: ${data.category} → ${category}`);
-    }
-  }
-  
-  console.log("✅ تم تصحيح جميع الفئات!");
-}
-
-fixCategories();
 
 // ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', function () {
@@ -54,9 +25,12 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
 async function loadProductsFromFirebase() {
   try {
     console.log("📦 Chargement des produits depuis Firebase...");
+    
     const productsRef = collection(db, "produits");
     const productsQuery = query(productsRef);
     const querySnapshot = await getDocs(productsQuery);
@@ -82,7 +56,6 @@ async function loadProductsFromFirebase() {
       `;
     } else {
       loadProducts();
-      loadCategories(); // ✅ تحميل الفئات مع العدد الحقيقي للمنتجات
     }
   } catch (error) {
     console.error("❌ Erreur chargement produits:", error);
@@ -92,96 +65,6 @@ async function loadProductsFromFirebase() {
         Vérifiez votre connexion internet.
       </p>
     `;
-  }
-}
-// ========== CHARGER LES CATÉGORIES AVEC QUANTITÉS RÉELLES ==========
-function loadCategories() {
-  const categoriesSlider = document.getElementById('categoriesSlider');
-  if (!categoriesSlider) return;
-  
-  // تعريف الفئات مع أسماء الصور
-  const categories = [
-    { id: 'proteines', name: 'Protéines Whey', image: 'images/proteines.png' },
-    { id: 'gainer', name: 'Masse / Gainer', image: 'images/proteines.png' },
-    { id: 'fatburner', name: 'Brûleur de Graisse', image: 'images/proteines.png' },
-    { id: 'acide', name: 'Acides Aminés', image: 'images/proteines.png' },
-    { id: 'creatine', name: 'Créatine', image: 'images/proteines.png' },
-    { id: 'accessories', name: 'Accessoires', image: 'images/proteines.png' }
-  ];
-  
-  // عدّ المنتجات في كل فئة
-  const categoryCounts = {};
-  products.forEach(product => {
-    const category = product.category;
-    if (category) {
-      categoryCounts[category] = (categoryCounts[category] || 0) + 1;
-    }
-  });
-  
-  // إنشاء بطاقات الفئات
-  categoriesSlider.innerHTML = '';
-  
-  categories.forEach(cat => {
-    const count = categoryCounts[cat.id] || 0;
-    if (count === 0) return; // عدم عرض الفئات الفارغة
-    
-    const card = document.createElement('div');
-    card.className = 'category-card';
-    card.setAttribute('data-category', cat.id);
-    
-    card.innerHTML = `
-      <img src="${cat.image}" alt="${cat.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22140%22 viewBox=%220 0 200 150%22%3E%3Crect fill=%22%233498db%22 width=%22200%22 height=%22150%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2220%22%3E${cat.name.substring(0, 10)}%3C/text%3E%3C/svg%3E'">
-      <h3>${cat.name}</h3>
-      <p>${count} produit${count > 1 ? 's' : ''}</p>
-    `;
-    
-    // إضافة حدث النقر لفلترة المنتجات
-    card.addEventListener('click', () => filterByCategory(cat.id));
-    
-    categoriesSlider.appendChild(card);
-  });
-  
-  console.log("✅ الفئات تم تحميلها مع العدد الحقيقي للمنتجات");
-}
-
-// ========== FILTRER PAR CATÉGORIE ==========
-function filterByCategory(category) {
-  console.log("🔍 فلترة حسب الفئة:", category);
-  
-  // إزالة التحديد من جميع الفئات
-  document.querySelectorAll('.category-card').forEach(card => {
-    card.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    card.style.transform = 'none';
-  });
-  
-  // إضافة تأثير التحديد للفئة المختارة
-  const selectedCard = document.querySelector(`.category-card[data-category="${category}"]`);
-  if (selectedCard) {
-    selectedCard.style.boxShadow = '0 8px 20px rgba(52, 152, 219, 0.4)';
-    selectedCard.style.transform = 'translateY(-5px)';
-    
-    // إلغاء التحديد بعد 1.5 ثانية
-    setTimeout(() => {
-      selectedCard.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-      selectedCard.style.transform = 'none';
-    }, 1500);
-  }
-  
-  // فلترة المنتجات
-  if (category === 'all') {
-    loadProducts();
-    document.getElementById('categoryFilter').value = '';
-  } else {
-    const filtered = products.filter(product => 
-      product.category && product.category.toLowerCase() === category.toLowerCase()
-    );
-    loadProducts(filtered);
-    
-    // تحديث الفلتر في القائمة المنسدلة
-    const filterSelect = document.getElementById('categoryFilter');
-    if (filterSelect) {
-      filterSelect.value = category;
-    }
   }
 }
 
@@ -246,6 +129,7 @@ function loadProducts(filteredProducts = null) {
     // ✅ عرض الكمية
     let quantityHTML = '';
     const quantity = product.quantity || 0;
+    
     if (quantity > 0) {
       quantityHTML = `<span class="product-quantity">${quantity} en stock</span>`;
     } else {
@@ -290,17 +174,22 @@ function loadProducts(filteredProducts = null) {
 // ✅ دالة لاقتطاع الوصف
 function truncateDescription(description, maxLength) {
   if (!description) return '';
+  
   // إزالة المسافات الزائدة
   description = description.trim();
+  
   if (description.length <= maxLength) {
     return description;
   }
+  
   // اقتطاع الكلمات الكاملة فقط
   const trimmed = description.substring(0, maxLength);
   const lastSpace = trimmed.lastIndexOf(' ');
+  
   if (lastSpace > 0) {
     return trimmed.substring(0, lastSpace) + '...';
   }
+  
   return trimmed + '...';
 }
 
@@ -347,6 +236,7 @@ function openProductDetail(productId) {
   
   // ✅ فتح المودال
   document.getElementById('productDetailModal').classList.add('active');
+  
   console.log(`📦 Détails du produit "${product.name}" affichés`);
 }
 
@@ -389,10 +279,12 @@ function updateQuantity(productId, change) {
       // ✅ التحقق من الكمية المتبقية في المخزن
       const product = products.find(p => p.id === productId);
       const maxQuantity = product.quantity || 0;
+      
       if (item.quantity > maxQuantity) {
         item.quantity = maxQuantity;
         showNotification('Quantité maximale atteinte!', 'error');
       }
+      
       saveCartToStorage();
       displayCart();
     }
@@ -438,7 +330,6 @@ function displayCart() {
       </div>
       <button class="remove-btn" onclick="removeFromCart('${item.id}')">Supprimer</button>
     `;
-    
     cartItems.appendChild(cartItem);
   });
   
@@ -519,7 +410,7 @@ function filterProducts() {
   
   const filtered = products.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm) ||
-      (product.description && product.description.toLowerCase().includes(searchTerm));
+                          (product.description && product.description.toLowerCase().includes(searchTerm));
     const matchesCategory = !selectedCategory || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -589,6 +480,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const w = wilayaSel.value;
     communeSel.innerHTML = '<option value="">Sélectionner une commune</option>';
     updateShippingPrice();
+    
     if (w && wilayasData[w]) {
       wilayasData[w].forEach(c => {
         const opt = document.createElement('option');
@@ -678,6 +570,7 @@ async function submitOrderForm() {
     // ✅ إعادة تعيين النموذج
     form.reset();
     document.getElementById('shippingPrice').textContent = '0 DA';
+    
     showNotification(`Commande envoyée avec succès! Quantités mises à jour.`, 'success');
     console.log("✅ Commande envoyée avec succès et quantités mises à jour!");
   } catch (error) {
@@ -689,15 +582,18 @@ async function submitOrderForm() {
 // ✅ دالة لتقليل الكمية من المنتجات في قاعدة البيانات
 async function updateProductsQuantities(cartItems) {
   const results = [];
+  
   for (const item of cartItems) {
     try {
       console.log(`📦 Mise à jour du produit: ${item.name} (ID: ${item.id})`);
+      
       const productRef = doc(db, "produits", item.id);
       const productDoc = await getDoc(productRef);
       
       if (productDoc.exists()) {
         const currentQuantity = productDoc.data().quantity || 0;
         const newQuantity = currentQuantity - item.quantity;
+        
         console.log(`  Quantité actuelle: ${currentQuantity}, Quantité à soustraire: ${item.quantity}, Nouvelle quantité: ${newQuantity}`);
         
         // ✅ التأكد من أن الكمية لا تصبح سالبة
@@ -720,6 +616,7 @@ async function updateProductsQuantities(cartItems) {
       results.push({ success: false, productId: item.id, reason: error.message });
     }
   }
+  
   return results;
 }
 
@@ -727,15 +624,16 @@ async function updateProductsQuantities(cartItems) {
 function showNotification(message, type = 'success') {
   const notif = document.createElement('div');
   const bgColor = type === 'success' ? '#27ae60' : '#e74c3c';
+  
   notif.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: ${bgColor};
-    color: white;
-    padding: 15px 25px;
-    border-radius: 5px;
-    z-index: 300;
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    background: ${bgColor}; 
+    color: white; 
+    padding: 15px 25px; 
+    border-radius: 5px; 
+    z-index: 300; 
     animation: slideIn 0.3s ease-out;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     font-size: 14px;
@@ -751,13 +649,13 @@ function showNotification(message, type = 'success') {
 
 const style = document.createElement('style');
 style.textContent = `
-  @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
-  @keyframes slideOut {
-    from { transform: translateX(0); opacity: 1; }
-    to { transform: translateX(100%); opacity: 0; }
+  @keyframes slideIn { 
+    from { transform: translateX(100%); opacity: 0; } 
+    to { transform: translateX(0); opacity: 1; } 
+  } 
+  @keyframes slideOut { 
+    from { transform: translateX(0); opacity: 1; } 
+    to { transform: translateX(100%); opacity: 0; } 
   }
 `;
 document.head.appendChild(style);
@@ -826,42 +724,124 @@ const wilayasData = {
 
 // ========== PRIX DE LIVRAISON À DOMICILE ==========
 const shippingPrices = {
-  "01 - Adrar": 1500, "02 - Chlef": 700, "03 - Laghouat": 1200, "04 - Oum El Bouaghi": 800,
-  "05 - Batna": 700, "06 - Béjaïa": 700, "07 - Biskra": 1100, "08 - Béchar": 2200,
-  "09 - Blida": 700, "10 - Bouira": 700, "11 - Tamanrasset": 3500, "12 - Tébessa": 1100,
-  "13 - Tlemcen": 900, "14 - Tiaret": 900, "15 - Tizi Ouzou": 700, "16 - Alger": 600,
-  "17 - Djelfa": 1000, "18 - Jijel": 700, "19 - Sétif": 550, "20 - Saïda": 900,
-  "21 - Skikda": 800, "22 - Sidi Bel Abbès": 900, "23 - Annaba": 700, "24 - Guelma": 850,
-  "25 - Constantine": 650, "26 - Médéa": 800, "27 - Mostaganem": 800, "28 - M'Sila": 700,
-  "29 - Mascara": 900, "30 - Ouargla": 2000, "31 - Oran": 700, "32 - El Bayadh": 1500,
-  "33 - Illizi": 3000, "34 - Bordj Bou Arréridj": 600, "35 - Boumerdès": 700, "36 - El Tarf": 1100,
-  "37 - Tindouf": 3500, "38 - Tissemsilt": 900, "39 - El Oued": 1800, "40 - Khenchela": 800,
-  "41 - Souk Ahras": 1100, "42 - Tipaza": 700, "43 - Mila": 800, "44 - Aïn Defla": 800,
-  "45 - Naâma": 1500, "46 - Aïn Témouchent": 900, "47 - Ghardaïa": 1800, "48 - Relizane": 800,
-  "49 - Timimoun": 2500, "50 - Bordj Badji Mokhtar": 3500, "51 - Ouled Djellal": 1200,
-  "52 - Béni Abbès": 2500, "53 - In Salah": 3000, "54 - In Guezzam": 3500, "55 - Touggourt": 2000,
-  "56 - Djanet": 3500, "57 - El M'Ghair": 1800, "58 - El Meniaa": 1800
+  "01 - Adrar": 1500,
+  "02 - Chlef": 700,
+  "03 - Laghouat": 1200,
+  "04 - Oum El Bouaghi": 800,
+  "05 - Batna": 700,
+  "06 - Béjaïa": 700,
+  "07 - Biskra": 1100,
+  "08 - Béchar": 2200,
+  "09 - Blida": 700,
+  "10 - Bouira": 700,
+  "11 - Tamanrasset": 3500,
+  "12 - Tébessa": 1100,
+  "13 - Tlemcen": 900,
+  "14 - Tiaret": 900,
+  "15 - Tizi Ouzou": 700,
+  "16 - Alger": 600,
+  "17 - Djelfa": 1000,
+  "18 - Jijel": 700,
+  "19 - Sétif": 550,
+  "20 - Saïda": 900,
+  "21 - Skikda": 800,
+  "22 - Sidi Bel Abbès": 900,
+  "23 - Annaba": 700,
+  "24 - Guelma": 850,
+  "25 - Constantine": 650,
+  "26 - Médéa": 800,
+  "27 - Mostaganem": 800,
+  "28 - M'Sila": 700,
+  "29 - Mascara": 900,
+  "30 - Ouargla": 2000,
+  "31 - Oran": 700,
+  "32 - El Bayadh": 1500,
+  "33 - Illizi": 3000,
+  "34 - Bordj Bou Arréridj": 600,
+  "35 - Boumerdès": 700,
+  "36 - El Tarf": 1100,
+  "37 - Tindouf": 3500,
+  "38 - Tissemsilt": 900,
+  "39 - El Oued": 1800,
+  "40 - Khenchela": 800,
+  "41 - Souk Ahras": 1100,
+  "42 - Tipaza": 700,
+  "43 - Mila": 800,
+  "44 - Aïn Defla": 800,
+  "45 - Naâma": 1500,
+  "46 - Aïn Témouchent": 900,
+  "47 - Ghardaïa": 1800,
+  "48 - Relizane": 800,
+  "49 - Timimoun": 2500,
+  "50 - Bordj Badji Mokhtar": 3500,
+  "51 - Ouled Djellal": 1200,
+  "52 - Béni Abbès": 2500,
+  "53 - In Salah": 3000,
+  "54 - In Guezzam": 3500,
+  "55 - Touggourt": 2000,
+  "56 - Djanet": 3500,
+  "57 - El M'Ghair": 1800,
+  "58 - El Meniaa": 1800
 };
 
 // ========== PRIX DE LIVRAISON STOP DESK ==========
 const stopDeskPrices = {
-  "01 - Adrar": 600, "02 - Chlef": 600, "03 - Laghouat": 600, "04 - Oum El Bouaghi": 800,
-  "05 - Batna": 700, "06 - Béjaïa": 700, "07 - Biskra": 900, "08 - Béchar": 600,
-  "09 - Blida": 700, "10 - Bouira": 700, "11 - Tamanrasset": 600, "12 - Tébessa": 850,
-  "13 - Tlemcen": 800, "14 - Tiaret": 800, "15 - Tizi Ouzou": 600, "16 - Alger": 600,
-  "17 - Djelfa": 600, "18 - Jijel": 700, "19 - Sétif": 550, "20 - Saïda": 900,
-  "21 - Skikda": 800, "22 - Sidi Bel Abbès": 800, "23 - Annaba": 600, "24 - Guelma": 850,
-  "25 - Constantine": 600, "26 - Médéa": 600, "27 - Mostaganem": 800, "28 - M'Sila": 600,
-  "29 - Mascara": 800, "30 - Ouargla": 600, "31 - Oran": 600, "32 - El Bayadh": 600,
-  "33 - Illizi": 600, "34 - Bordj Bou Arréridj": 600, "35 - Boumerdès": 700, "36 - El Tarf": 850,
-  "37 - Tindouf": 600, "38 - Tissemsilt": 850, "39 - El Oued": 600, "40 - Khenchela": 600,
-  "41 - Souk Ahras": 850, "42 - Tipaza": 600, "43 - Mila": 600, "44 - Aïn Defla": 800,
-  "45 - Naâma": 600, "46 - Aïn Témouchent": 800, "47 - Ghardaïa": 600, "48 - Relizane": 800,
-  "49 - Timimoun": 600, "50 - Bordj Badji Mokhtar": 600, "51 - Ouled Djellal": 900,
-  "52 - Béni Abbès": 600, "53 - In Salah": 600, "54 - In Guezzam": 600, "55 - Touggourt": 600,
-  "56 - Djanet": 600, "57 - El M'Ghair": 600, "58 - El Meniaa": 600
+  "01 - Adrar": 600,
+  "02 - Chlef": 600,
+  "03 - Laghouat": 600,
+  "04 - Oum El Bouaghi": 800,
+  "05 - Batna": 700,
+  "06 - Béjaïa": 700,
+  "07 - Biskra": 900,
+  "08 - Béchar": 600,
+  "09 - Blida": 700,
+  "10 - Bouira": 700,
+  "11 - Tamanrasset": 600,
+  "12 - Tébessa": 850,
+  "13 - Tlemcen": 800,
+  "14 - Tiaret": 800,
+  "15 - Tizi Ouzou": 600,
+  "16 - Alger": 600,
+  "17 - Djelfa": 600,
+  "18 - Jijel": 700,
+  "19 - Sétif": 550,
+  "20 - Saïda": 900,
+  "21 - Skikda": 800,
+  "22 - Sidi Bel Abbès": 800,
+  "23 - Annaba": 600,
+  "24 - Guelma": 850,
+  "25 - Constantine": 600,
+  "26 - Médéa": 600,
+  "27 - Mostaganem": 800,
+  "28 - M'Sila": 600,
+  "29 - Mascara": 800,
+  "30 - Ouargla": 600,
+  "31 - Oran": 600,
+  "32 - El Bayadh": 600,
+  "33 - Illizi": 600,
+  "34 - Bordj Bou Arréridj": 600,
+  "35 - Boumerdès": 700,
+  "36 - El Tarf": 850,
+  "37 - Tindouf": 600,
+  "38 - Tissemsilt": 850,
+  "39 - El Oued": 600,
+  "40 - Khenchela": 600,
+  "41 - Souk Ahras": 850,
+  "42 - Tipaza": 600,
+  "43 - Mila": 600,
+  "44 - Aïn Defla": 800,
+  "45 - Naâma": 600,
+  "46 - Aïn Témouchent": 800,
+  "47 - Ghardaïa": 600,
+  "48 - Relizane": 800,
+  "49 - Timimoun": 600,
+  "50 - Bordj Badji Mokhtar": 600,
+  "51 - Ouled Djellal": 900,
+  "52 - Béni Abbès": 600,
+  "53 - In Salah": 600,
+  "54 - In Guezzam": 600,
+  "55 - Touggourt": 600,
+  "56 - Djanet": 600,
+  "57 - El M'Ghair": 600,
+  "58 - El Meniaa": 600
 };
-
-
-
-
