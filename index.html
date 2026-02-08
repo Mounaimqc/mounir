@@ -1,226 +1,223 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wahbi Zoghbi - Vente en Ligne</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="icon" type="image/x-icon" href="/logo.jpeg">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wahbi Zoghbi - Vente en Ligne</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="/logo.jpeg">
 </head>
 <body>
-    <!-- En-tête -->
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <div class="logo">
-                   <img src="images/logo.jpeg" alt="Logo Wahbi Zoghbi">
-                   <h1>Wahbi Zoghbi</h1>
-                </div>
-                <div class="nav-items">
-                    <div class="contact-info">
-                        <span class="tlf">📞 0669 46 99 56</span> 
-                    </div>
-                   <a href="tracking.html" 
-   style="
-     display: inline-flex;
-     align-items: center;
-     justify-content: center;
-     width: 179px; 
-     height: 40px; 
-     color: #2c3e50; 
-     text-decoration: none; 
-     padding: 0 15px; 
-     margin-right: 10px; 
-     border: 2px solid black; 
-     background-color: white;
-     border-radius: 5px;
-     font-weight: bold;
-     font-size: 13px;
-     transition: all 0.3s ease;
-     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-   "
-   onmouseover="this.style.backgroundColor='black'; this.style.color='white'; this.style.boxShadow='0 4px 8px rgba(52, 152, 219, 0.3)';"
-   onmouseout="this.style.backgroundColor='white'; this.style.color='#2c3e50'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
-  📦 Suivi Commande
-</a>
-                    <button class="cart-btn" id="cartBtn">
-                        🛒 Panier <span class="cart-count" id="cartCount">0</span>
-                    </button>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <!-- Section des produits -->
-        <section class="products-section">
-            <div class="container">
-                <h2>Nos Produits</h2>
-                <div class="filters">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="Rechercher un produit..."
-                        class="search-input"
-                    >
-                    <select id="categoryFilter" class="category-filter">
-                        <option value="">Toutes les catégories</option>
-                        <option value="proteines">Protéines whey</option>
-                        <option value="Masse Gainer">Masse / Gainer</option>
-                        <option value="acide">Acide aminé</option>
-                    </select>
-                </div>
-                <div class="products-grid" id="productsGrid">
-                    <!-- Les produits seront affichés ici -->
-                    <p style="text-align:center; padding: 40px; color: #7f8c8d;">
-                        ⏳ Chargement des produits...
-                    </p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Modal du panier -->
-    <div class="modal" id="cartModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>Votre Panier</h2>
-            <div class="cart-items" id="cartItems">
-                <!-- Les articles du panier seront affichés ici -->
-            </div>
-            <div class="cart-summary">
-                <p class="total">Total: <span id="totalPrice">0.00</span> DA</p>
-                <button class="checkout-btn" id="checkoutBtn">Passer la Commande</button>
-            </div>
+  <!-- En-tête -->
+  <header>
+    <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <img src="images/logo.jpeg" alt="Logo Wahbi Zoghbi">
+          <h1>Wahbi Zoghbi</h1>
         </div>
-    </div>
-
-    <!-- Modal du formulaire de commande -->
-    <div class="modal" id="orderFormModal">
-        <div class="modal-content order-form-content">
-            <span class="close-modal">&times;</span>
-            <h2>Formulaire de Commande</h2>
-            <form id="orderForm">
-                <!-- Type de commande -->
-                <div class="form-group">
-                    <label for="orderType">Type de Commande *</label>
-                    <select id="orderType" required>
-                        <option value="">Sélectionner un type</option>
-                        <option value="domicile">Livraison à domicile</option>
-                        <option value="stopdesk">Stop Desk (Retrait au magasin)</option>
-                    </select>
-                </div>
-
-                <!-- Nom et Prénom -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstName">Prénom *</label>
-                        <input type="text" id="firstName" required placeholder="Votre prénom">
-                    </div>
-                    <div class="form-group">
-                        <label for="lastName">Nom *</label>
-                        <input type="text" id="lastName" required placeholder="Votre nom">
-                    </div>
-                </div>
-
-                <!-- Numéros de téléphone -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="phone1">Numéro de téléphone *</label>
-                        <input type="tel" id="phone1" required placeholder="05XXXXXXXX">
-                    </div>
-                    <div class="form-group">
-                        <label for="phone2">Deuxième numéro (optionnel)</label>
-                        <input type="tel" id="phone2" placeholder="05XXXXXXXX">
-                    </div>
-                </div>
-
-                <!-- Wilaya et Commune -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="wilaya">Wilaya *</label>
-                        <select id="wilaya" required>
-                            <option value="">Sélectionner une wilaya</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="commune">Commune *</label>
-                        <select id="commune" required>
-                            <option value="">Sélectionner une commune</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Affichage du prix de livraison -->
-                <div class="shipping-info">
-                    <div class="shipping-price">
-                        <span>Frais de livraison:</span>
-                        <strong id="shippingPrice">0 DA</strong>
-                    </div>
-                </div>
-
-                <!-- Boutons -->
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" onclick="closeOrderForm()">Annuler</button>
-                    <button type="submit" class="btn-submit">Confirmer la Commande</button>
-                </div>
-            </form>
+        <div class="nav-items">
+          <div class="contact-info">
+            <span class="tlf">📞 0669 46 99 56</span>
+          </div>
+          <a href="tracking.html"
+            style="
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 179px;
+              height: 40px;
+              color: #2c3e50;
+              text-decoration: none;
+              padding: 0 15px;
+              margin-right: 10px;
+              border: 2px solid black;
+              background-color: white;
+              border-radius: 5px;
+              font-weight: bold;
+              font-size: 13px;
+              transition: all 0.3s ease;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            "
+            onmouseover="this.style.backgroundColor='black'; this.style.color='white'; this.style.boxShadow='0 4px 8px rgba(52, 152, 219, 0.3)';"
+            onmouseout="this.style.backgroundColor='white'; this.style.color='#2c3e50'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
+            📦 Suivi Commande
+          </a>
+          <button class="cart-btn" id="cartBtn">
+            🛒 Panier <span class="cart-count" id="cartCount">0</span>
+          </button>
         </div>
-    </div>
+      </div>
+    </nav>
+  </header>
 
-    <!-- Modal de confirmation de commande -->
-    <div class="modal" id="confirmModal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h2>✓ Commande Confirmée!</h2>
-            <p style="font-size: 1.2rem; color: #e74c3c; font-weight: bold;">
-                Numéro de commande: <strong id="orderNumber"></strong>
-            </p>
-            <p>📸 <strong>Prenez une photo de ce numéro</strong> ou notez-le bien !</p>
-            <p>Vous pouvez le retrouver dans la page "Suivi de Commande".</p>
-            <button class="btn-primary" onclick="location.reload()">Continuer vos achats</button>
+  <main>
+    <!-- Section des catégories -->
+    <section class="categories-section">
+      <div class="container">
+        <h2>Catégories</h2>
+        <div class="categories-slider" id="categoriesSlider">
+          <!-- Les catégories seront chargées dynamiquement depuis Firebase -->
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- Modal تفاصيل المنتج -->
-    <div class="modal" id="productDetailModal">
-        <div class="modal-content product-detail-content">
-            <span class="close-modal">&times;</span>
-            <div class="product-detail">
-                <img id="detailImage" src="" alt="Image du produit" class="detail-image">
-                <div class="detail-info">
-                    <h2 id="detailName"></h2>
-                    <p id="detailCategory"></p>
-                    <div id="detailDescription"></div>
-                    <p class="product-price"><strong id="detailPrice"></strong> DA</p>
-                    <button class="add-to-cart-btn" id="modalAddToCartBtn">Ajouter au panier</button>
-                </div>
-            </div>
+    <!-- Section des produits -->
+    <section class="products-section">
+      <div class="container">
+        <h2>Nos Produits</h2>
+        <div class="filters">
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Rechercher un produit..."
+            class="search-input"
+          >
+          <select id="categoryFilter" class="category-filter">
+            <option value="">Toutes les catégories</option>
+            <option value="proteines">Protéines whey</option>
+            <option value="gainer">Masse / Gainer</option>
+            <option value="acide">Acide aminé</option>
+            <option value="fatburner">Brûleur de graisse</option>
+            <option value="creatine">Créatine</option>
+            <option value="accessories">Accessoires</option>
+          </select>
         </div>
+        <div class="products-grid" id="productsGrid">
+          <!-- Les produits seront affichés ici -->
+          <p style="text-align:center; padding: 40px; color: #7f8c8d;">
+            ⏳ Chargement des produits...
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal du panier -->
+  <div class="modal" id="cartModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>Votre Panier</h2>
+      <div class="cart-items" id="cartItems">
+        <!-- Les articles du panier seront affichés ici -->
+      </div>
+      <div class="cart-summary">
+        <p class="total">Total: <span id="totalPrice">0.00</span> DA</p>
+        <button class="checkout-btn" id="checkoutBtn">Passer la Commande</button>
+      </div>
     </div>
+  </div>
 
-    <footer>
-        <p>&copy; 2026 Wahbi Zoghbi - Tous droits réservés</p>
-    </footer>
+  <!-- Modal du formulaire de commande -->
+  <div class="modal" id="orderFormModal">
+    <div class="modal-content order-form-content">
+      <span class="close-modal">&times;</span>
+      <h2>Formulaire de Commande</h2>
+      <form id="orderForm">
+        <!-- Type de commande -->
+        <div class="form-group">
+          <label for="orderType">Type de Commande *</label>
+          <select id="orderType" required>
+            <option value="">Sélectionner un type</option>
+            <option value="domicile">Livraison à domicile</option>
+            <option value="stopdesk">Stop Desk (Retrait au magasin)</option>
+          </select>
+        </div>
 
-    <!-- ✅ تحميل الفايربيز بشكل صحيح (يجب تشغيل الموقع عبر خادم محلي مثل Live Server) -->
-    <script type="module" src="firebase-config.js"></script>
-    <script type="module" src="script.js"></script>
+        <!-- Nom et Prénom -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">Prénom *</label>
+            <input type="text" id="firstName" required placeholder="Votre prénom">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Nom *</label>
+            <input type="text" id="lastName" required placeholder="Votre nom">
+          </div>
+        </div>
+
+        <!-- Numéros de téléphone -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="phone1">Numéro de téléphone *</label>
+            <input type="tel" id="phone1" required placeholder="05XXXXXXXX">
+          </div>
+          <div class="form-group">
+            <label for="phone2">Deuxième numéro (optionnel)</label>
+            <input type="tel" id="phone2" placeholder="05XXXXXXXX">
+          </div>
+        </div>
+
+        <!-- Wilaya et Commune -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="wilaya">Wilaya *</label>
+            <select id="wilaya" required>
+              <option value="">Sélectionner une wilaya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="commune">Commune *</label>
+            <select id="commune" required>
+              <option value="">Sélectionner une commune</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Affichage du prix de livraison -->
+        <div class="shipping-info">
+          <div class="shipping-price">
+            <span>Frais de livraison:</span>
+            <strong id="shippingPrice">0 DA</strong>
+          </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="form-actions">
+          <button type="button" class="btn-cancel" onclick="closeOrderForm()">Annuler</button>
+          <button type="submit" class="btn-submit">Confirmer la Commande</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de confirmation de commande -->
+  <div class="modal" id="confirmModal">
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2>✓ Commande Confirmée!</h2>
+      <p style="font-size: 1.2rem; color: #e74c3c; font-weight: bold;">
+        Numéro de commande: <strong id="orderNumber"></strong>
+      </p>
+      <p>📸 <strong>Prenez une photo de ce numéro</strong> ou notez-le bien !</p>
+      <p>Vous pouvez le retrouver dans la page "Suivi de Commande".</p>
+      <button class="btn-primary" onclick="location.reload()">Continuer vos achats</button>
+    </div>
+  </div>
+
+  <!-- Modal Détails Produit -->
+  <div class="modal" id="productDetailModal">
+    <div class="modal-content product-detail-content">
+      <span class="close-modal">&times;</span>
+      <div class="product-detail">
+        <img id="detailImage" src="" alt="Image du produit" class="detail-image">
+        <div class="detail-info">
+          <h2 id="detailName"></h2>
+          <p id="detailCategory"></p>
+          <div id="detailDescription"></div>
+          <p class="product-price"><strong id="detailPrice"></strong> DA</p>
+          <button class="add-to-cart-btn" id="modalAddToCartBtn">Ajouter au panier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 Wahbi Zoghbi - Tous droits réservés</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
