@@ -55,7 +55,7 @@ async function loadProductsFromFirebase() {
       `;
     } else {
       loadProducts();
-      loadCategories(); // ✅ Charger les catégories
+      loadCategories(); // ✅ تحميل الفئات مع العدد الحقيقي للمنتجات
     }
   } catch (error) {
     console.error("❌ Erreur chargement produits:", error);
@@ -69,14 +69,13 @@ async function loadProductsFromFirebase() {
 }
 
 // ========== CHARGER LES CATÉGORIES AVEC QUANTITÉS RÉELLES ==========
-// ========== تحميل الفئات مع العدد الحقيقي للمنتجات ==========
 function loadCategories() {
   const categoriesSlider = document.getElementById('categoriesSlider');
   if (!categoriesSlider) return;
   
   // تعريف الفئات مع أسماء الصور
   const categories = [
-    { id: 'proteines', name: 'Protéines Whey', image: 'images/proteines.png' },
+    { id: 'proteines', name: 'Protéines Whey', image: 'images/proteines.jpg' },
     { id: 'gainer', name: 'Masse / Gainer', image: 'images/gainer.jpg' },
     { id: 'fatburner', name: 'Brûleur de Graisse', image: 'images/fatburner.jpg' },
     { id: 'acide', name: 'Acides Aminés', image: 'images/acide.jpg' },
@@ -119,7 +118,7 @@ function loadCategories() {
   console.log("✅ الفئات تم تحميلها مع العدد الحقيقي للمنتجات");
 }
 
-// ========== فلترة المنتجات حسب الفئة ==========
+// ========== FILTRER PAR CATÉGORIE ==========
 function filterByCategory(category) {
   console.log("🔍 فلترة حسب الفئة:", category);
   
@@ -157,67 +156,6 @@ function filterByCategory(category) {
     if (filterSelect) {
       filterSelect.value = category;
     }
-  }
-}
-
-// ========== تعديل دالة التحميل ==========
-document.addEventListener('DOMContentLoaded', function () {
-  console.log("🚀 تطبيق بدأ...");
-  loadProductsFromFirebase();
-  setupEventListeners();
-  loadCartFromStorage();
-  
-  // ربط زر الإضافة في Modal
-  const modalBtn = document.getElementById('modalAddToCartBtn');
-  if (modalBtn) {
-    modalBtn.addEventListener('click', () => {
-      if (currentProductId) {
-        addToCart(currentProductId);
-        document.getElementById('productDetailModal').classList.remove('active');
-      }
-    });
-  }
-});
-
-// تعديل دالة تحميل المنتجات
-async function loadProductsFromFirebase() {
-  try {
-    console.log("📦 تحميل المنتجات من Firebase...");
-    const productsRef = collection(db, "produits");
-    const productsQuery = query(productsRef);
-    const querySnapshot = await getDocs(productsQuery);
-    
-    products = [];
-    querySnapshot.forEach(doc => {
-      console.log("📄 منتج تم العثور عليه:", doc.id, doc.data());
-      products.push({
-        id: doc.id,
-        ...doc.data()
-      });
-    });
-    
-    console.log(`✅ ${products.length} منتج تم تحميله`);
-    
-    if (products.length === 0) {
-      console.warn("⚠️ لا يوجد منتجات في قاعدة البيانات!");
-      document.getElementById('productsGrid').innerHTML = `
-        <p style="text-align:center;color:#e74c3c; padding: 40px;">
-          ⚠️ لا يوجد منتجات متاحة في الوقت الحالي.<br>
-          يرجى الاتصال بالإدارة.
-        </p>
-      `;
-    } else {
-      loadProducts();
-      loadCategories(); // ✅ تحميل الفئات مع العدد الحقيقي للمنتجات
-    }
-  } catch (error) {
-    console.error("❌ خطأ في تحميل المنتجات:", error);
-    document.getElementById('productsGrid').innerHTML = `
-      <p style="text-align:center;color:red; padding: 40px;">
-        ❌ خطأ في تحميل المنتجات.<br>
-        يرجى التحقق من اتصال الإنترنت.
-      </p>
-    `;
   }
 }
 
@@ -384,46 +322,6 @@ function openProductDetail(productId) {
   // ✅ فتح المودال
   document.getElementById('productDetailModal').classList.add('active');
   console.log(`📦 Détails du produit "${product.name}" affichés`);
-}
-
-// ========== FILTRER PAR CATÉGORIE ==========
-function filterByCategory(category) {
-  console.log("🔍 Filtrer par catégorie:", category);
-  
-  // Mettre en évidence la catégorie sélectionnée
-  document.querySelectorAll('.category-card').forEach(card => {
-    card.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-    card.style.transform = 'none';
-  });
-  
-  const selectedCard = document.querySelector(`.category-card[data-category="${category}"]`);
-  if (selectedCard) {
-    selectedCard.style.boxShadow = '0 8px 20px rgba(52, 152, 219, 0.4)';
-    selectedCard.style.transform = 'translateY(-5px)';
-    
-    // Réinitialiser après 1.5 secondes
-    setTimeout(() => {
-      selectedCard.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
-      selectedCard.style.transform = 'none';
-    }, 1500);
-  }
-  
-  // Filtrer les produits
-  if (category === 'all') {
-    loadProducts();
-    document.getElementById('categoryFilter').value = '';
-  } else {
-    const filtered = products.filter(product => 
-      product.category && product.category.toLowerCase() === category.toLowerCase()
-    );
-    loadProducts(filtered);
-    
-    // Mettre à jour le filtre dans le menu déroulant
-    const filterSelect = document.getElementById('categoryFilter');
-    if (filterSelect) {
-      filterSelect.value = category;
-    }
-  }
 }
 
 // ========== FONCTIONS DU PANIER ==========
@@ -937,5 +835,3 @@ const stopDeskPrices = {
   "52 - Béni Abbès": 600, "53 - In Salah": 600, "54 - In Guezzam": 600, "55 - Touggourt": 600,
   "56 - Djanet": 600, "57 - El M'Ghair": 600, "58 - El Meniaa": 600
 };
-
-
