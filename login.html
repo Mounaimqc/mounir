@@ -3,176 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion - Amar informatique</title>
+    <title>Connexion Admin - Amar Informatique</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #2563EB;
+            --background: #F3F4F6;
+            --surface: #FFFFFF;
+            --text-main: #1F2937;
         }
-
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
-
-        .login-container {
-            background: white;
+        .login-card {
+            background: var(--surface);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
-        }
-
-        .login-header {
             text-align: center;
-            margin-bottom: 30px;
         }
-
-        .login-header h1 {
-            color: #2c3e50;
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .login-header p {
-            color: #7f8c8d;
-            font-size: 0.95rem;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            color: #2c3e50;
-            font-weight: bold;
+        .logo {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
             margin-bottom: 8px;
         }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s;
+        .subtitle {
+            color: #6B7280;
+            margin-bottom: 32px;
+            font-size: 0.9rem;
         }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
         }
-
-        .login-btn {
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        input {
             width: 100%;
             padding: 12px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 1rem;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s;
+            transition: background 0.2s;
         }
-
-        .login-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        .btn:hover {
+            background: #1E40AF;
         }
-
-        .error-message {
-            display: none;
-            background-color: #f8d7da;
-            color: #721c24;
-            padding: 12px 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-left: 4px solid #f5c6cb;
-        }
-
-        .info-box {
-            background-color: #e7f3ff;
-            border-left: 4px solid #2196F3;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            color: #0c5aa0;
-        }
-
-        .info-box strong {
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        @media (max-width: 600px) {
-            .login-container {
-                padding: 30px 20px;
-                margin: 20px;
-            }
-
-            .login-header h1 {
-                font-size: 1.5rem;
-            }
+        .footer {
+            margin-top: 24px;
+            font-size: 0.8rem;
+            color: #9CA3AF;
         }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>🔐 Accès Admin</h1>
-            <p>Tableau de bord des commandes</p>
-        </div>
-
-        <div class="error-message" id="errorMessage"></div>
-
-        <div class="info-box">
-            <strong>Accès réservé</strong>
-            Veuillez entrer votre mot de passe administrateur
-        </div>
-
-        <form id="loginForm" onsubmit="handleLogin(event)">
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" id="password" placeholder="Entrez le mot de passe" autofocus>
+    <div class="login-card">
+        <div class="logo">🔐 Amar Informatique</div>
+        <div class="subtitle">Accès réservé aux administrateurs</div>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <label>Mot de passe</label>
+                <input type="password" id="password" placeholder="••••••••" required>
             </div>
-            <button type="submit" class="login-btn">Accéder au Dashboard</button>
+            <button type="submit" class="btn">Accéder au Dashboard</button>
         </form>
+
+        <div class="footer">
+            &copy; 2026 Amar Informatique
+        </div>
     </div>
 
     <script>
-    const ADMIN_PASSWORD = 'amar2024'; // ← غيّرها إلى كلمتك السرية
-
-    function handleLogin(event) {
-        event.preventDefault();
-        const password = document.getElementById('password').value;
-        if (password === ADMIN_PASSWORD) {
-            sessionStorage.setItem('adminLogged', 'true');
-            window.location.href = 'admin.html';
-        } else {
-            const error = document.getElementById('errorMessage');
-            error.textContent = '❌ Mot de passe incorrect';
-            error.style.display = 'block';
-            document.getElementById('password').value = '';
-            setTimeout(() => error.style.display = 'none', 3000);
-        }
-    }
-
-    // إذا كان مسجّل دخول، وجهه مباشرة إلى Dashboard
-    if (sessionStorage.getItem('adminLogged') === 'true') {
-        window.location.href = 'admin.html';
-    }
-
-    document.getElementById('loginForm').addEventListener('submit', handleLogin);
-</script>
+        // Simple Client-Side Auth (Note: Insecure for production, use Firebase Auth for real security)
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const pass = document.getElementById('password').value;
+            // Change this password securely
+            if(pass === "admin123") { 
+                window.location.href = "admin.html";
+            } else {
+                alert("Mot de passe incorrect");
+            }
+        });
+    </script>
 </body>
 </html>
