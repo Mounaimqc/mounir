@@ -1,249 +1,134 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Suivi de Commande - Amar Informatique</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #2563EB;
-            --primary-dark: #1E40AF;
-            --success: #10B981;
-            --warning: #F59E0B;
-            --background: #F9FAFB;
-            --surface: #FFFFFF;
-            --text-main: #1F2937;
-            --text-light: #6B7280;
-            --border: #E5E7EB;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: var(--background); color: var(--text-main); }
-        
-        .header { background: var(--surface); box-shadow: var(--shadow); padding: 20px 24px; }
-        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); text-decoration: none; }
-        
-        .tracking-container { max-width: 800px; margin: 60px auto; padding: 24px; }
-        .tracking-card { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); padding: 40px; }
-        .tracking-title { text-align: center; margin-bottom: 32px; }
-        .tracking-title h1 { font-size: 1.75rem; margin-bottom: 8px; }
-        .tracking-title p { color: var(--text-light); }
-        
-        .search-form { display: flex; gap: 12px; margin-bottom: 40px; }
-        .search-input { flex: 1; padding: 14px 20px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 1rem; }
-        .search-input:focus { outline: none; border-color: var(--primary); }
-        .search-btn { padding: 14px 28px; background: var(--primary); color: white; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; }
-        .search-btn:hover { background: var(--primary-dark); }
-        
-        .status-timeline { position: relative; padding-left: 40px; }
-        .status-timeline::before {
-            content: '';
-            position: absolute;
-            left: 15px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border);
-        }
-        .status-item { position: relative; margin-bottom: 32px; }
-        .status-item:last-child { margin-bottom: 0; }
-        .status-dot {
-            position: absolute;
-            left: -32px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        .status-item.active .status-dot { background: var(--primary); }
-        .status-item.completed .status-dot { background: var(--success); }
-        .status-content h3 { font-size: 1rem; margin-bottom: 4px; }
-        .status-content p { color: var(--text-light); font-size: 0.875rem; }
-        
-        .order-info { background: #F0F9FF; padding: 24px; border-radius: var(--radius); margin-top: 40px; }
-        .order-info h3 { margin-bottom: 16px; }
-        .info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
-        .info-row:last-child { border-bottom: none; }
-        .info-label { color: var(--text-light); }
-        .info-value { font-weight: 500; }
-        
-        .back-link { display: inline-flex; align-items: center; gap: 8px; color: var(--primary); text-decoration: none; margin-top: 24px; font-weight: 500; }
-        .back-link:hover { text-decoration: underline; }
-        
-        .error-message { background: #FEF2F2; color: #DC2626; padding: 16px; border-radius: var(--radius); margin-top: 24px; display: none; }
-        .error-message.show { display: block; }
-        
-        @media (max-width: 768px) {
-            .search-form { flex-direction: column; }
-            .tracking-card { padding: 24px; }
-        }
-    </style>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suivi Commande - Amar Informatique</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--primary:#2563eb;--success:#10b981;--bg:#f9fafb;--surface:#fff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--radius:12px;--shadow:0 4px 6px -1px rgba(0,0,0,.1)}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+    body{background:var(--bg);color:var(--text)}
+    .header{background:var(--surface);box-shadow:var(--shadow);padding:20px 24px}
+    .header-container{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center}
+    .logo{font-size:1.5rem;font-weight:700;color:var(--primary);text-decoration:none}
+    .tracking-container{max-width:800px;margin:60px auto;padding:24px}
+    .tracking-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);padding:40px}
+    .tracking-title{text-align:center;margin-bottom:32px}
+    .tracking-title h1{font-size:1.75rem;margin-bottom:8px}
+    .tracking-title p{color:var(--text-light)}
+    .search-form{display:flex;gap:12px;margin-bottom:40px}
+    .search-input{flex:1;padding:14px 20px;border:1px solid var(--border);border-radius:var(--radius);font-size:1rem}
+    .search-input:focus{outline:none;border-color:var(--primary)}
+    .search-btn{padding:14px 28px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-weight:600;cursor:pointer}
+    .search-btn:hover{background:var(--primary-dark)}
+    .status-timeline{position:relative;padding-left:40px}
+    .status-timeline::before{content:'';position:absolute;left:15px;top:0;bottom:0;width:2px;background:var(--border)}
+    .status-item{position:relative;margin-bottom:32px}
+    .status-item:last-child{margin-bottom:0}
+    .status-dot{position:absolute;left:-32px;width:32px;height:32px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;color:#fff}
+    .status-item.active .status-dot{background:var(--primary)}
+    .status-item.completed .status-dot{background:var(--success)}
+    .status-content h3{font-size:1rem;margin-bottom:4px}
+    .status-content p{color:var(--text-light);font-size:.875rem}
+    .order-info{background:#f0f9ff;padding:24px;border-radius:var(--radius);margin-top:40px}
+    .order-info h3{margin-bottom:16px}
+    .info-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border)}
+    .info-row:last-child{border-bottom:none}
+    .info-label{color:var(--text-light)}
+    .info-value{font-weight:500}
+    .back-link{display:inline-flex;align-items:center;gap:8px;color:var(--primary);text-decoration:none;margin-top:24px;font-weight:500}
+    .back-link:hover{text-decoration:underline}
+    .error-message{background:#fef2f2;color:#dc2626;padding:16px;border-radius:var(--radius);margin-top:24px;display:none}
+    .error-message.show{display:block}
+    @media(max-width:768px){.search-form{flex-direction:column}.tracking-card{padding:24px}}
+  </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                <i class="fa-solid fa-laptop"></i> Amar Informatique
-            </a>
-            <a href="index.html" class="back-link" style="margin: 0;">
-                <i class="fa-solid fa-arrow-left"></i> Retour
-            </a>
-        </div>
-    </header>
-
-    <div class="tracking-container">
-        <div class="tracking-card">
-            <div class="tracking-title">
-                <h1>📦 Suivi de Commande</h1>
-                <p>Entrez votre numéro de commande pour voir son statut</p>
-            </div>
-
-            <form class="search-form" id="trackingForm">
-                <input type="text" class="search-input" id="orderNumber" placeholder="Ex: CMD-123456" required>
-                <button type="submit" class="search-btn">
-                    <i class="fa-solid fa-search"></i> Rechercher
-                </button>
-            </form>
-
-            <div class="error-message" id="errorMessage">
-                <i class="fa-solid fa-circle-exclamation"></i> Commande non trouvée
-            </div>
-
-            <div id="trackingResult" style="display: none;">
-                <div class="status-timeline">
-                    <div class="status-item" id="status-pending">
-                        <div class="status-dot"><i class="fa-solid fa-clock"></i></div>
-                        <div class="status-content">
-                            <h3>Commande Reçue</h3>
-                            <p>Votre commande a été enregistrée</p>
-                        </div>
-                    </div>
-                    <div class="status-item" id="status-accepted">
-                        <div class="status-dot"><i class="fa-solid fa-check"></i></div>
-                        <div class="status-content">
-                            <h3>Commande Acceptée</h3>
-                            <p>Votre commande est en préparation</p>
-                        </div>
-                    </div>
-                    <div class="status-item" id="status-shipped">
-                        <div class="status-dot"><i class="fa-solid fa-truck"></i></div>
-                        <div class="status-content">
-                            <h3>En Route</h3>
-                            <p>Votre commande est en livraison</p>
-                        </div>
-                    </div>
-                    <div class="status-item" id="status-arrived">
-                        <div class="status-dot"><i class="fa-solid fa-box"></i></div>
-                        <div class="status-content">
-                            <h3>Livrée</h3>
-                            <p>Votre commande a été livrée avec succès</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="order-info">
-                    <h3>📋 Détails de la Commande</h3>
-                    <div class="info-row">
-                        <span class="info-label">Numéro de commande</span>
-                        <span class="info-value" id="info-orderNumber"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Date</span>
-                        <span class="info-value" id="info-date"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Client</span>
-                        <span class="info-value" id="info-client"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Téléphone</span>
-                        <span class="info-value" id="info-phone"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Type</span>
-                        <span class="info-value" id="info-type"></span>
-                    </div>
-                    <div class="info-row">
-                        <span class="info-label">Total</span>
-                        <span class="info-value" id="info-total"></span>
-                    </div>
-                </div>
-            </div>
-
-            <a href="index.html" class="back-link">
-                <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
-            </a>
-        </div>
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo"><i class="fa-solid fa-laptop"></i> Amar Informatique</a>
+      <a href="index.html" class="back-link" style="margin:0"><i class="fa-solid fa-arrow-left"></i> Retour</a>
     </div>
+  </header>
 
-    <script type="module">
-        import { db } from './firebase-config.js';
-        import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  <div class="tracking-container">
+    <div class="tracking-card">
+      <div class="tracking-title">
+        <h1>📦 Suivi de Commande</h1>
+        <p>Entrez votre numéro de commande pour voir son statut</p>
+      </div>
+      <form class="search-form" id="trackingForm">
+        <input type="text" class="search-input" id="orderNumber" placeholder="Ex: CMD-123456" required>
+        <button type="submit" class="search-btn"><i class="fa-solid fa-search"></i> Rechercher</button>
+      </form>
+      <div class="error-message" id="errorMessage"><i class="fa-solid fa-circle-exclamation"></i> Commande non trouvée</div>
+      <div id="trackingResult" style="display:none">
+        <div class="status-timeline">
+          <div class="status-item" id="status-pending"><div class="status-dot"><i class="fa-solid fa-clock"></i></div><div class="status-content"><h3>Commande Reçue</h3><p>Votre commande a été enregistrée</p></div></div>
+          <div class="status-item" id="status-accepted"><div class="status-dot"><i class="fa-solid fa-check"></i></div><div class="status-content"><h3>Commande Acceptée</h3><p>Votre commande est en préparation</p></div></div>
+          <div class="status-item" id="status-shipped"><div class="status-dot"><i class="fa-solid fa-truck"></i></div><div class="status-content"><h3>En Route</h3><p>Votre commande est en livraison</p></div></div>
+          <div class="status-item" id="status-arrived"><div class="status-dot"><i class="fa-solid fa-box"></i></div><div class="status-content"><h3>Livrée</h3><p>Votre commande a été livrée avec succès</p></div></div>
+        </div>
+        <div class="order-info">
+          <h3>📋 Détails de la Commande</h3>
+          <div class="info-row"><span class="info-label">Numéro</span><span class="info-value" id="info-orderNumber"></span></div>
+          <div class="info-row"><span class="info-label">Date</span><span class="info-value" id="info-date"></span></div>
+          <div class="info-row"><span class="info-label">Client</span><span class="info-value" id="info-client"></span></div>
+          <div class="info-row"><span class="info-label">Téléphone</span><span class="info-value" id="info-phone"></span></div>
+          <div class="info-row"><span class="info-label">Type</span><span class="info-value" id="info-type"></span></div>
+          <div class="info-row"><span class="info-label">Total</span><span class="info-value" id="info-total"></span></div>
+        </div>
+      </div>
+      <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</a>
+    </div>
+  </div>
 
-        document.getElementById('trackingForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const orderNumber = document.getElementById('orderNumber').value.trim();
-            const errorMessage = document.getElementById('errorMessage');
-            const result = document.getElementById('trackingResult');
+  <script type="module">
+    import { db } from './firebase-config.js';
+    import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-            if (!orderNumber) return;
+    document.getElementById('trackingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const orderNumber = document.getElementById('orderNumber').value.trim();
+      const errorMsg = document.getElementById('errorMessage');
+      const result = document.getElementById('trackingResult');
 
-            try {
-                const q = query(collection(db, "commandes"), where("orderNumber", "==", orderNumber));
-                const snapshot = await getDocs(q);
+      try {
+        const q = query(collection(db, "commandes"), where("orderNumber", "==", orderNumber));
+        const snapshot = await getDocs(q);
+        if (snapshot.empty) { errorMsg.classList.add('show'); result.style.display = 'none'; return; }
+        
+        errorMsg.classList.remove('show');
+        const order = snapshot.docs[0].data();
+        displayTracking(order);
+      } catch (error) {
+        console.error("Erreur suivi:", error);
+        errorMsg.textContent = "Erreur de connexion";
+        errorMsg.classList.add('show');
+      }
+    });
 
-                if (snapshot.empty) {
-                    errorMessage.classList.add('show');
-                    result.style.display = 'none';
-                    return;
-                }
+    function displayTracking(order) {
+      document.getElementById('trackingResult').style.display = 'block';
+      document.getElementById('info-orderNumber').textContent = order.orderNumber;
+      document.getElementById('info-date').textContent = new Date(order.date).toLocaleDateString('fr-FR');
+      document.getElementById('info-client').textContent = `${order.firstName} ${order.lastName}`;
+      document.getElementById('info-phone').textContent = order.phone1;
+      document.getElementById('info-type').textContent = order.orderType === 'domicile' ? '🏠 Livraison' : '🏪 Stop Desk';
+      document.getElementById('info-total').textContent = (order.grandTotal || 0).toFixed(2) + ' DA';
 
-                errorMessage.classList.remove('show');
-                const order = snapshot.docs[0].data();
-                displayTracking(order);
-            } catch (error) {
-                console.error("Erreur suivi:", error);
-                errorMessage.textContent = "Erreur de connexion";
-                errorMessage.classList.add('show');
-            }
-        });
-
-        function displayTracking(order) {
-            document.getElementById('trackingResult').style.display = 'block';
-            document.getElementById('info-orderNumber').textContent = order.orderNumber;
-            document.getElementById('info-date').textContent = new Date(order.date).toLocaleDateString('fr-FR');
-            document.getElementById('info-client').textContent = `${order.firstName} ${order.lastName}`;
-            document.getElementById('info-phone').textContent = order.phone1;
-            document.getElementById('info-type').textContent = order.orderType === 'domicile' ? '🏠 Livraison' : '🏪 Stop Desk';
-            document.getElementById('info-total').textContent = (order.grandTotal || 0).toFixed(2) + ' DA';
-
-            // Reset all statuses
-            ['pending', 'accepted', 'shipped', 'arrived'].forEach(s => {
-                document.getElementById(`status-${s}`).classList.remove('active', 'completed');
-            });
-
-            // Set active/completed based on order status
-            const statusOrder = ['pending', 'accepted', 'shipped', 'arrived'];
-            const currentStatus = order.status || 'pending';
-            const currentIndex = statusOrder.indexOf(currentStatus);
-
-            statusOrder.forEach((s, index) => {
-                const el = document.getElementById(`status-${s}`);
-                if (index < currentIndex) {
-                    el.classList.add('completed');
-                } else if (index === currentIndex) {
-                    el.classList.add('active');
-                }
-            });
-        }
-    </script>
+      ['pending','accepted','shipped','arrived'].forEach(s => document.getElementById(`status-${s}`).classList.remove('active','completed'));
+      const statusOrder = ['pending','accepted','shipped','arrived'];
+      const current = order.status || 'pending';
+      const idx = statusOrder.indexOf(current);
+      statusOrder.forEach((s, i) => {
+        const el = document.getElementById(`status-${s}`);
+        if (i < idx) el.classList.add('completed');
+        else if (i === idx) el.classList.add('active');
+      });
+    }
+  </script>
 </body>
 </html>
