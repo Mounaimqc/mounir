@@ -720,7 +720,7 @@
                         : `<div class="status-badge out-of-stock"><i class="fa-solid fa-xmark"></i> RUPTURE DE STOCK</div>`;
 
                     const cartBtnHTML = pQty > 0
-                        ? `<button class="add-to-cart-hero" onclick="window.addToCart('${docSnap.id}')">
+                        ? `<button class="add-to-cart-hero" onclick="addToCartFromPage('${docSnap.id}')">
                  <i class="fa-solid fa-cart-plus"></i> Ajouter à l'Arsenal
                </button>`
                         : `<button class="add-to-cart-hero" disabled>
@@ -804,6 +804,15 @@
         </div>`;
             }
         });
+
+        window.addToCartFromPage = function (productId) {
+            let selectedFlavor = null;
+            const activeBtn = document.querySelector('.flavor-selector-btn.active');
+            if (activeBtn) {
+                selectedFlavor = activeBtn.textContent.trim();
+            }
+            window.addToCart(productId, selectedFlavor);
+        };
     </script>
 </body>
 

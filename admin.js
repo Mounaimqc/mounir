@@ -90,7 +90,7 @@ function showDetail(orderNumber) {
   if (cmd.cartItems?.length > 0) {
     itemsContainer.innerHTML = cmd.cartItems.map(item => `
       <div class="detail-row">
-        <span class="detail-label">${item.name} ×${item.quantity}</span>
+        <span class="detail-label">${item.name} ${item.flavor ? `<span style="color:var(--primary); font-size:0.8rem;">(${item.flavor})</span>` : ''} ×${item.quantity}</span>
         <span class="detail-value">${(item.price * item.quantity).toFixed(2)} DA</span>
       </div>`).join('');
   } else {

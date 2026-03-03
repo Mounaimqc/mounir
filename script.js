@@ -248,7 +248,7 @@ function oldOpenProductDetail(productId) {
 }
 
 // ========== FONCTIONS DU PANIER ==========
-function addToCart(productId) {
+function addToCart(productId, flavorName = null) {
   const product = products.find(p => p.id === productId);
   if (!product) {
     console.error("❌ Produit non trouvé:", productId);
@@ -261,7 +261,10 @@ function addToCart(productId) {
     return;
   }
 
-  const existingItem = cart.find(item => item.id === productId);
+  // Generate a unique ID for the cart item combining productId and flavor
+  const cartItemId = flavorName ? `${productId}_${flavorName}` : productId;
+
+  const existingItem = cart.find(item => item.cartItemId === cartItemId);
   if (existingItem) {
     if (existingItem.quantity >= quantity) {
       showNotification('Quantité maximale atteinte!', 'error');
@@ -269,23 +272,23 @@ function addToCart(productId) {
     }
     existingItem.quantity += 1;
   } else {
-    cart.push({ ...product, quantity: 1 });
+    cart.push({ ...product, quantity: 1, flavor: flavorName, cartItemId: cartItemId });
   }
 
   saveCartToStorage();
   updateCartCount();
-  showNotification(`${product.name} ajouté au panier!`, 'success');
+  showNotification(`${product.name} ${flavorName ? `(${flavorName}) ` : ''}ajouté au panier!`, 'success');
 }
 
-function updateQuantity(productId, change) {
-  const item = cart.find(item => item.id === productId);
+function updateCartQuantity(cartItemId, change) {
+  const item = cart.find(i => (i.cartItemId || i.id) === cartItemId);
   if (!item) return;
 
   item.quantity += change;
   if (item.quantity <= 0) {
-    removeFromCart(productId);
+    removeCartItem(cartItemId);
   } else {
-    const product = products.find(p => p.id === productId);
+    const product = products.find(p => p.id === item.id);
     const maxQuantity = product?.quantity || 0;
     if (item.quantity > maxQuantity) {
       item.quantity = maxQuantity;
@@ -296,8 +299,8 @@ function updateQuantity(productId, change) {
   }
 }
 
-function removeFromCart(productId) {
-  cart = cart.filter(item => item.id !== productId);
+function removeCartItem(cartItemId) {
+  cart = cart.filter(item => (item.cartItemId || item.id) !== cartItemId);
   saveCartToStorage();
   updateCartCount();
   displayCart();
@@ -322,20 +325,26 @@ function displayCart() {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
 
+    // Fallback if old cart items don't have cartItemId
+    const currentCartItemId = item.cartItemId || item.id;
+
     const cartItem = document.createElement('div');
     cartItem.className = 'cart-item';
     cartItem.style.cssText = 'display:flex; gap:16px; padding:16px 0; border-bottom:1px solid #e5e7eb;';
     cartItem.innerHTML = `
       <div class="cart-item-info" style="flex:1;">
-        <div class="cart-item-name" style="font-weight:500; margin-bottom:4px;">${item.name}</div>
+        <div class="cart-item-name" style="font-weight:500; margin-bottom:4px;">
+          ${item.name} 
+          ${item.flavor ? `<span style="font-size:0.75rem;color:var(--gb-gold);padding:2px 6px;background:rgba(212,175,55,0.1);border-radius:4px;margin-left:6px;">${item.flavor}</span>` : ''}
+        </div>
         <div class="cart-item-price" style="color:#6b7280; font-size:0.875rem;">${item.price.toFixed(2)} DA × ${item.quantity} = ${itemTotal.toFixed(2)} DA</div>
       </div>
       <div class="cart-item-quantity" style="display:flex; align-items:center; gap:8px;">
-        <button class="quantity-btn" onclick="window.updateQuantity('${item.id}', -1)" style="width:28px; height:28px; border:1px solid #e5e7eb; background:#fff; border-radius:6px; cursor:pointer;">-</button>
+        <button class="quantity-btn" onclick="window.updateCartQuantity('${currentCartItemId}', -1)" style="width:28px; height:28px; border:1px solid #e5e7eb; background:#fff; border-radius:6px; cursor:pointer;">-</button>
         <span>${item.quantity}</span>
-        <button class="quantity-btn" onclick="window.updateQuantity('${item.id}', 1)" style="width:28px; height:28px; border:1px solid #e5e7eb; background:#fff; border-radius:6px; cursor:pointer;">+</button>
+        <button class="quantity-btn" onclick="window.updateCartQuantity('${currentCartItemId}', 1)" style="width:28px; height:28px; border:1px solid #e5e7eb; background:#fff; border-radius:6px; cursor:pointer;">+</button>
       </div>
-      <button class="remove-btn" onclick="window.removeFromCart('${item.id}')" style="background:#f59e0b; color:#fff; border:none; padding:4px 12px; border-radius:4px; cursor:pointer; font-size:0.75rem;">Supprimer</button>
+      <button class="remove-btn" onclick="window.removeCartItem('${currentCartItemId}')" style="background:#f59e0b; color:#fff; border:none; padding:4px 12px; border-radius:4px; cursor:pointer; font-size:0.75rem;">Supprimer</button>
     `;
     cartItems.appendChild(cartItem);
   });
@@ -555,6 +564,7 @@ async function submitOrderForm() {
     cartItems: cart.map(item => ({
       id: item.id,
       name: item.name,
+      flavor: item.flavor || null,
       price: item.price,
       quantity: item.quantity,
       total: item.price * item.quantity
@@ -709,8 +719,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ========== EXPOSER FONCTIONS GLOBALES ==========
 window.addToCart = addToCart;
-window.updateQuantity = updateQuantity;
-window.removeFromCart = removeFromCart;
+window.updateCartQuantity = updateCartQuantity;
+window.removeCartItem = removeCartItem;
+// Backward compatibility for old calls
+window.updateQuantity = updateCartQuantity;
+window.removeFromCart = removeCartItem;
+
 window.openProductDetail = openProductDetail;
 window.displayCart = displayCart;
 

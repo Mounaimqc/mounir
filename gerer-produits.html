@@ -44,7 +44,8 @@
             flex-direction: column;
             position: fixed;
             height: 100%;
-            z-index: 100
+            z-index: 100;
+            transition: transform 0.3s ease;
         }
 
         .sidebar-header {
@@ -397,8 +398,13 @@
         }
 
         @media(max-width:768px) {
+            .menu-toggle {
+                display: block !important;
+            }
+
             .sidebar {
-                transform: translateX(-100%)
+                transform: translateX(-100%);
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
             }
 
             .sidebar.active {
@@ -436,9 +442,14 @@
 
     <main class="main-content">
         <div class="top-bar">
-            <div class="page-title">
-                <h1>📦 Gérer les Produits</h1>
-                <p>Gérez votre inventaire, modifiez les prix, et mettez à jour les stocks.</p>
+            <div style="display:flex; align-items:center; gap: 15px;">
+                <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')"
+                    style="display:none; background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;"><i
+                        class="fa-solid fa-bars"></i></button>
+                <div class="page-title">
+                    <h1>📦 Gérer les Produits</h1>
+                    <p>Gérez votre inventaire, modifiez les prix, et mettez à jour les stocks.</p>
+                </div>
             </div>
             <div style="display:flex;align-items:center;gap:12px">
                 <div
