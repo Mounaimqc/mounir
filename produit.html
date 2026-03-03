@@ -729,7 +729,7 @@
 
                     container.innerHTML = `
             <div class="product-image-container">
-              <img src="${pImage}" alt="${pName}" onerror="this.src='https://via.placeholder.com/600x600?text=Produit'">
+              <img id="main-product-image" src="${pImage}" alt="${pName}" onerror="this.src='https://via.placeholder.com/600x600?text=Produit'">
             </div>
             <div class="product-details">
               <div class="category">${pCategory}</div>
@@ -737,11 +737,59 @@
               <div class="price">${pPrice.toFixed(2)} DA</div>
               ${stockHTML}
               <div class="description">${pDesc}</div>
+
+              ${(product.flavors && product.flavors.length > 0) ? `
+              <div class="flavors-selection" style="margin: 20px 0;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--gb-white);">Goûts disponibles :</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  ${product.flavors.map((f, i) => `
+                    <button class="flavor-selector-btn ${i === 0 ? 'active' : ''}" 
+                            data-image="${f.image || pImage}"
+                            style="padding: 10px 15px; background: ${i === 0 ? 'var(--gb-gold)' : 'var(--gb-grey)'}; color: ${i === 0 ? 'var(--gb-black)' : 'var(--gb-white)'}; border: 1px solid var(--gb-gold); border-radius: var(--radius); cursor: pointer; font-weight: 700; transition: var(--transition);">
+                      ${f.name}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>` : ''}
+
               <div style="margin-top: 40px;">
                 ${cartBtnHTML}
               </div>
             </div>
           `;
+
+                    // Add event listeners for flavor selectors
+                    if (product.flavors && product.flavors.length > 0) {
+                        const mainImg = document.getElementById('main-product-image');
+                        const btns = document.querySelectorAll('.flavor-selector-btn');
+
+                        // Set first flavor image if available
+                        if (product.flavors[0].image) {
+                            mainImg.src = product.flavors[0].image;
+                        }
+
+                        btns.forEach(btn => {
+                            btn.addEventListener('click', (e) => {
+                                // Remove active class
+                                btns.forEach(b => {
+                                    b.classList.remove('active');
+                                    b.style.background = 'var(--gb-grey)';
+                                    b.style.color = 'var(--gb-white)';
+                                });
+
+                                // Add active to current
+                                btn.classList.add('active');
+                                btn.style.background = 'var(--gb-gold)';
+                                btn.style.color = 'var(--gb-black)';
+
+                                // Update image
+                                const newImgSrc = btn.getAttribute('data-image');
+                                if (newImgSrc && newImgSrc !== 'undefined' && newImgSrc !== '') {
+                                    mainImg.src = newImgSrc;
+                                }
+                            });
+                        });
+                    }
                 } else {
                     container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 100px 0;">
             <i class="fa-solid fa-box-open" style="font-size:3rem; color:var(--gb-light-grey); margin-bottom:20px;"></i>

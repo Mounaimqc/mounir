@@ -680,11 +680,25 @@
               <option value="Autre">Autre</option>
             </select></div>
           <div class="form-group"><label class="form-label">Description</label><textarea id="productDescription"
-              class="form-control" rows="3"></textarea></div>
+              class="form-control" rows="3"></textarea> </div>
           <div class="form-group"><label class="form-label">Inventaire (Stock) *</label><input type="number"
               id="productQuantity" class="form-control" required min="0" value="10"></div>
           <div class="form-group"><label class="form-label">Prix (DA) *</label><input type="number" id="productPrice"
               class="form-control" required min="0"></div>
+
+          <!-- Section Goûts -->
+          <div class="form-group"
+            style="border: 1px solid var(--border); padding: 15px; border-radius: var(--radius); margin-top: 15px;">
+            <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
+              Goûts / Variantes (Optionnel)
+              <button type="button" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;"
+                onclick="addFlavorField()">+ Ajouter un goût</button>
+            </label>
+            <div id="flavorsList" style="display:flex; flex-direction:column; gap:10px;"></div>
+            <p style="font-size: 0.75rem; color: var(--text-light); margin-top: 5px;">Ajoutez des goûts (ex: Chocolat,
+              Vanille) avec l'URL de l'image correspondante. Chaque fois que le visiteur cliquera sur le goût, l'image
+              sera mise à jour.</p>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
