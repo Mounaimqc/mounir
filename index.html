@@ -1,276 +1,895 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Wahbi Zoghbi - Vente en Ligne</title>
+  <title>Wahbi Zoghbi | Premium Supplements</title>
+
+  <!-- Fonts: Montserrat for HEADINGS, Inter for BODY -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
-    :root{--primary:#2563eb;--primary-dark:#1e40af;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--bg:#f9fafb;--surface:#fff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,.1);--radius:12px}
-    *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
-    body{background:var(--bg);color:var(--text);line-height:1.6}
-    a{text-decoration:none;color:inherit}
-    
-    /* Header */
-    .header{background:var(--surface);box-shadow:var(--shadow);position:sticky;top:0;z-index:100}
-    .header-container{max-width:1400px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
-    .logo{font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:10px}
-    .header-actions{display:flex;align-items:center;gap:16px}
-    .header-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:var(--radius);background:#eff6ff;color:var(--primary);font-weight:500;transition:.2s;cursor:pointer}
-    .header-btn:hover{background:var(--primary);color:#fff}
-    .cart-btn{position:relative}
-    .cart-count{position:absolute;top:-8px;right:-8px;background:var(--danger);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600}
-    
-    /* Hero */
-    .hero{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;padding:60px 24px;text-align:center}
-    .hero h1{font-size:2.2rem;margin-bottom:12px}
-    .hero p{opacity:.9;max-width:600px;margin:0 auto}
-    
-    /* Filters */
-    .filters{max-width:1400px;margin:0 auto;padding:24px;display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
-    .filter-btn{padding:10px 20px;border:1px solid var(--border);background:var(--surface);border-radius:25px;cursor:pointer;font-weight:500;transition:.2s}
-    .filter-btn:hover,.filter-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-    
-    /* Products Grid */
-    .products-grid{max-width:1400px;margin:0 auto;padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
-    .product-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:.3s;cursor:pointer}
-    .product-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px -5px rgba(0,0,0,.15)}
-    .product-image{width:100%;height:200px;object-fit:cover;background:#f3f4f6}
-    .product-info{padding:20px}
-    .product-category{font-size:.75rem;color:var(--primary);text-transform:uppercase;font-weight:600;margin-bottom:8px}
-    .product-name{font-size:1.1rem;font-weight:600;margin-bottom:8px}
-    .product-description{font-size:.875rem;color:var(--text-light);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-    .product-quantity{font-size:.75rem;margin:4px 0}
-    .product-quantity.out-of-stock{color:var(--danger)}
-    .product-footer{display:flex;justify-content:space-between;align-items:center}
-    .product-price{font-size:1.2rem;font-weight:700;color:var(--primary)}
-    .add-to-cart-btn{padding:10px 18px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-weight:500;transition:.2s}
-    .add-to-cart-btn:hover{background:var(--primary-dark)}
-    .add-to-cart-btn:disabled{background:#9ca3af;cursor:not-allowed}
-    
-    /* Modal */
-    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
-    .modal-overlay.active{display:flex}
-    .modal{background:var(--surface);width:100%;max-width:520px;border-radius:var(--radius);box-shadow:0 20px 25px -5px rgba(0,0,0,.1);max-height:90vh;overflow-y:auto}
-    .modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .modal-title{font-size:1.25rem;font-weight:600}
-    .close-modal{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-light)}
-    .modal-body{padding:24px}
-    .modal-footer{padding:20px 24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    
-    /* Cart */
-    .cart-items{max-height:300px;overflow-y:auto}
-    .cart-item{display:flex;gap:16px;padding:16px 0;border-bottom:1px solid var(--border)}
-    .cart-item-image{width:60px;height:60px;object-fit:cover;border-radius:8px}
-    .cart-item-info{flex:1}
-    .cart-item-name{font-weight:500;margin-bottom:4px}
-    .cart-item-price{color:var(--text-light);font-size:.875rem}
-    .cart-item-quantity{display:flex;align-items:center;gap:8px;margin-top:8px}
-    .quantity-btn{width:28px;height:28px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}
-    .remove-btn{background:var(--danger);color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:.75rem}
-    .cart-total{font-size:1.25rem;font-weight:700}
-    
-    /* Form */
-    .btn{padding:12px 24px;border-radius:var(--radius);border:none;cursor:pointer;font-weight:600;transition:.2s}
-    .btn-primary{background:var(--primary);color:#fff}
-    .btn-primary:hover{background:var(--primary-dark)}
-    .btn-outline{background:#fff;border:1px solid var(--border);color:var(--text)}
-    .btn-outline:hover{background:#f9fafb}
-    .form-group{margin-bottom:20px}
-    .form-label{display:block;margin-bottom:8px;font-weight:500;font-size:.875rem}
-    .form-control{width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius);font-size:1rem}
-    .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .shipping-info{background:#f0f9ff;padding:16px;border-radius:var(--radius);display:none}
-    .shipping-info.active{display:block}
-    
-    /* Footer */
-    .footer{background:var(--surface);border-top:1px solid var(--border);padding:40px 24px;margin-top:60px}
-    .footer-container{max-width:1400px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:40px}
-    .footer-section h3{font-size:1.1rem;margin-bottom:16px}
-    .footer-section p,.footer-section a{color:var(--text-light);font-size:.875rem;margin-bottom:8px;display:block}
-    .footer-section a:hover{color:var(--primary)}
-    .footer-bottom{max-width:1400px;margin:40px auto 0;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-light);font-size:.875rem}
-    
-    /* Detail Modal Image */
-    #detailImage{width:100%;max-height:300px;object-fit:contain;margin-bottom:16px;border-radius:8px;background:#f3f4f6}
-    
-    @media(max-width:768px){
-      .header-container{flex-wrap:wrap;gap:16px}
-      .hero h1{font-size:1.75rem}
-      .form-row{grid-template-columns:1fr}
-      .products-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+    /* ========== WAHBI ZOGHBI THEME ========== */
+    :root {
+      /* Colors */
+      --gb-gold: #D4AF37;
+      --gb-gold-light: #F3E5AB;
+      --gb-gold-dark: #AA8C2C;
+      --gb-black: #050505;
+      --gb-dark-grey: #111111;
+      --gb-grey: #222222;
+      --gb-light-grey: #888888;
+      --gb-white: #FFFFFF;
+      --gb-danger: #ffcc00;
+      --gb-success: #1cd072;
+
+      /* Layout & Effects */
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.2);
+      --radius: 8px;
+      --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--gb-black);
+      color: var(--gb-white);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Montserrat', sans-serif;
+      text-transform: uppercase;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    /* ========== HEADER / NAV ========== */
+    .header {
+      background: rgba(17, 17, 17, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: 900;
+      color: var(--gb-white);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: 2px;
+    }
+
+    .logo span {
+      color: var(--gb-gold);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--gb-white);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid var(--gb-gold);
+    }
+
+    .header-btn:hover {
+      background: var(--gb-gold);
+      color: var(--gb-black);
+    }
+
+    .cart-btn {
+      position: relative;
+      background: var(--gb-gold);
+      color: var(--gb-black);
+    }
+
+    .cart-btn:hover {
+      background: var(--gb-gold-light);
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--gb-danger);
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 2px solid var(--gb-dark-grey);
+    }
+
+    /* ========== HERO SECTION (BOUTIQUE) ========== */
+    .hero {
+      background: linear-gradient(180deg, rgba(17, 17, 17, 0.1) 0%, var(--gb-black) 100%),
+        url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+      padding: 120px 24px 80px;
+      text-align: center;
+      border-bottom: 2px solid var(--gb-gold);
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
+      letter-spacing: 1px;
+    }
+
+    .hero h1 span {
+      color: var(--gb-gold);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--gb-white);
+      max-width: 600px;
+      margin: 0 auto;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* ========== FILTERS & SEARCH ========== */
+    .shop-controls {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 24px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .filter-btn {
+      padding: 10px 24px;
+      background: var(--gb-grey);
+      color: var(--gb-white);
+      border: 1px solid var(--gb-grey);
+      border-radius: 30px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--gb-gold-dark);
+      border-color: var(--gb-gold);
+      color: var(--gb-black);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .search-container {
+      position: relative;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .search-container i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gb-light-grey);
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 16px 16px 16px 44px;
+      background: var(--gb-grey);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--radius-lg);
+      color: var(--gb-white);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    #searchInput:focus {
+      outline: none;
+      border-color: var(--gb-gold);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    }
+
+    /* ========== PRODUCTS GRID & CARDS ========== */
+    /* Preserving the classes generated by JS */
+    .products-grid {
+      max-width: 1400px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .product-card {
+      background: var(--gb-dark-grey);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--gb-gold);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      background: #000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .product-info {
+      padding: 24px;
+    }
+
+    .product-category {
+      font-size: 0.75rem;
+      color: var(--gb-gold);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--gb-white);
+      margin-bottom: 12px;
+      line-height: 1.3;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .product-description {
+      font-size: 0.875rem;
+      color: var(--gb-light-grey);
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-quantity {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gb-success);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .product-quantity.out-of-stock {
+      color: var(--gb-danger);
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-price {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gb-white);
+    }
+
+    .add-to-cart-btn {
+      padding: 12px 20px;
+      background: var(--gb-gold);
+      color: var(--gb-black);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      border-radius: var(--radius);
+    }
+
+    .add-to-cart-btn:hover:not(:disabled) {
+      background: var(--gb-white);
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .add-to-cart-btn:disabled {
+      background: var(--gb-grey);
+      color: var(--gb-light-grey);
+      cursor: not-allowed;
+    }
+
+    /* ========== MODALS ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s;
+    }
+
+    .modal {
+      background: var(--gb-dark-grey);
+      width: 100%;
+      max-width: 550px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-hover);
+    }
+
+    .modal-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      color: var(--gb-gold);
+    }
+
+    .close-modal {
+      background: none;
+      color: var(--gb-light-grey);
+      font-size: 1.8rem;
+    }
+
+    .close-modal:hover {
+      color: var(--gb-white);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--gb-black);
+    }
+
+    /* Detail Modal Specifics */
+    #detailImage {
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: var(--radius);
+      background: #000;
+      margin-bottom: 20px;
+    }
+
+    #detailName {
+      font-size: 2rem;
+      color: var(--gb-white);
+      margin-bottom: 10px;
+    }
+
+    #detailPrice {
+      color: var(--gb-gold);
+    }
+
+    /* Cart Modal Specifics */
+    .cart-items {
+      max-height: 350px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .cart-items::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .cart-items::-webkit-scrollbar-thumb {
+      background: var(--gb-gold);
+      border-radius: 4px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      align-items: center;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: 700;
+      color: var(--gb-white);
+      font-size: 1.1rem;
+    }
+
+    .cart-item-price {
+      color: var(--gb-gold);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .quantity-btn {
+      width: 32px;
+      height: 32px;
+      background: var(--gb-grey);
+      color: var(--gb-white);
+      border-radius: var(--radius);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-btn:hover {
+      background: var(--gb-gold);
+      color: var(--gb-black);
+    }
+
+    .remove-btn {
+      background: transparent;
+      color: var(--gb-danger);
+      border: 1px solid var(--gb-danger);
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .remove-btn:hover {
+      background: var(--gb-danger);
+      color: white;
+    }
+
+    .cart-total {
+      font-size: 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .cart-empty {
+      text-align: center;
+      color: var(--gb-light-grey);
+      padding: 40px 0;
+      font-size: 1.1rem;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--gb-light-grey);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px;
+      background: var(--gb-black);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius);
+      color: var(--gb-white);
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gb-gold);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .shipping-info {
+      background: rgba(212, 175, 55, 0.1);
+      padding: 20px;
+      border-radius: var(--radius);
+      border: 1px dashed var(--gb-gold);
+      margin-top: 20px;
+      display: none;
+    }
+
+    .shipping-info.active {
+      display: block;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: var(--gb-gold);
+      color: var(--gb-black);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--gb-gold-light);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-primary:disabled {
+      background: var(--gb-grey);
+      color: var(--gb-light-grey);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gb-light-grey);
+      color: var(--gb-white);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gb-white);
+      color: var(--gb-white);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      background: var(--gb-black);
+      border-top: 2px solid var(--gb-gold);
+      padding: 60px 24px 20px;
+      margin-top: 60px;
+    }
+
+    .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+    }
+
+    .footer-section h3 {
+      font-size: 1.25rem;
+      color: var(--gb-white);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: var(--gb-light-grey);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-section i {
+      color: var(--gb-gold);
+      width: 20px;
+    }
+
+    .footer-section a:hover {
+      color: var(--gb-gold);
+      padding-left: 5px;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 60px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: var(--gb-light-grey);
+      font-size: 0.85rem;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @media(max-width:768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .header-container {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
+
   <!-- Header -->
   <header class="header">
     <div class="header-container">
-      <a href="index.html" class="logo"><i class="fa-solid fa-laptop"></i> Wahbi Zoghbi </a>
+      <a href="index.html" class="logo">Wahbi <span>Zoghbi</span></a>
       <div class="header-actions">
-        <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck"></i> Suivi</a>
+        <!-- Replaced tracking with something thematic but preserving href -->
+        <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck-fast"></i> Suivi</a>
         <button class="header-btn cart-btn" id="cartBtn">
           <i class="fa-solid fa-cart-shopping"></i> Panier
           <span class="cart-count" id="cartCount">0</span>
         </button>
-        <a href="login.html" class="header-btn"><i class="fa-solid fa-user"></i> Admin</a>
+        <a href="login.html" class="header-btn"><i class="fa-solid fa-user-shield"></i> Admin</a>
       </div>
     </div>
   </header>
 
   <!-- Hero -->
   <section class="hero">
-    <h1> Bienvenue chez Wahbi Zoghbi</h1>
-    <p>Produits de qualité aux meilleurs prix. Livraison rapide partout en Algérie.</p>
+    <h1>REVEILLEZ LA <span>BÊTE</span> EN VOUS.</h1>
+    <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché
+      Algérien.</p>
   </section>
 
-  <!-- Filters -->
-  <div class="filters">
-    <button class="filter-btn active" id="categoryFilter" data-category="all">Tous</button>
-    <button class="filter-btn" data-category="Protéines whey">Protéines whey</button>
-    <button class="filter-btn" data-category="Masse / Gainer">Masse / Gainer</button>
-    <button class="filter-btn" data-category="Acide aminé">Acide aminé</button>
-  </div>
-
-  <!-- Search -->
-  <div style="max-width:1400px;margin:0 auto;padding:0 24px">
-    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Rechercher un produit..." style="margin-bottom:24px">
-  </div>
-
-  <!-- Products -->
-  <div class="products-grid" id="productsGrid">
-    <div style="text-align:center;padding:60px;color:var(--text-light);grid-column:1/-1">
-      <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem"></i>
-      <p style="margin-top:16px">Chargement des produits...</p>
+  <!-- Shop Controls (Filters & Search) -->
+  <div class="shop-controls">
+    <div class="filters">
+      <button class="filter-btn active" id="categoryFilter" data-category="all">Tous les produits</button>
+      <button class="filter-btn" data-category="Protéines whey">Whey Protein</button>
+      <button class="filter-btn" data-category="Masse / Gainer">Mass Gainer</button>
+      <button class="filter-btn" data-category="Acide aminé">Acides Aminés</button>
+      <button class="filter-btn" data-category="Pre-Workout">Pre-Workout</button>
+    </div>
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher votre supplément explosif...">
     </div>
   </div>
 
-  <!-- Cart Modal -->
+  <!-- Products Grid (ID PRESERVED FOR JS) -->
+  <div class="products-grid" id="productsGrid">
+    <div style="text-align:center; padding:100px 20px; color:var(--gb-gold); grid-column:1/-1;">
+      <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; margin-bottom:20px;"></i>
+      <p style="font-size:1.2rem; font-family:'Montserrat', sans-serif;">CHARGEMENT DE LA BOUTIQUE...</p>
+    </div>
+  </div>
+
+  <!-- Cart Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="cartModal">
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">🛒 Votre Panier</h3>
+        <h3 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> PANIER</h3>
         <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
         <div class="cart-items" id="cartItems">
-          <p style="text-align:center;color:var(--text-light);padding:40px 0">Votre panier est vide</p>
+          <!-- Handled by JS -->
         </div>
       </div>
       <div class="modal-footer">
-        <div class="cart-total">Total: <span id="totalPrice">0.00</span> DA</div>
-        <button class="btn btn-primary" id="checkoutBtn" disabled>Passer la Commande <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="cart-total">TOTAL: <span id="totalPrice" style="color:var(--gb-gold)">0.00</span> DA</div>
+        <button class="btn btn-primary" id="checkoutBtn" disabled>COMMANDER <i class="fa-solid fa-bolt"></i></button>
       </div>
     </div>
   </div>
 
-  <!-- Product Detail Modal -->
+  <!-- Product Detail Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="productDetailModal">
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">📦 Détails du Produit</h3>
+        <h3 class="modal-title">Détails Supérieurs</h3>
         <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
         <img id="detailImage" src="" alt="Produit">
-        <h2 id="detailName" style="margin-bottom:8px"></h2>
-        <p class="product-category" id="detailCategory"></p>
-        <div id="detailDescription" style="margin:16px 0;color:var(--text-light)"></div>
-        <p style="font-size:1.5rem;font-weight:700;color:var(--primary)"><span id="detailPrice">0</span> DA</p>
+        <h2 id="detailName"></h2>
+        <p class="product-category" id="detailCategory"
+          style="color:var(--gb-gold); font-weight:700; font-size:0.9rem; margin-bottom:15px;"></p>
+        <div id="detailDescription" style="margin:20px 0; color:var(--gb-light-grey); line-height:1.7;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <p style="font-size:2rem; font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);"><span
+              id="detailPrice">0</span> DA</p>
+        </div>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline close-modal">Annuler</button>
-        <button class="btn btn-primary" id="modalAddToCartBtn">Ajouter au panier</button>
+        <button class="btn btn-outline close-modal">Retour</button>
+        <button class="btn btn-primary" id="modalAddToCartBtn">Ajouter à l'Arsenal</button>
       </div>
     </div>
   </div>
 
-  <!-- Checkout Modal -->
+  <!-- Checkout/Order Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="orderFormModal">
     <div class="modal">
       <div class="modal-header">
-        <h3 class="modal-title">📦 Formulaire de Commande</h3>
+        <h3 class="modal-title">FINALISER LA COMMANDE</h3>
         <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
         <form id="orderForm">
           <div class="form-group">
-            <label class="form-label">Type de Commande *</label>
+            <label class="form-label">MÉTHODE DE LIVRAISON *</label>
             <select class="form-control" id="orderType" required>
-              <option value="">Sélectionner un type</option>
-              <option value="domicile">🏠 Livraison à domicile</option>
-              <option value="stopdesk">🏪 Stop Desk (Retrait au magasin)</option>
+              <option value="">Sélectionner</option>
+              <option value="domicile">Livraison à domicile</option>
+              <option value="stopdesk">Stop Desk (Point relais)</option>
             </select>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Prénom *</label>
+              <label class="form-label">PRÉNOM *</label>
               <input type="text" class="form-control" id="firstName" required>
             </div>
             <div class="form-group">
-              <label class="form-label">Nom *</label>
+              <label class="form-label">NOM *</label>
               <input type="text" class="form-control" id="lastName" required>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Téléphone 1 *</label>
+              <label class="form-label">TÉLÉPHONE 1 *</label>
               <input type="tel" class="form-control" id="phone1" required placeholder="05/06/07...">
             </div>
             <div class="form-group">
-              <label class="form-label">Téléphone 2 (Optionnel)</label>
-              <input type="tel" class="form-control" id="phone2" placeholder="05/06/07...">
+              <label class="form-label">TÉLÉPHONE 2</label>
+              <input type="tel" class="form-control" id="phone2" placeholder="Optionnel">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Wilaya *</label>
-              <select class="form-control" id="wilaya" required>
-                <option value="">Sélectionner une wilaya</option>
-              </select>
+              <label class="form-label">WILAYA *</label>
+              <select class="form-control" id="wilaya" required></select>
             </div>
             <div class="form-group">
-              <label class="form-label">Commune *</label>
-              <select class="form-control" id="commune" required>
-                <option value="">Sélectionner une commune</option>
-              </select>
+              <label class="form-label">COMMUNE *</label>
+              <select class="form-control" id="commune" required></select>
             </div>
           </div>
           <div class="shipping-info" id="shippingInfo">
-            <div style="display:flex;justify-content:space-between;margin-bottom:8px">
-              <span>Frais de livraison:</span>
-              <span id="shippingPrice" style="font-weight:600">0 DA</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--gb-white);">
+              <span>Frais de livraison d'élite:</span>
+              <span id="shippingPrice" style="font-weight:700; color:var(--gb-gold)">0 DA</span>
             </div>
-            <div style="display:flex;justify-content:space-between;font-size:1.1rem">
-              <span style="font-weight:600">Total à payer:</span>
-              <span id="grandTotal" style="font-weight:700;color:var(--primary)">0 DA</span>
+            <div style="display:flex; justify-content:space-between; font-size:1.3rem; align-items:center;">
+              <span style="font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);">TOTAL
+                NET:</span>
+              <span id="grandTotal" style="font-size:1.6rem; font-weight:900; color:var(--gb-gold);">0 DA</span>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline close-modal">Annuler</button>
-        <button class="btn btn-primary" type="submit" form="orderForm">Confirmer la Commande <i class="fa-solid fa-check"></i></button>
+        <button class="btn btn-primary" type="submit" form="orderForm">Valider la Commande <i
+            class="fa-solid fa-check-double"></i></button>
       </div>
     </div>
   </div>
 
-  <!-- Success Modal -->
+  <!-- Success Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="confirmModal">
-    <div class="modal" style="text-align:center">
-      <div class="modal-body">
-        <div style="width:80px;height:80px;background:#ecfdf5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px">
-          <i class="fa-solid fa-check" style="font-size:2.5rem;color:var(--success)"></i>
+    <div class="modal" style="text-align:center;">
+      <div class="modal-body" style="padding: 50px 30px;">
+        <div
+          style="width:100px; height:100px; background:rgba(28,208,114,0.1); border:2px solid var(--gb-success); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
+          <i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gb-success);"></i>
         </div>
-        <h3 style="margin-bottom:16px">✅ Commande Confirmée!</h3>
-        <p style="color:var(--text-light);margin-bottom:24px">Votre commande a été enregistrée avec succès.</p>
-        <div style="background:#f0f9ff;padding:20px;border-radius:var(--radius);margin-bottom:24px">
-          <p style="font-size:.875rem;color:var(--text-light);margin-bottom:8px">Numéro de commande:</p>
-          <p style="font-size:1.5rem;font-weight:700;color:var(--primary)" id="orderNumber"></p>
+        <h3 style="margin-bottom:20px; font-size:2rem; color:var(--gb-success);">VICTOIRE !</h3>
+        <p style="color:var(--gb-light-grey); margin-bottom:30px; font-size:1.1rem;">La commande a été transmise à notre
+          quartier général.</p>
+
+        <div
+          style="background:var(--gb-black); border:1px solid var(--gb-gold); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
+          <p style="font-size:0.9rem; color:var(--gb-light-grey); margin-bottom:10px; text-transform:uppercase;">CODE
+            D'OPÉRATION (Numéro)</p>
+          <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;"
+            id="orderNumber"></p>
         </div>
-        <p style="font-size:.875rem;color:var(--text-light);margin-bottom:24px"><i class="fa-solid fa-camera"></i> Prenez une photo de ce numéro!</p>
-        <button class="btn btn-primary" id="continueBtn" style="width:100%">Continuer vos achats</button>
+
+        <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i class="fa-solid fa-camera"></i>
+          Capturez cet écran pour le suivi.</p>
+        <button class="btn btn-primary close-modal" id="continueBtn" style="width:100%;">Continuer
+          l'Entraînement</button>
       </div>
     </div>
   </div>
@@ -279,28 +898,30 @@
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section">
-        <h3>📞 Contact</h3>
-        <p><i class="fa-solid fa-phone"></i> 0669 46 99 56</p>
-        <p><i class="fa-solid fa-envelope"></i> wahbizoghbi@gmail.com</p>
-        <p><i class="fa-solid fa-location-dot"></i> Algérie</p>
+        <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
+        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments
+          certifiés premium.</p>
       </div>
       <div class="footer-section">
-        <h3>🔗 Liens</h3>
-        <a href="index.html">Accueil</a>
-        <a href="tracking.html">Suivi Commande</a>
-        <a href="login.html">Espace Admin</a>
+        <h3>QG COMMANDEMENT</h3>
+        <p><i class="fa-solid fa-phone"></i> +213 (0) 669 46 99 56</p>
+        <p><i class="fa-solid fa-envelope"></i> contact@wahbizoghbi.dz</p>
+        <p><i class="fa-solid fa-location-crosshairs"></i> Algérie</p>
       </div>
       <div class="footer-section">
-        <h3>💳 Paiement</h3>
-        <p>Paiement à la livraison</p>
-        <p style="margin-top:8px"><i class="fa-solid fa-truck"></i> Livraison 58 wilayas</p>
+        <h3>LOGISTIQUE</h3>
+        <p><i class="fa-solid fa-shield-halved"></i> Paiement 100% sécurisé à la livraison</p>
+        <p><i class="fa-solid fa-truck-fast"></i> Déploiement rapide sur les 58 wilayas</p>
       </div>
     </div>
-    <div class="footer-bottom"><p>© 2026 Wahbi Zoghbi - Tous droits réservés</p></div>
+    <div class="footer-bottom">
+      <p>© 2026 Wahbi Zoghbi. Tous droits réservés.</p>
+    </div>
   </footer>
 
+  <!-- Firebase & Client Logic (PRESERVED) -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="script.js"></script>
 </body>
-</html>
 
+</html>
