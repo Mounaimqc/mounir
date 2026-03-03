@@ -1,8 +1,7 @@
 // admin.js - Firebase v10+ Compatible
+import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot } 
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
-import { 
-  collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot 
-} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 let allCommandes = [];
 
@@ -11,9 +10,7 @@ function loadCommandes() {
   const tbody = document.getElementById('ordersTableBody');
   if (!tbody) return;
   
-  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px">
-    <i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...
-  </td></tr>`;
+  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px"><i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</td></tr>`;
 
   const q = query(collection(db, "commandes"), orderBy("date", "desc"));
   
@@ -28,15 +25,11 @@ function loadCommandes() {
     initializeWilayaFilter();
     
     if (allCommandes.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280">
-        Aucune commande pour le moment
-      </td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light)">Aucune commande pour le moment</td></tr>`;
     }
   }, (error) => {
     console.error("❌ Erreur Firebase:", error);
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#ef4444">
-      Erreur: ${error.message}
-    </td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--danger)">Erreur: ${error.message}</td></tr>`;
   });
 }
 
@@ -46,9 +39,7 @@ function displayCommandes(commandes) {
   if (!tbody) return;
   
   if (commandes.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:#6b7280">
-      Aucune commande trouvée
-    </td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light)">Aucune commande trouvée</td></tr>`;
     return;
   }
   
@@ -58,28 +49,16 @@ function displayCommandes(commandes) {
     
     return `
       <tr>
-        <td style="font-weight:600;color:#2563eb">#${cmd.orderNumber}</td>
+        <td style="font-weight:600;color:var(--primary)">#${cmd.orderNumber}</td>
         <td>${cmd.firstName || ''} ${cmd.lastName || ''}</td>
-        <td><span style="font-size:0.85rem">
-          <i class="fa-solid ${cmd.orderType==='domicile'?'fa-truck':'fa-store'}"></i> 
-          ${cmd.orderType==='domicile'?'Domicile':'Stop Desk'}
-        </span></td>
+        <td><span style="font-size:.85rem"><i class="fa-solid ${cmd.orderType==='domicile'?'fa-truck':'fa-store'}"></i> ${cmd.orderType==='domicile'?'Domicile':'Stop Desk'}</span></td>
         <td>${cmd.wilaya || '-'}</td>
-        <td>${cmd.phone1 || '-'} 
-          <i class="fa-regular fa-copy" style="cursor:pointer;margin-left:5px" 
-             onclick="navigator.clipboard.writeText('${cmd.phone1||''}')" title="Copier"></i>
-        </td>
+        <td>${cmd.phone1 || '-'}</td>
         <td style="font-weight:600">${(cmd.grandTotal || 0).toFixed(2)} DA</td>
         <td><span class="status-badge ${statusClass}">${statusLabel}</span></td>
         <td>
-          <button onclick="showDetail('${cmd.orderNumber}')" 
-                  style="padding:6px 12px;background:#2563eb;color:#fff;border:none;border-radius:4px;cursor:pointer">
-            Détails
-          </button>
-          <button onclick="deleteCommande('${cmd.orderNumber}')" 
-                  style="padding:6px 12px;background:#ef4444;color:#fff;border:none;border-radius:4px;cursor:pointer;margin-left:5px">
-            🗑
-          </button>
+          <button onclick="showDetail('${cmd.orderNumber}')" style="padding:6px 12px;background:var(--primary);color:#fff;border:none;border-radius:4px;cursor:pointer">Détails</button>
+          <button onclick="deleteCommande('${cmd.orderNumber}')" style="padding:6px 12px;background:var(--danger);color:#fff;border:none;border-radius:4px;cursor:pointer;margin-left:5px">🗑</button>
         </td>
       </tr>`;
   }).join('');
@@ -110,13 +89,12 @@ function showDetail(orderNumber) {
   const itemsContainer = document.getElementById('detailItems');
   if (cmd.cartItems?.length > 0) {
     itemsContainer.innerHTML = cmd.cartItems.map(item => `
-      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed #e5e7eb">
-        <span><strong>${item.name}</strong><br><small>${item.price} DA × ${item.quantity}</small></span>
-        <strong>${(item.price * item.quantity).toFixed(2)} DA</strong>
-      </div>
-    `).join('');
+      <div class="detail-row">
+        <span class="detail-label">${item.name} ×${item.quantity}</span>
+        <span class="detail-value">${(item.price * item.quantity).toFixed(2)} DA</span>
+      </div>`).join('');
   } else {
-    itemsContainer.innerHTML = '<p style="text-align:center;color:#6b7280">Aucun produit</p>';
+    itemsContainer.innerHTML = '<p style="text-align:center;color:var(--text-light)">Aucun produit</p>';
   }
   
   document.getElementById('detailCartTotal').textContent = (cmd.cartTotal || 0).toFixed(2);
@@ -254,13 +232,10 @@ function exportCommandes() {
 
 // ========== UTILITAIRES ==========
 function showNotification(msg, type = 'success') {
-  const container = document.getElementById('toastContainer');
-  if (!container) { alert(msg); return; }
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  toast.style.cssText = `background:${type==='success'?'#10b981':'#ef4444'};color:#fff;padding:12px 24px;border-radius:8px;margin-bottom:10px;box-shadow:0 4px 6px rgba(0,0,0,.1);display:flex;align-items:center;gap:10px`;
-  toast.innerHTML = `<i class="fa-solid ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`;
-  container.appendChild(toast);
+  toast.textContent = msg;
+  document.body.appendChild(toast);
   setTimeout(() => { toast.style.opacity='0'; setTimeout(()=>toast.remove(),300); }, 3000);
 }
 function formatDateTime(d) { if (!d) return '—'; return new Date(d).toLocaleString('fr-FR', { day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit' }); }
