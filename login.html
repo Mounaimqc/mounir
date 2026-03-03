@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Connexion Admin - Amar Informatique</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root{--primary:#2563eb;--primary-dark:#1e40af;--bg:linear-gradient(135deg,#667eea,#764ba2);--surface:#fff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--radius:12px;--shadow:0 20px 25px -5px rgba(0,0,0,.1)}
     *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
@@ -51,7 +50,7 @@
     document.getElementById('loginForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const pass = document.getElementById('password').value;
-      // ⚠️ Change this password in production! Use Firebase Auth for real security.
+      // ⚠️ Change this password in production!
       if (pass === "admin123") { window.location.href = "admin.html"; }
       else { showToast("Mot de passe incorrect"); }
     });
