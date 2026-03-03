@@ -79,7 +79,7 @@ async function loadProductsFromFirebase() {
           <p style="font-size:0.875rem; margin-top:8px;">Veuillez contacter l'administrateur.</p>
         </div>`;
     } else {
-      loadProducts(products);
+      loadProducts(products); // ✅ Passer les produits en paramètre
     }
   } catch (error) {
     console.error("❌ Erreur chargement produits:", error);
@@ -112,14 +112,12 @@ function loadProducts(productsToDisplay) {
   grid.innerHTML = '';
   
   productsToDisplay.forEach(product => {
-    // Créer la carte produit
     const card = document.createElement('div');
     card.className = 'product-card';
     card.style.cssText = 'background:#fff; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1); overflow:hidden; transition:transform 0.3s; cursor:pointer;';
     card.addEventListener('mouseenter', () => card.style.transform = 'translateY(-4px)');
     card.addEventListener('mouseleave', () => card.style.transform = 'translateY(0)');
     
-    // Clic sur la carte (sauf bouton Ajouter)
     card.addEventListener('click', (e) => {
       if (e.target.classList.contains('add-to-cart-btn')) return;
       openProductDetail(product.id);
@@ -145,10 +143,7 @@ function loadProducts(productsToDisplay) {
     info.className = 'product-info';
     info.style.cssText = 'padding:20px;';
     
-    // Description tronquée
     const shortDesc = truncateDescription(product.description || '', 50);
-    
-    // Quantité
     const quantity = product.quantity || 0;
     const quantityHTML = quantity > 0 
       ? `<span class="product-quantity" style="color:#10b981; font-size:0.75rem; font-weight:600;">${quantity} en stock</span>`
@@ -169,7 +164,6 @@ function loadProducts(productsToDisplay) {
       </div>
     `;
     
-    // Bouton Ajouter - Style disabled
     const btn = info.querySelector('.add-to-cart-btn');
     if (btn && quantity <= 0) {
       btn.style.cssText = 'padding:10px 18px; background:#9ca3af; color:#fff; border:none; border-radius:8px; cursor:not-allowed; font-weight:500;';
@@ -183,7 +177,6 @@ function loadProducts(productsToDisplay) {
     grid.appendChild(card);
   });
   
-  // Ajouter les écouteurs aux boutons "Ajouter"
   document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -215,28 +208,23 @@ function openProductDetail(productId) {
   
   currentProductId = productId;
   
-  // Image
   const detailImage = document.getElementById('detailImage');
   if (detailImage) {
     detailImage.src = (product.image && product.image.trim()) ? product.image : PLACEHOLDER_SVG;
     detailImage.style.cssText = 'width:100%; max-height:300px; object-fit:contain; margin-bottom:16px; border-radius:8px; background:#f3f4f6;';
   }
   
-  // Nom
   const detailName = document.getElementById('detailName');
   if (detailName) detailName.textContent = product.name;
   
-  // Catégorie
   const detailCategory = document.getElementById('detailCategory');
   if (detailCategory) detailCategory.textContent = product.category;
   
-  // Quantité
   const quantity = product.quantity || 0;
   const quantityText = quantity > 0
     ? `<span style="color:#10b981; font-weight:bold;">${quantity} en stock</span>`
     : `<span style="color:#ef4444; font-weight:bold;">Rupture de stock</span>`;
   
-  // Description
   const detailDescription = document.getElementById('detailDescription');
   if (detailDescription) {
     const description = product.description || 'Pas de description disponible.';
@@ -247,11 +235,9 @@ function openProductDetail(productId) {
     `;
   }
   
-  // Prix
   const detailPrice = document.getElementById('detailPrice');
   if (detailPrice) detailPrice.textContent = product.price.toFixed(2);
   
-  // Ouvrir modal
   const modal = document.getElementById('productDetailModal');
   if (modal) modal.classList.add('active');
   
@@ -403,14 +389,12 @@ function setupEventListeners() {
     });
   });
   
-  // Fermer modal au clic dehors
   window.addEventListener('click', (e) => {
     document.querySelectorAll('.modal').forEach(modal => {
       if (e.target === modal) modal.classList.remove('active');
     });
   });
   
-  // Fermer modal avec ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active'));
@@ -497,7 +481,6 @@ function updateShippingPrice() {
   priceEl.textContent = price + ' DA';
   if (info) info.classList.add('active');
   
-  // Update grand total
   const cartTotal = parseFloat(document.getElementById('totalPrice')?.textContent || '0');
   const grandTotalEl = document.getElementById('grandTotal');
   if (grandTotalEl) grandTotalEl.textContent = (cartTotal + price).toFixed(2) + ' DA';
@@ -573,25 +556,19 @@ async function submitOrderForm() {
     const orderRef = await addDoc(collection(db, "commandes"), commande);
     console.log("✅ Commande sauvegardée avec ID:", orderRef.id);
     
-    // Mettre à jour les quantités
     await updateProductsQuantities(cart);
-    
-    // Recharger les produits
     await loadProductsFromFirebase();
     
-    // Afficher confirmation
     closeOrderForm();
     const confirmModal = document.getElementById('confirmModal');
     const orderNumberEl = document.getElementById('orderNumber');
     if (confirmModal) confirmModal.classList.add('active');
     if (orderNumberEl) orderNumberEl.textContent = orderNumber;
     
-    // Vider le panier
     cart = [];
     saveCartToStorage();
     updateCartCount();
     
-    // Réinitialiser formulaire
     form.reset();
     if (document.getElementById('shippingPrice')) {
       document.getElementById('shippingPrice').textContent = '0 DA';
