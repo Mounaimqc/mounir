@@ -1,18 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin - Amar Informatique</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root{--primary:#2563eb;--primary-dark:#1e40af;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--bg:#f3f4f6;--surface:#fff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,.1);--radius:8px}
     *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
     body{background:var(--bg);color:var(--text);display:flex;min-height:100vh}
     
-    /* Sidebar */
     .sidebar{width:250px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;height:100%;z-index:100}
     .sidebar-header{padding:24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
     .logo{font-weight:700;font-size:1.25rem;color:var(--primary)}
@@ -21,13 +18,11 @@
     .nav-link{display:flex;align-items:center;gap:12px;padding:12px;border-radius:var(--radius);color:var(--text-light);text-decoration:none;transition:.2s}
     .nav-link:hover,.nav-link.active{background:#eff6ff;color:var(--primary);font-weight:500}
     
-    /* Main */
     .main-content{flex:1;margin-left:250px;padding:32px;overflow-y:auto}
     .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
     .page-title h1{font-size:1.5rem;font-weight:700}
     .page-title p{color:var(--text-light);font-size:.875rem;margin-top:4px}
     
-    /* Stats */
     .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;margin-bottom:32px}
     .stat-card{background:var(--surface);padding:24px;border-radius:var(--radius);box-shadow:var(--shadow);display:flex;justify-content:space-between;align-items:start}
     .stat-info h3{font-size:.875rem;color:var(--text-light);font-weight:500}
@@ -38,26 +33,17 @@
     .icon-orange{background:#fffbeb;color:var(--warning)}
     .icon-red{background:#fef2f2;color:var(--danger)}
     
-    /* Charts */
-    .charts-container{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:32px}
-    .chart-card{background:var(--surface);padding:24px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    .chart-header{display:flex;justify-content:space-between;margin-bottom:16px}
-    .chart-title{font-weight:600;font-size:1.1rem}
-    
-    /* Actions */
     .actions-bar{background:var(--surface);padding:16px;border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
     .filters{display:flex;gap:12px;flex:1}
     .input-group{position:relative;flex:1;max-width:300px}
     .input-group i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-light)}
     .input-group input,.input-group select{width:100%;padding:10px 10px 10px 36px;border:1px solid var(--border);border-radius:var(--radius);outline:none}
-    .input-group input:focus,.input-group select:focus{border-color:var(--primary)}
     .btn{padding:10px 20px;border-radius:var(--radius);border:none;cursor:pointer;font-weight:500;display:inline-flex;align-items:center;gap:8px;transition:.2s}
     .btn-primary{background:var(--primary);color:#fff}
     .btn-primary:hover{background:var(--primary-dark)}
     .btn-outline{background:#fff;border:1px solid var(--border);color:var(--text)}
     .btn-outline:hover{background:#f9fafb}
     
-    /* Table */
     .table-container{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
     table{width:100%;border-collapse:collapse}
     th{background:#f9fafb;padding:16px;text-align:left;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--text-light);font-weight:600}
@@ -74,8 +60,7 @@
     .icon-btn:hover{background:#f3f4f6;color:var(--primary)}
     .icon-btn.delete:hover{color:var(--danger);background:#fef2f2}
     
-    /* Modal */
-    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(2px)}
+    .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000}
     .modal-overlay.active{display:flex}
     .modal{background:var(--surface);width:100%;max-width:600px;border-radius:var(--radius);box-shadow:0 20px 25px -5px rgba(0,0,0,.1);max-height:90vh;overflow-y:auto}
     .modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
@@ -83,7 +68,6 @@
     .modal-footer{padding:20px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:12px}
     .close-modal{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-light)}
     
-    /* Form */
     .form-group{margin-bottom:16px}
     .form-label{display:block;margin-bottom:8px;font-size:.875rem;font-weight:500}
     .form-control{width:100%;padding:10px;border:1px solid var(--border);border-radius:var(--radius)}
@@ -92,9 +76,7 @@
     .detail-label{color:var(--text-light);font-size:.875rem}
     .detail-value{font-weight:500;text-align:right}
     
-    /* Toast */
-    .toast-container{position:fixed;top:20px;right:20px;z-index:9999}
-    .toast{background:var(--text);color:#fff;padding:12px 24px;border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;animation:slideIn .3s ease}
+    .toast{position:fixed;top:20px;right:20px;background:var(--text);color:#fff;padding:12px 24px;border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;animation:slideIn .3s ease;z-index:9999}
     .toast.success{background:var(--success)}
     .toast.error{background:var(--danger)}
     @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
@@ -103,20 +85,12 @@
       .sidebar{transform:translateX(-100%)}
       .sidebar.active{transform:translateX(0)}
       .main-content{margin-left:0}
-      .charts-container{grid-template-columns:1fr}
       .filters{flex-direction:column}
       .input-group{max-width:100%}
-    }
-    @media print{
-      .sidebar,.top-bar,.actions-bar,.btn,.no-print{display:none!important}
-      .main-content{margin:0;padding:0}
-      .modal-overlay{position:static;background:#fff;display:block!important}
-      .modal{box-shadow:none;max-width:100%}
     }
   </style>
 </head>
 <body>
-  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-header">
       <i class="fa-solid fa-layer-group" style="color:var(--primary);font-size:1.5rem"></i>
@@ -129,17 +103,15 @@
     </ul>
   </aside>
 
-  <!-- Main -->
   <main class="main-content">
     <div class="top-bar">
-      <div class="page-title"><h1>Dashboard Commandes</h1><p>Gérez vos commandes en temps réel</p></div>
+      <div class="page-title"><h1>📊 Dashboard Commandes</h1><p>Gérez vos commandes en temps réel</p></div>
       <div style="display:flex;align-items:center;gap:12px">
         <div style="width:40px;height:40px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600">A</div>
         <div><div style="font-weight:600;font-size:.875rem">Admin</div><div style="font-size:.75rem;color:var(--text-light)">Super Utilisateur</div></div>
       </div>
     </div>
 
-    <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-info"><h3>Commandes</h3><p id="totalCommandes">0</p></div><div class="stat-icon icon-blue"><i class="fa-solid fa-shopping-cart"></i></div></div>
       <div class="stat-card"><div class="stat-info"><h3>Revenu</h3><p id="totalRevenu">0 DA</p></div><div class="stat-icon icon-green"><i class="fa-solid fa-wallet"></i></div></div>
@@ -147,19 +119,6 @@
       <div class="stat-card"><div class="stat-info"><h3>Stop Desk</h3><p id="totalStopdesk">0</p></div><div class="stat-icon icon-red"><i class="fa-solid fa-store"></i></div></div>
     </div>
 
-    <!-- Charts -->
-    <div class="charts-container">
-      <div class="chart-card">
-        <div class="chart-header"><span class="chart-title">Évolution des Revenus</span></div>
-        <canvas id="revenueChart"></canvas>
-      </div>
-      <div class="chart-card">
-        <div class="chart-header"><span class="chart-title">Statut des Commandes</span></div>
-        <canvas id="statusChart"></canvas>
-      </div>
-    </div>
-
-    <!-- Filters -->
     <div class="actions-bar">
       <div class="filters">
         <div class="input-group"><i class="fa-solid fa-search"></i><input type="text" id="searchInput" placeholder="Rechercher..."></div>
@@ -173,7 +132,6 @@
       </div>
     </div>
 
-    <!-- Table -->
     <div class="table-container">
       <table>
         <thead>
@@ -197,12 +155,15 @@
         </div>
         <h4 style="margin-bottom:12px;font-size:1rem">Informations Client</h4>
         <div class="detail-row"><span class="detail-label">Nom</span><span class="detail-value" id="detailName"></span></div>
-        <div class="detail-row"><span class="detail-label">Téléphone 1</span><span class="detail-value"><span id="detailPhone1"></span><i class="fa-regular fa-copy icon-btn" onclick="copyText('detailPhone1')" title="Copier"></i></span></div>
+        <div class="detail-row"><span class="detail-label">Téléphone 1</span><span class="detail-value"><span id="detailPhone1"></span></span></div>
         <div class="detail-row"><span class="detail-label">Téléphone 2</span><span class="detail-value" id="detailPhone2"></span></div>
-        <div class="detail-row"><span class="detail-label">Adresse</span><span class="detail-value" id="detailAddress"></span></div>
+        <div class="detail-row"><span class="detail-label">Wilaya</span><span class="detail-value" id="detailWilaya"></span></div>
+        <div class="detail-row"><span class="detail-label">Commune</span><span class="detail-value" id="detailCommune"></span></div>
         <h4 style="margin:20px 0 12px;font-size:1rem">Produits</h4>
         <div id="detailItems" style="margin-bottom:20px"></div>
-        <div class="detail-row" style="border-top:2px solid var(--border);padding-top:10px"><span class="detail-label" style="font-weight:700">Total</span><span class="detail-value" style="color:var(--primary);font-size:1.2rem" id="detailTotal"></span></div>
+        <div class="detail-row" style="border-top:2px solid var(--border);padding-top:10px"><span class="detail-label" style="font-weight:700">Sous-total</span><span class="detail-value"><span id="detailCartTotal"></span> DA</span></div>
+        <div class="detail-row"><span class="detail-label">Livraison</span><span class="detail-value"><span id="detailShipping"></span> DA</span></div>
+        <div class="detail-row"><span class="detail-label" style="font-weight:700">Total</span><span class="detail-value" style="color:var(--primary);font-size:1.2rem"><span id="detailTotal"></span> DA</span></div>
       </div>
       <div class="modal-footer">
         <select id="statusSelect" style="padding:8px;border:1px solid var(--border);border-radius:var(--radius);margin-right:10px">
@@ -212,7 +173,6 @@
           <option value="arrived">📦 Arrivée</option>
           <option value="returned">↩️ Retournée</option>
         </select>
-        <button class="btn btn-outline" onclick="printInvoice()"><i class="fa-solid fa-print"></i> Imprimer</button>
         <button class="btn btn-primary" onclick="confirmStatusUpdate()">Mettre à Jour</button>
       </div>
     </div>
@@ -221,24 +181,23 @@
   <!-- Add Product Modal -->
   <div class="modal-overlay" id="addProductModal">
     <div class="modal">
-      <div class="modal-header"><h3>Ajouter un Produit</h3><button class="close-modal" onclick="closeAddProductModal()">&times;</button></div>
+      <div class="modal-header"><h3>➕ Ajouter un Produit</h3><button class="close-modal" onclick="closeAddProductModal()">&times;</button></div>
       <div class="modal-body">
         <form id="addProductForm">
-          <div class="form-group"><label class="form-label">Nom *</label><input type="text" id="productName" class="form-control" required></div>
-          <div class="form-group"><label class="form-label">URL Image *</label><input type="url" id="productImage" class="form-control" placeholder="https://..." required></div>
-          <div class="form-group"><label class="form-label">Catégorie *</label><select id="productCategory" class="form-control" required><option value="Laptop">Laptop</option><option value="Imprimants">Imprimants</option><option value="Accessoires">Accessoires</option><option value="Autre">Autre</option></select></div>
+          <div class="form-group"><label class="form-label">Nom du produit *</label><input type="text" id="productName" class="form-control" required></div>
+          <div class="form-group"><label class="form-label">URL de l'image *</label><input type="url" id="productImage" class="form-control" placeholder="https://..." required></div>
+          <div class="form-group"><label class="form-label">Catégorie *</label><select id="productCategory" class="form-control" required><option value="">Sélectionner...</option><option value="Laptop">Laptop</option><option value="Imprimants">Imprimants</option><option value="Accessoires">Accessoires</option><option value="Autre">Autre</option></select></div>
           <div class="form-group"><label class="form-label">Description</label><textarea id="productDescription" class="form-control" rows="3"></textarea></div>
           <div class="form-group"><label class="form-label">Prix (DA) *</label><input type="number" id="productPrice" class="form-control" required min="0"></div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeAddProductModal()">Annuler</button>
-        <button class="btn btn-primary" onclick="document.getElementById('addProductForm').requestSubmit()">Enregistrer</button>
+        <button class="btn btn-primary" type="submit" form="addProductForm">✅ Enregistrer</button>
       </div>
     </div>
   </div>
 
-  <div class="toast-container" id="toastContainer"></div>
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="admin.js"></script>
 </body>
