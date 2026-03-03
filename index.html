@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amar Informatique - Vente en Ligne</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root{--primary:#2563eb;--primary-dark:#1e40af;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--bg:#f9fafb;--surface:#fff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--shadow:0 4px 6px -1px rgba(0,0,0,.1);--radius:12px}
     *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
@@ -17,7 +16,7 @@
     .header-container{max-width:1400px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
     .logo{font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:10px}
     .header-actions{display:flex;align-items:center;gap:16px}
-    .header-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:var(--radius);background:#eff6ff;color:var(--primary);font-weight:500;transition:.2s}
+    .header-btn{display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:var(--radius);background:#eff6ff;color:var(--primary);font-weight:500;transition:.2s;cursor:pointer}
     .header-btn:hover{background:var(--primary);color:#fff}
     .cart-btn{position:relative}
     .cart-count{position:absolute;top:-8px;right:-8px;background:var(--danger);color:#fff;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:600}
@@ -34,17 +33,20 @@
     
     /* Products Grid */
     .products-grid{max-width:1400px;margin:0 auto;padding:24px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:24px}
-    .product-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:.3s}
+    .product-card{background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:.3s;cursor:pointer}
     .product-card:hover{transform:translateY(-4px);box-shadow:0 10px 25px -5px rgba(0,0,0,.15)}
     .product-image{width:100%;height:200px;object-fit:cover;background:#f3f4f6}
     .product-info{padding:20px}
     .product-category{font-size:.75rem;color:var(--primary);text-transform:uppercase;font-weight:600;margin-bottom:8px}
     .product-name{font-size:1.1rem;font-weight:600;margin-bottom:8px}
     .product-description{font-size:.875rem;color:var(--text-light);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .product-quantity{font-size:.75rem;margin:4px 0}
+    .product-quantity.out-of-stock{color:var(--danger)}
     .product-footer{display:flex;justify-content:space-between;align-items:center}
     .product-price{font-size:1.2rem;font-weight:700;color:var(--primary)}
-    .add-to-cart{padding:10px 18px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-weight:500;transition:.2s;display:flex;align-items:center;gap:6px}
-    .add-to-cart:hover{background:var(--primary-dark)}
+    .add-to-cart-btn{padding:10px 18px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);cursor:pointer;font-weight:500;transition:.2s}
+    .add-to-cart-btn:hover{background:var(--primary-dark)}
+    .add-to-cart-btn:disabled{background:#9ca3af;cursor:not-allowed}
     
     /* Modal */
     .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
@@ -64,7 +66,8 @@
     .cart-item-name{font-weight:500;margin-bottom:4px}
     .cart-item-price{color:var(--text-light);font-size:.875rem}
     .cart-item-quantity{display:flex;align-items:center;gap:8px;margin-top:8px}
-    .qty-btn{width:28px;height:28px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}
+    .quantity-btn{width:28px;height:28px;border:1px solid var(--border);background:#fff;border-radius:6px;cursor:pointer}
+    .remove-btn{background:var(--danger);color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:.75rem}
     .cart-total{font-size:1.25rem;font-weight:700}
     
     /* Form */
@@ -78,13 +81,8 @@
     .form-control{width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius);font-size:1rem}
     .form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    
-    /* Toast */
-    .toast-container{position:fixed;top:20px;right:20px;z-index:9999}
-    .toast{background:var(--text);color:#fff;padding:14px 24px;border-radius:var(--radius);margin-bottom:10px;box-shadow:var(--shadow);display:flex;align-items:center;gap:10px;animation:slideIn .3s ease}
-    .toast.success{background:var(--success)}
-    .toast.error{background:var(--danger)}
-    @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+    .shipping-info{background:#f0f9ff;padding:16px;border-radius:var(--radius);display:none}
+    .shipping-info.active{display:block}
     
     /* Footer */
     .footer{background:var(--surface);border-top:1px solid var(--border);padding:40px 24px;margin-top:60px}
@@ -94,10 +92,8 @@
     .footer-section a:hover{color:var(--primary)}
     .footer-bottom{max-width:1400px;margin:40px auto 0;padding-top:24px;border-top:1px solid var(--border);text-align:center;color:var(--text-light);font-size:.875rem}
     
-    /* Loading */
-    .loading{text-align:center;padding:60px 20px;color:var(--text-light)}
-    .loading i{font-size:2rem;animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
+    /* Detail Modal Image */
+    #detailImage{width:100%;max-height:300px;object-fit:contain;margin-bottom:16px;border-radius:8px;background:#f3f4f6}
     
     @media(max-width:768px){
       .header-container{flex-wrap:wrap;gap:16px}
@@ -114,7 +110,7 @@
       <a href="index.html" class="logo"><i class="fa-solid fa-laptop"></i> Amar Informatique</a>
       <div class="header-actions">
         <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck"></i> Suivi</a>
-        <button class="header-btn cart-btn" onclick="openCart()">
+        <button class="header-btn cart-btn" id="cartBtn">
           <i class="fa-solid fa-cart-shopping"></i> Panier
           <span class="cart-count" id="cartCount">0</span>
         </button>
@@ -130,17 +126,24 @@
   </section>
 
   <!-- Filters -->
-  <div class="filters" id="categoryFilters">
-    <button class="filter-btn active" data-category="all">Tous</button>
-    <button class="filter-btn" data-category="Laptop">Laptops</button>
-    <button class="filter-btn" data-category="Imprimants">Imprimants</button>
-    <button class="filter-btn" data-category="Accessoires">Accessoires</button>
-    <button class="filter-btn" data-category="Autre">Autre</button>
+  <div class="filters">
+    <button class="filter-btn active" id="categoryFilter" data-category="all">Tous</button>
+    <button class="filter-btn" data-category="Protéines whey">Protéines whey</button>
+    <button class="filter-btn" data-category="Masse / Gainer">Masse / Gainer</button>
+    <button class="filter-btn" data-category="Acide aminé">Acide aminé</button>
+  </div>
+
+  <!-- Search -->
+  <div style="max-width:1400px;margin:0 auto;padding:0 24px">
+    <input type="text" id="searchInput" class="form-control" placeholder="🔍 Rechercher un produit..." style="margin-bottom:24px">
   </div>
 
   <!-- Products -->
   <div class="products-grid" id="productsGrid">
-    <div class="loading"><i class="fa-solid fa-circle-notch"></i><p>Chargement des produits...</p></div>
+    <div style="text-align:center;padding:60px;color:var(--text-light);grid-column:1/-1">
+      <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem"></i>
+      <p style="margin-top:16px">Chargement des produits...</p>
+    </div>
   </div>
 
   <!-- Cart Modal -->
@@ -148,7 +151,7 @@
     <div class="modal">
       <div class="modal-header">
         <h3 class="modal-title">🛒 Votre Panier</h3>
-        <button class="close-modal" onclick="closeCart()">&times;</button>
+        <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
         <div class="cart-items" id="cartItems">
@@ -156,27 +159,48 @@
         </div>
       </div>
       <div class="modal-footer">
-        <div class="cart-total">Total: <span id="cartTotal">0.00</span> DA</div>
-        <button class="btn btn-primary" onclick="openCheckout()" id="checkoutBtn">Commander <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="cart-total">Total: <span id="totalPrice">0.00</span> DA</div>
+        <button class="btn btn-primary" id="checkoutBtn" disabled>Passer la Commande <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">📦 Détails du Produit</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="detailImage" src="" alt="Produit">
+        <h2 id="detailName" style="margin-bottom:8px"></h2>
+        <p class="product-category" id="detailCategory"></p>
+        <div id="detailDescription" style="margin:16px 0;color:var(--text-light)"></div>
+        <p style="font-size:1.5rem;font-weight:700;color:var(--primary)"><span id="detailPrice">0</span> DA</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline close-modal">Annuler</button>
+        <button class="btn btn-primary" id="modalAddToCartBtn">Ajouter au panier</button>
       </div>
     </div>
   </div>
 
   <!-- Checkout Modal -->
-  <div class="modal-overlay" id="checkoutModal">
+  <div class="modal-overlay" id="orderFormModal">
     <div class="modal">
       <div class="modal-header">
         <h3 class="modal-title">📦 Formulaire de Commande</h3>
-        <button class="close-modal" onclick="closeCheckout()">&times;</button>
+        <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
-        <form id="checkoutForm">
+        <form id="orderForm">
           <div class="form-group">
             <label class="form-label">Type de Commande *</label>
-            <select class="form-control" id="orderType" required onchange="updateShipping()">
-              <option value="">Sélectionner</option>
+            <select class="form-control" id="orderType" required>
+              <option value="">Sélectionner un type</option>
               <option value="domicile">🏠 Livraison à domicile</option>
-              <option value="stopdesk">🏪 Stop Desk (Retrait magasin)</option>
+              <option value="stopdesk">🏪 Stop Desk (Retrait au magasin)</option>
             </select>
           </div>
           <div class="form-row">
@@ -202,7 +226,7 @@
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Wilaya *</label>
-              <select class="form-control" id="wilaya" required onchange="updateCommunes()">
+              <select class="form-control" id="wilaya" required>
                 <option value="">Sélectionner une wilaya</option>
               </select>
             </div>
@@ -213,7 +237,7 @@
               </select>
             </div>
           </div>
-          <div class="form-group" id="shippingInfo" style="background:#f0f9ff;padding:16px;border-radius:var(--radius);display:none">
+          <div class="shipping-info" id="shippingInfo">
             <div style="display:flex;justify-content:space-between;margin-bottom:8px">
               <span>Frais de livraison:</span>
               <span id="shippingPrice" style="font-weight:600">0 DA</span>
@@ -226,14 +250,14 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-outline" onclick="closeCheckout()">Annuler</button>
-        <button class="btn btn-primary" onclick="submitOrder()">Confirmer <i class="fa-solid fa-check"></i></button>
+        <button class="btn btn-outline close-modal">Annuler</button>
+        <button class="btn btn-primary" type="submit" form="orderForm">Confirmer la Commande <i class="fa-solid fa-check"></i></button>
       </div>
     </div>
   </div>
 
   <!-- Success Modal -->
-  <div class="modal-overlay" id="successModal">
+  <div class="modal-overlay" id="confirmModal">
     <div class="modal" style="text-align:center">
       <div class="modal-body">
         <div style="width:80px;height:80px;background:#ecfdf5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px">
@@ -243,10 +267,10 @@
         <p style="color:var(--text-light);margin-bottom:24px">Votre commande a été enregistrée avec succès.</p>
         <div style="background:#f0f9ff;padding:20px;border-radius:var(--radius);margin-bottom:24px">
           <p style="font-size:.875rem;color:var(--text-light);margin-bottom:8px">Numéro de commande:</p>
-          <p style="font-size:1.5rem;font-weight:700;color:var(--primary)" id="orderNumberDisplay"></p>
+          <p style="font-size:1.5rem;font-weight:700;color:var(--primary)" id="orderNumber"></p>
         </div>
         <p style="font-size:.875rem;color:var(--text-light);margin-bottom:24px"><i class="fa-solid fa-camera"></i> Prenez une photo de ce numéro!</p>
-        <button class="btn btn-primary" onclick="continueShopping()" style="width:100%">Continuer vos achats</button>
+        <button class="btn btn-primary" id="continueBtn" style="width:100%">Continuer vos achats</button>
       </div>
     </div>
   </div>
@@ -275,10 +299,7 @@
     <div class="footer-bottom"><p>© 2026 Amar Informatique - Tous droits réservés</p></div>
   </footer>
 
-  <div class="toast-container" id="toastContainer"></div>
   <script type="module" src="firebase-config.js"></script>
-  <script type="module" src="index.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
-
-
