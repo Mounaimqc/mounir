@@ -1,36 +1,192 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion Admin - Amar Informatique</title>
+  <title>Connexion Admin - Wahbi Zoghbi</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    :root{--primary:#2563eb;--primary-dark:#1e40af;--bg:linear-gradient(135deg,#667eea,#764ba2);--surface:#fff;--text:#1f2937;--text-light:#6b7280;--border:#e5e7eb;--radius:12px;--shadow:0 20px 25px -5px rgba(0,0,0,.1)}
-    *{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
-    body{background:var(--bg);display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-    .login-card{background:var(--surface);padding:48px;border-radius:var(--radius);box-shadow:var(--shadow);width:100%;max-width:420px;text-align:center}
-    .logo{color:var(--primary);font-size:1.75rem;font-weight:700;margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:12px}
-    .subtitle{color:var(--text-light);margin-bottom:32px;font-size:.9rem}
-    .input-group{margin-bottom:24px;text-align:left}
-    label{display:block;margin-bottom:8px;font-size:.875rem;font-weight:500;color:var(--text)}
-    .input-wrapper{position:relative}
-    .input-wrapper i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--text-light)}
-    input{width:100%;padding:14px 16px 14px 44px;border:1px solid var(--border);border-radius:var(--radius);font-size:1rem;transition:.2s}
-    input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-    .btn{width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:var(--radius);font-size:1rem;font-weight:600;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px}
-    .btn:hover{background:var(--primary-dark);transform:translateY(-2px)}
-    .back-link{display:block;margin-top:24px;color:var(--text-light);font-size:.875rem;text-decoration:none}
-    .back-link:hover{color:var(--primary)}
-    .footer{margin-top:32px;padding-top:24px;border-top:1px solid var(--border);font-size:.8rem;color:var(--text-light)}
-    .toast{position:fixed;top:20px;right:20px;background:#ef4444;color:#fff;padding:14px 24px;border-radius:var(--radius);box-shadow:var(--shadow);display:none;align-items:center;gap:10px;z-index:9999;animation:slideIn .3s ease}
-    .toast.show{display:flex}
-    @keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+    :root {
+      --primary: #ffcc00;
+      --primary-dark: #D4AF37;
+      --bg: #050505;
+      --surface: #111111;
+      --text: #fff;
+      --text-light: #888;
+      --border: #333;
+      --radius: 12px;
+      --shadow: 0 20px 25px -5px rgba(0, 0, 0, .5)
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif
+    }
+
+    body {
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 48px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+      text-align: center
+    }
+
+    .logo {
+      color: var(--text);
+      font-size: 1.75rem;
+      font-weight: 900;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px
+    }
+
+    .logo span {
+      color: var(--primary)
+    }
+
+    .subtitle {
+      color: var(--text-light);
+      margin-bottom: 32px;
+      font-size: .9rem
+    }
+
+    .input-group {
+      margin-bottom: 24px;
+      text-align: left
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text)
+    }
+
+    .input-wrapper {
+      position: relative
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light)
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      border: 1px solid var(--border);
+      background: #000;
+      color: #fff;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: .2s
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary)
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: #000;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px)
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 24px;
+      color: var(--text-light);
+      font-size: .875rem;
+      text-decoration: none
+    }
+
+    .back-link:hover {
+      color: var(--primary)
+    }
+
+    .footer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: .8rem;
+      color: var(--text-light)
+    }
+
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #ef4444;
+      color: #fff;
+      padding: 14px 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      display: none;
+      align-items: center;
+      gap: 10px;
+      z-index: 9999;
+      animation: slideIn .3s ease
+    }
+
+    .toast.show {
+      display: flex
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="login-card">
-    <div class="logo"><i class="fa-solid fa-lock"></i> Amar Informatique</div>
+    <div class="logo">WAHBI <span>ZOGHBI</span></div>
     <p class="subtitle">Accès réservé aux administrateurs</p>
     <form id="loginForm">
       <div class="input-group">
@@ -43,7 +199,9 @@
       <button type="submit" class="btn"><i class="fa-solid fa-right-to-bracket"></i> Accéder au Dashboard</button>
     </form>
     <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour au site</a>
-    <div class="footer"><p>© 2026 Amar Informatique - Tous droits réservés</p></div>
+    <div class="footer">
+      <p>© 2026 Wahbi Zoghbi - Tous droits réservés</p>
+    </div>
   </div>
   <div class="toast" id="toast"><i class="fa-solid fa-circle-exclamation"></i><span id="toastMsg"></span></div>
   <script>
@@ -62,4 +220,5 @@
     }
   </script>
 </body>
+
 </html>
