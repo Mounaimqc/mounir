@@ -4,45 +4,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion Admin - Amar Informatique</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #2563EB;
-            --background: #F3F4F6;
+            --primary-dark: #1E40AF;
+            --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --surface: #FFFFFF;
             --text-main: #1F2937;
+            --text-light: #6B7280;
+            --border: #E5E7EB;
+            --radius: 12px;
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body {
-            font-family: 'Inter', sans-serif;
             background: var(--background);
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .login-card {
+        .login-container {
             background: var(--surface);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 48px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
         }
         .logo {
             color: var(--primary);
-            font-size: 1.5rem;
+            font-size: 1.75rem;
             font-weight: 700;
             margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
         }
         .subtitle {
-            color: #6B7280;
+            color: var(--text-light);
             margin-bottom: 32px;
             font-size: 0.9rem;
         }
         .input-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             text-align: left;
         }
         label {
@@ -52,13 +62,23 @@
             font-weight: 500;
             color: var(--text-main);
         }
+        .input-wrapper {
+            position: relative;
+        }
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
         input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
+            padding: 14px 16px 14px 44px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             font-size: 1rem;
-            box-sizing: border-box;
+            transition: all 0.2s;
         }
         input:focus {
             outline: none;
@@ -67,56 +87,120 @@
         }
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             background: var(--primary);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius);
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
         .btn:hover {
-            background: #1E40AF;
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        .back-link {
+            display: block;
+            margin-top: 24px;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: var(--primary);
         }
         .footer {
-            margin-top: 24px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
             font-size: 0.8rem;
-            color: #9CA3AF;
+            color: var(--text-light);
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #EF4444;
+            color: white;
+            padding: 14px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+        }
+        .toast.show {
+            display: flex;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <div class="logo">🔐 Amar Informatique</div>
-        <div class="subtitle">Accès réservé aux administrateurs</div>
+    <div class="login-container">
+        <div class="logo">
+            <i class="fa-solid fa-lock"></i>
+            Amar Informatique
+        </div>
+        <p class="subtitle">Accès réservé aux administrateurs</p>
         
         <form id="loginForm">
             <div class="input-group">
                 <label>Mot de passe</label>
-                <input type="password" id="password" placeholder="••••••••" required>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-key"></i>
+                    <input type="password" id="password" placeholder="Entrez votre mot de passe" required>
+                </div>
             </div>
-            <button type="submit" class="btn">Accéder au Dashboard</button>
+            <button type="submit" class="btn">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Accéder au Dashboard
+            </button>
         </form>
 
+        <a href="index.html" class="back-link">
+            <i class="fa-solid fa-arrow-left"></i> Retour au site
+        </a>
+
         <div class="footer">
-            &copy; 2026 Amar Informatique
+            <p>© 2026 Amar Informatique - Tous droits réservés</p>
         </div>
     </div>
 
+    <div class="toast" id="toast">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="toastMessage"></span>
+    </div>
+
     <script>
-        // Simple Client-Side Auth (Note: Insecure for production, use Firebase Auth for real security)
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
             const pass = document.getElementById('password').value;
-            // Change this password securely
-            if(pass === "admin123") { 
+            
+            // Change this password securely in production
+            if(pass === "admin123") {
                 window.location.href = "admin.html";
             } else {
-                alert("Mot de passe incorrect");
+                showToast("Mot de passe incorrect");
             }
         });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMessage').textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
     </script>
 </body>
 </html>
