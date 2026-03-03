@@ -38,7 +38,6 @@ async function loadProductsFromFirebase() {
     return;
   }
   
-  // Afficher le chargement
   grid.innerHTML = `
     <div style="text-align:center; padding:60px; color:#6b7280; grid-column:1/-1;">
       <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;"></i>
@@ -48,6 +47,7 @@ async function loadProductsFromFirebase() {
   try {
     console.log("📦 Chargement des produits depuis Firebase...");
     
+    // ✅ CORRECT : Pas d'espaces dans le nom de collection
     const productsRef = collection(db, "produits");
     const productsQuery = query(productsRef, orderBy("dateAdded", "desc"));
     const querySnapshot = await getDocs(productsQuery);
@@ -76,10 +76,10 @@ async function loadProductsFromFirebase() {
         <div style="text-align:center; padding:60px; color:#e74c3c; grid-column:1/-1;">
           <i class="fa-solid fa-box-open" style="font-size:3rem; margin-bottom:16px;"></i>
           <p>Aucun produit disponible pour le moment.</p>
-          <p style="font-size:0.875rem; margin-top:8px;">Veuillez contacter l'administrateur.</p>
+          <p style="font-size:0.875rem; margin-top:8px;">Veuillez contacter l'administrateur ou ajouter des produits via le panel admin.</p>
         </div>`;
     } else {
-      loadProducts(products); // ✅ Passer les produits en paramètre
+      loadProducts(products);
     }
   } catch (error) {
     console.error("❌ Erreur chargement produits:", error);
@@ -91,7 +91,6 @@ async function loadProductsFromFirebase() {
       </div>`;
   }
 }
-
 // ========== AFFICHAGE DES PRODUITS ==========
 function loadProducts(productsToDisplay) {
   const grid = document.getElementById('productsGrid');
@@ -699,3 +698,4 @@ window.updateQuantity = updateQuantity;
 window.removeFromCart = removeFromCart;
 window.openProductDetail = openProductDetail;
 window.displayCart = displayCart;
+
