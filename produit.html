@@ -732,15 +732,7 @@
             <div class="product-image-container">
               <img id="main-product-image" src="${pImage}" alt="${pName}" onerror="this.src='https://via.placeholder.com/600x600?text=Produit'">
             </div>
-            <div class="product-details">
-              <div class="category">${pCategory}</div>
-              <h1>${pName}</h1>
-              <div class="price">${pPrice.toFixed(2)} DA</div>
-              ${stockHTML}
-              <div class="description">${pDesc}</div>
-
-              ${(product.flavors && product.flavors.length > 0) ? `
-              <div class="flavors-selection" style="margin: 20px 0;">
+            <div class="flavors-selection" style="margin: 20px 0;">
                 <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--gb-white);">Goûts disponibles :</h3>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                   ${product.flavors.map((f, i) => `
@@ -752,6 +744,15 @@
                   `).join('')}
                 </div>
               </div>` : ''}
+            <div class="product-details">
+              <div class="category">${pCategory}</div>
+              <h1>${pName}</h1>
+              <div class="price">${pPrice.toFixed(2)} DA</div>
+              ${stockHTML}
+              <div class="description">${pDesc}</div>
+
+              ${(product.flavors && product.flavors.length > 0) ? `
+              
 
               <div style="margin-top: 40px;">
                 ${cartBtnHTML}
@@ -819,3 +820,4 @@
 
 
 </html>
+
