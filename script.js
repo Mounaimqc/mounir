@@ -113,9 +113,7 @@ function loadProducts(productsToDisplay) {
   productsToDisplay.forEach(product => {
     const card = document.createElement('div');
     card.className = 'product-card';
-    card.style.cssText = 'background:var(--gb-dark-grey); border:1px solid rgba(212,175,55,0.1); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; transition:var(--transition); cursor:pointer; color:var(--gb-white);';
-    card.addEventListener('mouseenter', () => { card.style.transform = 'translateY(-5px)'; card.style.borderColor = 'var(--gb-gold)'; card.style.boxShadow = '0 12px 40px rgba(0,0,0,0.8)'; });
-    card.addEventListener('mouseleave', () => { card.style.transform = 'translateY(0)'; card.style.borderColor = 'rgba(212,175,55,0.1)'; card.style.boxShadow = 'var(--shadow)'; });
+    // REMOVED: Inline styles that override CSS classes
 
     card.addEventListener('click', (e) => {
       if (e.target.classList.contains('add-to-cart-btn')) return;
@@ -127,7 +125,7 @@ function loadProducts(productsToDisplay) {
     img.src = (product.image && product.image.trim()) ? product.image : 'https://via.placeholder.com/300x200?text=Produit';
     img.alt = product.name;
     img.className = 'product-image';
-    img.style.cssText = 'width:100%; height:250px; object-fit:contain; display:block; background:#fff; padding:20px;';
+    // REMOVED: Inline height/background to allow CSS control
     img.onerror = function () {
       this.src = PLACEHOLDER_SVG;
       this.style.objectFit = 'contain';
@@ -140,36 +138,29 @@ function loadProducts(productsToDisplay) {
     // Informations
     const info = document.createElement('div');
     info.className = 'product-info';
-    info.style.cssText = 'padding:20px;';
+    // REMOVED: Inline padding to allow CSS control
 
     const shortDesc = truncateDescription(product.description || '', 50);
     const quantity = product.quantity || 0;
     const quantityHTML = quantity > 0
-      ? `<span class="product-quantity" style="color:#10b981; font-size:0.75rem; font-weight:600;">${quantity} en stock</span>`
-      : `<span class="product-quantity out-of-stock" style="color:#f59e0b; font-size:0.75rem; font-weight:600;">Rupture de stock</span>`;
+      ? `<span class="product-quantity">${quantity} en stock</span>`
+      : `<span class="product-quantity out-of-stock">Rupture de stock</span>`;
 
     info.innerHTML = `
       <h3 class="product-name" style="font-size:1.1rem; font-family:'Montserrat', sans-serif; font-weight:700; margin-bottom:8px; color:var(--gb-white); text-transform:uppercase;">${product.name}</h3>
       <p class="product-category" style="font-size:0.75rem; color:var(--gb-gold); text-transform:uppercase; font-weight:700; margin-bottom:8px; letter-spacing:1px;">${product.category}</p>
       <p class="product-description" style="font-size:0.875rem; color:var(--gb-light-grey); margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${shortDesc}</p>
       ${quantityHTML}
-      <div class="product-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:16px;">
-        <span class="product-price" style="font-size:1.2rem; font-family:'Montserrat', sans-serif; font-weight:900; color:var(--gb-white);">${product.price.toFixed(2)} DA</span>
+      <div class="product-footer">
+        <span class="product-price">${product.price.toFixed(2)} DA</span>
         <button class="add-to-cart-btn" data-product-id="${product.id}" 
-          style="padding:10px 18px; background:var(--gb-gold); color:var(--gb-black); border:none; border-radius:var(--radius); cursor:pointer; font-weight:700; text-transform:uppercase; transition:var(--transition);"
           ${quantity <= 0 ? 'disabled' : ''}>
           ${quantity > 0 ? `<i class="fa-solid fa-cart-plus"></i> Ajouter` : 'Indisponible'}
         </button>
       </div>
     `;
 
-    const btn = info.querySelector('.add-to-cart-btn');
-    if (btn && quantity <= 0) {
-      btn.style.cssText = 'padding:10px 18px; background:var(--gb-grey); color:var(--gb-light-grey); border:none; border-radius:var(--radius); cursor:not-allowed; font-weight:700; text-transform:uppercase;';
-    } else if (btn) {
-      btn.addEventListener('mouseenter', () => { btn.style.background = 'var(--gb-white)'; btn.style.transform = 'translateY(-2px)'; });
-      btn.addEventListener('mouseleave', () => { btn.style.background = 'var(--gb-gold)'; btn.style.transform = 'translateY(0)'; });
-    }
+    // Button hover effects are handled by CSS
 
     card.appendChild(img);
     card.appendChild(info);
