@@ -1099,3 +1099,239 @@ footer a:hover {
     justify-content: center;
   }
 }
+/* ========== BOUTON AJOUTER AU PANIER - RESPONSIVE & TOUCH-FRIENDLY ========== */
+
+/* Container du footer produit - Flex adaptable */
+.product-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: clamp(8px, 2vw, 12px);
+  margin-top: auto;
+  padding-top: clamp(10px, 2vw, 15px);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap; /* ✅ Permet le wrapping sur petits écrans */
+}
+
+/* Prix du produit */
+.product-price {
+  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  font-weight: 800;
+  color: #e74c3c;
+  white-space: nowrap;
+  flex-shrink: 0; /* ✅ Empêche le prix de se compresser */
+  min-width: 70px;
+}
+
+/* 🔴 BOUTON AJOUTER AU PANIER - VERSION CORRIGÉE */
+.add-to-cart-btn {
+  /* Layout & Dimensions */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* ✅ Prend toute la largeur sur mobile */
+  min-width: unset;
+  min-height: 48px; /* ✅ Zone de touch minimum (Apple/Google) */
+  max-width: 100%;
+  
+  /* Espacement */
+  padding: clamp(12px, 3vw, 14px) clamp(16px, 4vw, 24px);
+  margin: 0;
+  
+  /* Typographie */
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.2;
+  
+  /* Couleurs & Style */
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  
+  /* Transitions */
+  transition: all 0.25s ease-in-out;
+  transform: translateZ(0); /* ✅ Force l'accélération GPU */
+  
+  /* Accessibilité */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  
+  /* Positionnement */
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 auto; /* ✅ Flexibilité dans le footer */
+}
+
+/* ✅ État Hover (Desktop uniquement) */
+@media (hover: hover) and (pointer: fine) {
+  .add-to-cart-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(231, 76, 60, 0.45);
+  }
+}
+
+/* ✅ État Active/Touch (Tous devices) */
+.add-to-cart-btn:active:not(:disabled),
+.add-to-cart-btn.active:not(:disabled) {
+  transform: scale(0.98) !important;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
+  transition: transform 0.1s ease !important;
+}
+
+/* ✅ État Focus (Accessibilité clavier) */
+.add-to-cart-btn:focus-visible {
+  outline: 3px solid rgba(231, 76, 60, 0.6);
+  outline-offset: 3px;
+}
+
+/* ✅ État Désactivé */
+.add-to-cart-btn:disabled {
+  background: linear-gradient(135deg, #555555, #444444);
+  color: #888888;
+  cursor: not-allowed;
+  opacity: 0.8;
+  transform: none !important;
+  box-shadow: none !important;
+  pointer-events: none; /* ✅ Empêche tout clic */
+}
+
+/* ✅ Animation de feedback visuel au clic */
+.add-to-cart-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  pointer-events: none;
+}
+
+.add-to-cart-btn:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* ✅ Icône dans le bouton (optionnel) */
+.add-to-cart-btn i {
+  margin-right: 8px;
+  font-size: 1.1em;
+  flex-shrink: 0;
+}
+
+/* 📱 MOBILE : ≤ 480px - Stack vertical */
+@media (max-width: 480px) {
+  .product-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .product-price {
+    text-align: center;
+    font-size: 1.2rem;
+    width: 100%;
+  }
+  
+  .add-to-cart-btn {
+    width: 100%;
+    min-height: 52px; /* ✅ Plus grand pour le pouce */
+    font-size: 1rem;
+    border-radius: 50px;
+  }
+  
+  .add-to-cart-btn i {
+    margin-right: 6px;
+  }
+}
+
+/* 📟 TABLETTE : 481px - 768px */
+@media (min-width: 481px) and (max-width: 768px) {
+  .product-footer {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .add-to-cart-btn {
+    flex: 1 1 200px; /* ✅ S'adapte mais garde une largeur min */
+    min-height: 48px;
+  }
+}
+
+/* 💻 DESKTOP : ≥ 769px - Layout horizontal */
+@media (min-width: 769px) {
+  .product-footer {
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+  
+  .add-to-cart-btn {
+    width: auto;
+    min-width: 140px;
+    max-width: 200px;
+    flex: 0 0 auto;
+  }
+}
+
+/* 🎮 OPTIMISATIONS TACTILES (Touch Devices) */
+@media (hover: none) and (pointer: coarse) {
+  /* Désactive les effets hover sur tactile */
+  .add-to-cart-btn:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Augmente la zone de touch */
+  .add-to-cart-btn {
+    min-height: 52px;
+    padding: 14px 20px;
+    margin: 4px 0; /* ✅ Espace pour éviter les clics accidentels */
+  }
+  
+  /* Feedback tactile plus prononcé */
+  .add-to-cart-btn:active {
+    transform: scale(0.96) !important;
+    background: linear-gradient(135deg, #a93226, #922b21) !important;
+  }
+  
+  /* Empêche le zoom double-tap */
+  .add-to-cart-btn {
+    touch-action: manipulation;
+  }
+}
+
+/* ♿ ACCESSIBILITÉ : High Contrast / Reduced Motion */
+@media (prefers-contrast: high) {
+  .add-to-cart-btn {
+    border: 2px solid #fff !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .add-to-cart-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+  .add-to-cart-btn::after {
+    display: none;
+  }
+}
+
+/* 🖨️ PRINT : Masquer le bouton à l'impression */
+@media print {
+  .add-to-cart-btn {
+    display: none !important;
+  }
+}
+
