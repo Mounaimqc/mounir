@@ -14,20 +14,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
      <link rel="icon" href="logo.jpeg" type="image/x-icon">
 
-    <!-- CSS Copied from index.html -> Custom adjustments for single product -->
+    <!-- CSS avec thème ROUGE -->
     <style>
-        /* ========== WAHBI ZOGHBI THEME ========== */
+        /* ========== WAHBI ZOGHBI THEME - ROUGE ========== */
         :root {
-            --gb-gold: #D4AF37;
-            --gb-gold-light: #F3E5AB;
-            --gb-gold-dark: #AA8C2C;
+            --gb-gold: #DC143C;              /* Crimson Red - couleur principale */
+            --gb-gold-light: #FF6B7A;        /* Light Red - pour les hover */
+            --gb-gold-dark: #8B0000;         /* Dark Red - pour les bordures/ombres */
             --gb-black: #050505;
             --gb-dark-grey: #111111;
             --gb-grey: #222222;
             --gb-light-grey: #888888;
             --gb-white: #FFFFFF;
-            --gb-danger: #ffcc00;
-            /* Yellow */
+            --gb-danger: #ff4d4d;            /* Rouge doux pour alertes */
             --gb-success: #1cd072;
 
             --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
@@ -81,7 +80,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+            border-bottom: 1px solid rgba(220, 20, 60, 0.3);
         }
 
         .header-container {
@@ -128,13 +127,13 @@
 
         .header-btn:hover {
             background: var(--gb-gold);
-            color: var(--gb-black);
+            color: var(--gb-white);
         }
 
         .cart-btn {
             position: relative;
             background: var(--gb-gold);
-            color: var(--gb-black);
+            color: var(--gb-white);
         }
 
         .cart-btn:hover {
@@ -231,16 +230,16 @@
         }
 
         .out-of-stock {
-            background: rgba(255, 204, 0, 0.1);
-            color: var(--gb-danger);
-            border: 1px solid var(--gb-danger);
+            background: rgba(220, 20, 60, 0.15);
+            color: var(--gb-gold-light);
+            border: 1px solid var(--gb-gold);
         }
 
         .add-to-cart-hero {
             width: 100%;
             padding: 18px;
             background: var(--gb-gold);
-            color: var(--gb-black);
+            color: var(--gb-white);
             font-weight: 800;
             font-size: 1.1rem;
             border-radius: var(--radius);
@@ -253,8 +252,8 @@
         }
 
         .add-to-cart-hero:hover:not(:disabled) {
-            background: var(--gb-white);
-            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+            background: var(--gb-gold-light);
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
             transform: translateY(-2px);
         }
 
@@ -264,7 +263,7 @@
             cursor: not-allowed;
         }
 
-        /* Modals & Default UI CSS (Cart, Checkout) Copied from Index */
+        /* Modals & Default UI CSS */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -289,7 +288,7 @@
             width: 100%;
             max-width: 550px;
             border-radius: var(--radius-lg);
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid rgba(220, 20, 60, 0.4);
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow);
@@ -375,7 +374,7 @@
 
         .btn-primary {
             background: var(--gb-gold);
-            color: var(--gb-black);
+            color: var(--gb-white);
             border: none;
         }
 
@@ -392,6 +391,11 @@
             background: transparent;
             border: 1px solid var(--gb-light-grey);
             color: var(--gb-white);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gb-gold);
+            color: var(--gb-gold-light);
         }
 
         .form-group {
@@ -419,6 +423,7 @@
         .form-control:focus {
             outline: none;
             border-color: var(--gb-gold);
+            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
         }
 
         .form-row {
@@ -428,7 +433,7 @@
         }
 
         .shipping-info {
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(220, 20, 60, 0.1);
             padding: 20px;
             border-radius: var(--radius);
             border: 1px dashed var(--gb-gold);
@@ -487,13 +492,8 @@
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         @media(max-width:768px) {
@@ -527,7 +527,7 @@
         </div>
     </header>
 
-    <!-- IMPORTANT: Hidden productsGrid so script.js doesn't crash and fetches products for cart -->
+    <!-- Hidden productsGrid for script.js compatibility -->
     <div id="productsGrid" style="display:none;"></div>
 
     <!-- Single Product Section -->
@@ -647,7 +647,7 @@
                     <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;"
                         id="orderNumber"></p>
                 </div>
-                <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i
+                <p style="font-size:0.9rem; color:var(--gb-gold-light); margin-bottom:30px;"><i
                         class="fa-solid fa-camera"></i> Capturez cet écran pour le suivi.</p>
                 <a href="index.html" class="btn btn-primary" style="width:100%; display:block;">Continuer
                     l'Entraînement</a>
@@ -747,7 +747,7 @@
                   ${product.flavors.map((f, i) => `
                     <button class="flavor-selector-btn ${i === 0 ? 'active' : ''}" 
                             data-image="${f.image || pImage}"
-                            style="padding: 10px 15px; background: ${i === 0 ? 'var(--gb-gold)' : 'var(--gb-grey)'}; color: ${i === 0 ? 'var(--gb-black)' : 'var(--gb-white)'}; border: 1px solid var(--gb-gold); border-radius: var(--radius); cursor: pointer; font-weight: 700; transition: var(--transition);">
+                            style="padding: 10px 15px; background: ${i === 0 ? 'var(--gb-gold)' : 'var(--gb-grey)'}; color: ${i === 0 ? 'var(--gb-white)' : 'var(--gb-white)'}; border: 1px solid var(--gb-gold); border-radius: var(--radius); cursor: pointer; font-weight: 700; transition: var(--transition);">
                       ${f.name}
                     </button>
                   `).join('')}
@@ -760,31 +760,27 @@
             </div>
           `;
 
-                    // Add event listeners for flavor selectors
+                    // Event listeners for flavor selectors
                     if (product.flavors && product.flavors.length > 0) {
                         const mainImg = document.getElementById('main-product-image');
                         const btns = document.querySelectorAll('.flavor-selector-btn');
 
-                        // Set first flavor image if available
                         if (product.flavors[0].image) {
                             mainImg.src = product.flavors[0].image;
                         }
 
                         btns.forEach(btn => {
                             btn.addEventListener('click', (e) => {
-                                // Remove active class
                                 btns.forEach(b => {
                                     b.classList.remove('active');
                                     b.style.background = 'var(--gb-grey)';
                                     b.style.color = 'var(--gb-white)';
                                 });
 
-                                // Add active to current
                                 btn.classList.add('active');
                                 btn.style.background = 'var(--gb-gold)';
-                                btn.style.color = 'var(--gb-black)';
+                                btn.style.color = 'var(--gb-white)';
 
-                                // Update image
                                 const newImgSrc = btn.getAttribute('data-image');
                                 if (newImgSrc && newImgSrc !== 'undefined' && newImgSrc !== '') {
                                     mainImg.src = newImgSrc;
@@ -817,8 +813,4 @@
         };
     </script>
 </body>
-
-
 </html>
-
-
