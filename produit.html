@@ -259,18 +259,21 @@
 
         .add-to-cart-hero {
             width: 100%;
-            padding: 18px;
+            padding: 20px;
             background: var(--gb-gold);
             color: var(--gb-black);
             font-weight: 800;
-            font-size: 1.1rem;
+            border: none;
             border-radius: var(--radius);
-            text-transform: uppercase;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
+            font-size: 1.25rem;
+            cursor: pointer;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .add-to-cart-hero:hover:not(:disabled) {
@@ -517,15 +520,79 @@
             }
         }
 
-        @media(max-width:768px) {
+        /* ========== RESPONSIVE ENHANCEMENTS ========== */
+        @media (max-width: 1024px) {
+            .single-product-container {
+                gap: 40px;
+                padding: 40px 24px;
+            }
+
+            .product-details h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+
             .single-product-container {
                 grid-template-columns: 1fr;
                 gap: 30px;
+                padding: 20px 16px;
             }
 
-            .header-container {
-                flex-direction: column;
-                gap: 16px;
+            .product-image-container img {
+                max-height: 400px;
+            }
+
+            .product-details h1 {
+                font-size: 1.8rem;
+            }
+
+            .product-details .price {
+                font-size: 1.5rem;
+            }
+
+            .logo img {
+                height: 45px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-image-container {
+                padding: 20px;
+            }
+
+            .product-image-container img {
+                max-height: 300px;
+            }
+
+            .product-details h1 {
+                font-size: 1.6rem;
+            }
+
+            .add-to-cart-hero {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+
+            .flavor-selector-btn {
+                flex: 1 1 140px;
+                font-size: 0.9rem;
+                padding: 12px !important;
+            }
+
+            .brand-name {
+                font-size: 1.2rem;
+            }
+
+            .brand-tagline {
+                font-size: 0.7rem;
+                letter-spacing: 2px;
             }
         }
     </style>

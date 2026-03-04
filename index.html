@@ -372,10 +372,16 @@
       padding: 12px 20px;
       background: var(--gb-gold);
       color: var(--gb-black);
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       border-radius: var(--radius);
+      width: auto;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .add-to-cart-btn:hover:not(:disabled) {
@@ -389,7 +395,90 @@
       cursor: not-allowed;
     }
 
-    /* ========== MODALS ========== */
+    /* ========== RESPONSIVE ENHANCEMENTS ========== */
+    @media (max-width: 1024px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .header-container {
+        flex-direction: column;
+        gap: 16px;
+        padding: 12px;
+      }
+
+      .logo img {
+        height: 40px;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 8px;
+      }
+
+      .product-info {
+        padding: 12px;
+      }
+
+      .product-name {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+
+      .product-price {
+        font-size: 1.1rem;
+      }
+
+      .product-image {
+        height: 150px;
+      }
+
+      .add-to-cart-btn {
+        width: 100%;
+        padding: 10px 5px;
+        font-size: 0.75rem;
+      }
+
+      .product-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .hero {
+        padding: 60px 16px 40px;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+      }
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -711,37 +800,125 @@
       }
     }
 
-    @media(max-width:768px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-
-      .header-container {
-        flex-direction: column;
-        gap: 16px;
-      }
-
-      .form-row {
-        grid-template-columns: 1fr;
+    /* ========== RESPONSIVE ENHANCEMENTS ========== */
+    @media (max-width: 1200px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
       }
     }
 
-    @media(max-width:480px) {
+    @media (max-width: 992px) {
       .products-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 20px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .logo img {
+        height: 45px;
+      }
+
+      .hero {
+        padding: 80px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .filters {
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+
+      .modal {
+        width: 95%;
+        margin: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 10px;
+      }
+
+      .product-info {
+        padding: 15px;
       }
 
       .product-name {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        min-height: 2.6em;
+      }
+
+      .product-description {
+        display: none;
+        /* Hide description on mobile to save space */
+      }
+
+      .product-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .add-to-cart-btn {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 10px;
       }
 
       .product-price {
         font-size: 1.1rem;
+        text-align: center;
       }
 
       .product-image {
-        height: 150px;
+        height: 180px;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+
+      .brand-tagline {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+        /* Single column on very small phones if needed, or stick to 2 */
+      }
+
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .header-btn {
+        width: 100%;
+        justify-content: center;
       }
     }
   </style>
