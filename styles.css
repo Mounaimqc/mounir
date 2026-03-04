@@ -68,9 +68,17 @@ header {
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .nav-items {
@@ -83,7 +91,7 @@ header {
 .cart-btn {
   background-color: white;
   color: black;
-   font-weight: bold;
+  font-weight: bold;
   padding: 8px 16px;
   border-radius: 5px;
   cursor: pointer;
@@ -92,14 +100,14 @@ header {
   display: flex;
   align-items: center;
   gap: 5px;
-    border: #121212 solid 1px;
+  border: #121212 solid 1px;
 }
 
 .cart-btn:hover {
-   border-radius: 50px;
-   background-color: #000;
-   color:white;
-  
+  border-radius: 50px;
+  background-color: #000;
+  color: white;
+
 }
 
 .cart-count {
@@ -159,15 +167,16 @@ header {
 }
 
 .product-card {
-  background: white;
+  background: transparent;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
   display: flex;
   flex-direction: column;
   height: 100%;
   cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .product-card:hover {
@@ -249,7 +258,7 @@ header {
 }
 
 .add-to-cart-btn {
-  background-color: #27ae60;
+  background-color: #e74c3c;
   color: white;
   border: none;
   padding: 8px 12px;
@@ -262,9 +271,9 @@ header {
 }
 
 .add-to-cart-btn:hover {
-  background-color: #229954;
+  background-color: #c0392b;
   transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(39, 174, 96, 0.4);
+  box-shadow: 0 4px 10px rgba(231, 76, 60, 0.4);
 }
 
 .add-to-cart-btn:active {
@@ -760,17 +769,3 @@ footer {
   cursor: not-allowed;
   opacity: 0.6;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
