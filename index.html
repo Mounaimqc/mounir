@@ -68,9 +68,9 @@
 
     /* ========== COULEURS ROUGE ========== */
     :root {
-      --gb-red: #DC143C;              /* Crimson Red - couleur principale */
-      --gb-red-light: #FF6B7A;        /* Light Red - hover */
-      --gb-red-dark: #8B0000;         /* Dark Red - ombres */
+      --gb-red: #DC143C;
+      --gb-red-light: #FF6B7A;
+      --gb-red-dark: #8B0000;
       --gb-red-glow: rgba(220, 20, 60, 0.4);
       --gb-black: #050505;
       --gb-dark-grey: #111111;
@@ -300,8 +300,9 @@
       gap: clamp(15px, 3vw, 25px);
     }
 
+    /* 🔴 PRODUCT CARD - BACKGROUND TRANSPARENT */
     .product-card {
-      background: #1a1a1a;
+      background: transparent; /* ✅ FOND TRANSPARENT */
       border-radius: clamp(12px, 3vw, 16px);
       overflow: hidden;
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -309,10 +310,25 @@
       flex-direction: column;
       height: 100%;
       cursor: pointer;
-      border: 1px solid transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08); /* ✅ Bordure subtile */
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
+      position: relative;
+    }
+
+    /* Effet de verre optionnel pour meilleure lisibilité */
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(26, 26, 26, 0.3); /* ✅ Léger overlay pour lisibilité */
+      border-radius: clamp(12px, 3vw, 16px);
+      z-index: 0;
+      transition: all 0.4s ease;
     }
 
     @keyframes fadeInUp {
@@ -333,16 +349,22 @@
         box-shadow: 0 20px 40px rgba(220, 20, 60, 0.3);
         border-color: var(--gb-red);
       }
+
+      .product-card:hover::before {
+        background: rgba(220, 20, 60, 0.1); /* ✅ Overlay rouge au hover */
+      }
     }
 
     .product-image {
       width: 100%;
       aspect-ratio: 1/1;
       object-fit: contain;
-      background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+      background: transparent; /* ✅ Image background transparent */
       padding: clamp(15px, 4vw, 25px);
       transition: transform 0.4s ease;
       border-bottom: 1px solid transparent;
+      position: relative;
+      z-index: 1;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -357,6 +379,8 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
+      position: relative;
+      z-index: 1;
     }
 
     .product-category {
@@ -418,8 +442,10 @@
       gap: clamp(8px, 2vw, 12px);
       margin-top: auto;
       padding-top: clamp(10px, 2vw, 15px);
-      border-top: 1px solid transparent;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
 
     .product-price {
@@ -650,12 +676,20 @@
         transform: none;
         box-shadow: none;
       }
+
+      .product-card:hover::before {
+        background: rgba(220, 20, 60, 0.15);
+      }
     }
 
     /* ♿ ACCESSIBILITY */
     @media (prefers-contrast: high) {
       .add-to-cart-btn {
         border: 2px solid #fff !important;
+      }
+
+      .product-card {
+        border-color: #fff !important;
       }
     }
 
@@ -672,6 +706,10 @@
       .product-card {
         opacity: 1 !important;
         transform: none !important;
+      }
+
+      .product-card::before {
+        display: none;
       }
     }
 
