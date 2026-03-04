@@ -1,5 +1,5 @@
 // script.js - Gestion du site client (Firebase v10+ Compatible)
-import { collection, getDocs, addDoc, query, orderBy, doc, updateDoc, getDoc } 
+import { collection, getDocs, addDoc, query, orderBy, doc, updateDoc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
 
@@ -9,7 +9,7 @@ let cart = [];
 let shippingPrice = 0;
 
 // ========== INITIALISATION ==========
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   console.log("🚀 Application démarrée...");
   loadProductsFromFirebase();
   setupEventListeners();
@@ -20,27 +20,27 @@ document.addEventListener('DOMContentLoaded', function() {
 async function loadProductsFromFirebase() {
   const grid = document.getElementById('productsGrid');
   if (!grid) return;
-  
+
   grid.innerHTML = `
     <div style="text-align:center; padding:60px; color:#6b7280;">
       <i class="fa-solid fa-circle-notch fa-spin" style="font-size:2rem;"></i>
       <p style="margin-top:16px;">Chargement des produits...</p>
     </div>`;
-  
+
   try {
     console.log("📦 Chargement des produits depuis Firebase...");
     const productsRef = collection(db, "produits");
     const productsQuery = query(productsRef, orderBy("dateAdded", "desc"));
     const querySnapshot = await getDocs(productsQuery);
-    
+
     products = [];
     querySnapshot.forEach(doc => {
       console.log("📄 Produit trouvé:", doc.id, doc.data());
       products.push({ id: doc.id, ...doc.data() });
     });
-    
+
     console.log(`✅ ${products.length} produits chargés`);
-    
+
     if (products.length === 0) {
       console.warn("⚠️ Aucun produit trouvé dans la base de données!");
       grid.innerHTML = `
@@ -69,10 +69,10 @@ async function loadProductsFromFirebase() {
 function loadProducts(filteredProducts = null) {
   const grid = document.getElementById('productsGrid');
   if (!grid) return;
-  
+
   const productsToDisplay = filteredProducts || products;
   grid.innerHTML = '';
-  
+
   if (productsToDisplay.length === 0) {
     grid.innerHTML = `
       <div style="text-align:center; padding:60px; color:#7f8c8d;">
@@ -81,35 +81,35 @@ function loadProducts(filteredProducts = null) {
       </div>`;
     return;
   }
-  
+
   productsToDisplay.forEach(product => {
     const card = document.createElement('div');
     card.className = 'product-card';
-    
+
     const img = document.createElement('img');
     img.src = product.image || 'https://via.placeholder.com/300x200?text=Produit';
     img.alt = product.name || 'Produit';
     img.className = 'product-image';
-    img.style.cssText = 'width:100%; height:200px; object-fit:cover; display:block;';
-    img.onerror = function() {
+    img.style.cssText = 'width:100%; height:200px; object-fit:contain; display:block; margin:0 auto; background:transparent;';
+    img.onerror = function () {
       this.src = 'https://via.placeholder.com/300x200?text=Image+non+disponible';
     };
-    
+
     // Ouvrir le détail au clic sur l'image
     img.addEventListener('click', (e) => {
       e.stopPropagation();
       openProductDetail(product.id);
     });
-    
+
     const info = document.createElement('div');
     info.className = 'product-info';
-    
+
     const shortDescription = truncateDescription(product.description || '', 50);
     const quantity = product.quantity || 0;
-    const quantityHTML = quantity > 0 
+    const quantityHTML = quantity > 0
       ? `<span class="product-quantity">${quantity} en stock</span>`
       : `<span class="product-quantity out-of-stock">Rupture de stock</span>`;
-    
+
     info.innerHTML = `
       <h3 class="product-name">${product.name || 'Produit sans nom'}</h3>
       <p class="product-category">${product.category || 'Catégorie inconnue'}</p>
@@ -123,11 +123,11 @@ function loadProducts(filteredProducts = null) {
         </button>
       </div>
     `;
-    
+
     card.appendChild(img);
     card.appendChild(info);
     grid.appendChild(card);
-    
+
     // Clic sur la carte pour ouvrir le détail
     card.addEventListener('click', (e) => {
       if (!e.target.classList.contains('add-to-cart-btn')) {
@@ -135,7 +135,7 @@ function loadProducts(filteredProducts = null) {
       }
     });
   });
-  
+
   // Ajouter les écouteurs aux boutons "Ajouter"
   document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -144,7 +144,7 @@ function loadProducts(filteredProducts = null) {
       addToCart(productId);
     });
   });
-  
+
   // Animation
   setTimeout(() => {
     document.querySelectorAll('.product-card').forEach(card => {
@@ -167,23 +167,23 @@ function truncateDescription(description, maxLength) {
 function openProductDetail(productId) {
   const product = products.find(p => p.id === productId);
   if (!product) return;
-  
+
   const detailImage = document.getElementById('detailImage');
   if (detailImage) {
     detailImage.src = product.image || 'https://via.placeholder.com/300x200?text=Produit';
   }
-  
+
   const detailName = document.getElementById('detailName');
   if (detailName) detailName.textContent = product.name || 'Produit sans nom';
-  
+
   const detailCategory = document.getElementById('detailCategory');
   if (detailCategory) detailCategory.textContent = product.category || 'Catégorie inconnue';
-  
+
   const quantity = product.quantity || 0;
   const quantityText = quantity > 0
     ? `<span style="color:#27ae60; font-weight:bold;">${quantity} en stock</span>`
     : `<span style="color:#e74c3c; font-weight:bold;">Rupture de stock</span>`;
-  
+
   const detailDescription = document.getElementById('detailDescription');
   if (detailDescription) {
     detailDescription.innerHTML = `
@@ -194,13 +194,13 @@ function openProductDetail(productId) {
       <strong>Quantité:</strong><br>${quantityText}
     `;
   }
-  
+
   const detailPrice = document.getElementById('detailPrice');
   if (detailPrice) detailPrice.textContent = (product.price || 0).toFixed(2);
-  
+
   const modal = document.getElementById('productDetailModal');
   if (modal) modal.classList.add('active');
-  
+
   console.log(`📦 Détails du produit "${product.name}" affichés`);
 }
 
@@ -208,13 +208,13 @@ function openProductDetail(productId) {
 function addToCart(productId) {
   const product = products.find(p => p.id === productId);
   if (!product) return;
-  
+
   const quantity = product.quantity || 0;
   if (quantity <= 0) {
     showNotification('Produit indisponible - rupture de stock!', 'error');
     return;
   }
-  
+
   const existingItem = cart.find(item => item.id === productId);
   if (existingItem) {
     if (existingItem.quantity >= quantity) {
@@ -225,7 +225,7 @@ function addToCart(productId) {
   } else {
     cart.push({ ...product, quantity: 1 });
   }
-  
+
   saveCartToStorage();
   updateCartCount();
   showNotification(`${product.name} ajouté au panier!`, 'success');
@@ -234,7 +234,7 @@ function addToCart(productId) {
 function updateQuantity(productId, change) {
   const item = cart.find(item => item.id === productId);
   if (!item) return;
-  
+
   item.quantity += change;
   if (item.quantity <= 0) {
     removeFromCart(productId);
@@ -260,7 +260,7 @@ function removeFromCart(productId) {
 function displayCart() {
   const cartItems = document.getElementById('cartItems');
   if (!cartItems) return;
-  
+
   let total = 0;
   if (cart.length === 0) {
     cartItems.innerHTML = `<p class="cart-empty">Votre panier est vide</p>`;
@@ -270,12 +270,12 @@ function displayCart() {
     if (checkoutBtn) checkoutBtn.disabled = true;
     return;
   }
-  
+
   cartItems.innerHTML = '';
   cart.forEach(item => {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
-    
+
     const cartItem = document.createElement('div');
     cartItem.className = 'cart-item';
     cartItem.innerHTML = `
@@ -292,7 +292,7 @@ function displayCart() {
     `;
     cartItems.appendChild(cartItem);
   });
-  
+
   const totalPrice = document.getElementById('totalPrice');
   const checkoutBtn = document.getElementById('checkoutBtn');
   if (totalPrice) totalPrice.textContent = total.toFixed(2);
@@ -330,28 +330,28 @@ function setupEventListeners() {
   const checkoutBtn = document.getElementById('checkoutBtn');
   const searchInput = document.getElementById('searchInput');
   const categoryFilter = document.getElementById('categoryFilter');
-  
+
   if (cartBtn && cartModal) {
     cartBtn.addEventListener('click', () => {
       cartModal.classList.add('active');
       displayCart();
     });
   }
-  
+
   closeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const modal = btn.closest('.modal');
       if (modal) modal.classList.remove('active');
     });
   });
-  
+
   // Fermer modal au clic dehors
   window.addEventListener('click', (e) => {
     document.querySelectorAll('.modal').forEach(modal => {
       if (e.target === modal) modal.classList.remove('active');
     });
   });
-  
+
   // Fermer modal avec ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -360,7 +360,7 @@ function setupEventListeners() {
       });
     }
   });
-  
+
   if (checkoutBtn && cartModal) {
     checkoutBtn.addEventListener('click', () => {
       if (cart.length > 0) {
@@ -369,7 +369,7 @@ function setupEventListeners() {
       }
     });
   }
-  
+
   if (searchInput) searchInput.addEventListener('input', filterProducts);
   if (categoryFilter) categoryFilter.addEventListener('change', filterProducts);
 }
@@ -377,17 +377,17 @@ function setupEventListeners() {
 function filterProducts() {
   const searchInput = document.getElementById('searchInput');
   const categoryFilter = document.getElementById('categoryFilter');
-  
+
   const searchTerm = searchInput?.value.toLowerCase() || '';
   const selectedCategory = categoryFilter?.value || '';
-  
+
   const filtered = products.filter(product => {
     const matchesSearch = product.name?.toLowerCase().includes(searchTerm) ||
       (product.description && product.description.toLowerCase().includes(searchTerm));
     const matchesCategory = !selectedCategory || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
-  
+
   loadProducts(filtered);
 }
 
@@ -418,7 +418,7 @@ function closeOrderForm() {
 function initializeWilayaSelect() {
   const select = document.getElementById('wilaya');
   if (!select) return;
-  
+
   select.innerHTML = '<option value="">Sélectionner une wilaya</option>';
   Object.keys(wilayasData).forEach(wilaya => {
     const opt = document.createElement('option');
@@ -433,22 +433,22 @@ function updateShippingPrice() {
   const wilayaSelect = document.getElementById('wilaya');
   const priceEl = document.getElementById('shippingPrice');
   const info = document.querySelector('.shipping-info');
-  
+
   if (!typeSelect || !wilayaSelect || !priceEl) return;
-  
+
   const type = typeSelect.value;
   const wilaya = wilayaSelect.value;
-  
+
   if (!wilaya) {
     priceEl.textContent = '0 DA';
     if (info) info.classList.remove('active');
     return;
   }
-  
+
   let price = 0;
   if (type === 'domicile') price = shippingPrices[wilaya] || 0;
   else if (type === 'stopdesk') price = stopDeskPrices[wilaya] || 0;
-  
+
   priceEl.textContent = price + ' DA';
   if (info) info.classList.add('active');
 }
@@ -477,25 +477,25 @@ const stopDeskPrices = {
 async function submitOrderForm() {
   const form = document.getElementById('orderForm');
   if (!form) return;
-  
+
   const orderType = form.orderType?.value;
   const wilaya = form.wilaya?.value;
   const commune = form.commune?.value;
-  
+
   if (!orderType || !wilaya || !commune) {
     showNotification("Veuillez remplir tous les champs obligatoires.", 'error');
     return;
   }
-  
+
   let shippingPrice = 0;
   if (orderType === 'domicile') shippingPrice = shippingPrices[wilaya] || 0;
   else if (orderType === 'stopdesk') shippingPrice = stopDeskPrices[wilaya] || 0;
-  
+
   const orderNumber = generateOrderNumber();
   const totalPriceEl = document.getElementById('totalPrice');
   const cartTotal = parseFloat(totalPriceEl?.textContent || '0');
   const grandTotal = cartTotal + shippingPrice;
-  
+
   const commande = {
     orderNumber,
     status: 'pending',
@@ -518,36 +518,36 @@ async function submitOrderForm() {
     grandTotal,
     date: new Date().toISOString()
   };
-  
+
   try {
     console.log("📤 Envoi de la commande à Firebase...");
     const orderRef = await addDoc(collection(db, "commandes"), commande);
     console.log("✅ Commande sauvegardée avec ID:", orderRef.id);
-    
+
     // Mettre à jour les quantités
     await updateProductsQuantities(cart);
-    
+
     // Recharger les produits
     await loadProductsFromFirebase();
-    
+
     // Fermer modal et afficher confirmation
     closeOrderForm();
     const confirmModal = document.getElementById('confirmModal');
     const orderNumberEl = document.getElementById('orderNumber');
     if (confirmModal) confirmModal.classList.add('active');
     if (orderNumberEl) orderNumberEl.textContent = orderNumber;
-    
+
     // Vider le panier
     cart = [];
     saveCartToStorage();
     updateCartCount();
-    
+
     // Réinitialiser formulaire
     form.reset();
     if (document.getElementById('shippingPrice')) {
       document.getElementById('shippingPrice').textContent = '0 DA';
     }
-    
+
     showNotification(`Commande envoyée avec succès!`, 'success');
     console.log("✅ Commande envoyée avec succès!");
   } catch (error) {
@@ -564,11 +564,11 @@ async function updateProductsQuantities(cartItems) {
       console.log(`📦 Mise à jour: ${item.name} (ID: ${item.id})`);
       const productRef = doc(db, "produits", item.id);
       const productDoc = await getDoc(productRef);
-      
+
       if (productDoc.exists()) {
         const currentQuantity = productDoc.data().quantity || 0;
         const newQuantity = currentQuantity - item.quantity;
-        
+
         if (newQuantity >= 0) {
           await updateDoc(productRef, { quantity: newQuantity });
           console.log(`✅ ${item.name}: ${currentQuantity} → ${newQuantity}`);
@@ -593,7 +593,7 @@ async function updateProductsQuantities(cartItems) {
 function showNotification(message, type = 'success') {
   const existing = document.querySelector('.notification-toast');
   if (existing) existing.remove();
-  
+
   const notif = document.createElement('div');
   notif.className = 'notification-toast';
   const bgColor = type === 'success' ? '#27ae60' : '#e74c3c';
@@ -613,7 +613,7 @@ function showNotification(message, type = 'success') {
   `;
   notif.textContent = message;
   document.body.appendChild(notif);
-  
+
   setTimeout(() => {
     notif.style.animation = 'slideOut 0.3s ease-out';
     setTimeout(() => notif.remove(), 300);
@@ -642,7 +642,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wilayaSel = document.getElementById('wilaya');
   const typeSel = document.getElementById('orderType');
   const communeSel = document.getElementById('commune');
-  
+
   if (wilayaSel) {
     wilayaSel.addEventListener('change', () => {
       const w = wilayaSel.value;
@@ -660,11 +660,11 @@ document.addEventListener('DOMContentLoaded', () => {
       updateShippingPrice();
     });
   }
-  
+
   if (typeSel) {
     typeSel.addEventListener('change', updateShippingPrice);
   }
-  
+
   const orderForm = document.getElementById('orderForm');
   if (orderForm) {
     orderForm.addEventListener('submit', (e) => {
