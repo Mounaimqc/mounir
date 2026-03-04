@@ -66,6 +66,21 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    /* ========== COULEURS ROUGE ========== */
+    :root {
+      --gb-red: #DC143C;              /* Crimson Red - couleur principale */
+      --gb-red-light: #FF6B7A;        /* Light Red - hover */
+      --gb-red-dark: #8B0000;         /* Dark Red - ombres */
+      --gb-red-glow: rgba(220, 20, 60, 0.4);
+      --gb-black: #050505;
+      --gb-dark-grey: #111111;
+      --gb-grey: #222222;
+      --gb-light-grey: #888888;
+      --gb-white: #FFFFFF;
+      --gb-danger: #ff4d4d;
+      --gb-success: #1cd072;
+    }
+
     /* ========== CONTAINER ========== */
     .container {
       width: min(95%, 1400px);
@@ -81,6 +96,7 @@
       z-index: 1000;
       box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
+      border-bottom: 1px solid transparent;
     }
 
     .navbar {
@@ -120,7 +136,7 @@
     }
 
     .logo span {
-      color: #e74c3c;
+      color: var(--gb-red);
     }
 
     .nav-items {
@@ -133,7 +149,7 @@
     }
 
     .cart-btn {
-      background-color: #e74c3c;
+      background-color: var(--gb-red);
       color: white;
       font-weight: 600;
       padding: clamp(8px, 2vw, 10px) clamp(12px, 3vw, 18px);
@@ -145,12 +161,14 @@
       align-items: center;
       gap: 6px;
       min-height: 44px;
+      border: 1px solid transparent;
     }
 
     .cart-btn:hover {
-      background-color: #c0392b;
+      background-color: var(--gb-red-light);
       transform: translateY(-2px);
-      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+      box-shadow: 0 4px 15px var(--gb-red-glow);
+      border-color: var(--gb-red-light);
     }
 
     .cart-count {
@@ -158,7 +176,7 @@
       align-items: center;
       justify-content: center;
       background-color: #fff;
-      color: #e74c3c;
+      color: var(--gb-red);
       border-radius: 50%;
       min-width: 22px;
       height: 22px;
@@ -173,6 +191,7 @@
         url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
       padding: clamp(60px, 10vw, 120px) 0 clamp(40px, 8vw, 80px);
       text-align: center;
+      border-bottom: 2px solid transparent;
     }
 
     .hero h1 {
@@ -184,7 +203,7 @@
     }
 
     .hero h1 span {
-      color: #e74c3c;
+      color: var(--gb-red);
     }
 
     .hero p {
@@ -224,14 +243,15 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      transition: all 0.3s ease;
     }
 
     .filter-btn:hover,
     .filter-btn.active {
-      background: #e74c3c;
-      border-color: #c0392b;
+      background: var(--gb-red);
+      border-color: var(--gb-red-light);
       color: #fff;
-      box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+      box-shadow: 0 0 15px var(--gb-red-glow);
     }
 
     .search-container {
@@ -252,7 +272,7 @@
       width: 100%;
       padding: clamp(12px, 3vw, 16px) 16px 16px 44px;
       background: #222;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid transparent;
       border-radius: 50px;
       color: #fff;
       font-size: clamp(0.9rem, 2.5vw, 1rem);
@@ -262,8 +282,8 @@
 
     #searchInput:focus {
       outline: none;
-      border-color: #e74c3c;
-      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+      border-color: var(--gb-red);
+      box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
     }
 
     #searchInput::placeholder {
@@ -289,7 +309,7 @@
       flex-direction: column;
       height: 100%;
       cursor: pointer;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid transparent;
       opacity: 0;
       transform: translateY(20px);
       animation: fadeInUp 0.6s ease forwards;
@@ -310,8 +330,8 @@
     @media (hover: hover) and (pointer: fine) {
       .product-card:hover {
         transform: translateY(-8px) scale(1.02);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-        border-color: rgba(231, 76, 60, 0.3);
+        box-shadow: 0 20px 40px rgba(220, 20, 60, 0.3);
+        border-color: var(--gb-red);
       }
     }
 
@@ -322,6 +342,7 @@
       background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
       padding: clamp(15px, 4vw, 25px);
       transition: transform 0.4s ease;
+      border-bottom: 1px solid transparent;
     }
 
     @media (hover: hover) and (pointer: fine) {
@@ -340,7 +361,7 @@
 
     .product-category {
       font-size: clamp(0.75rem, 2.5vw, 0.85rem);
-      color: #e74c3c;
+      color: var(--gb-red);
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
@@ -380,14 +401,16 @@
       display: inline-block;
       width: fit-content;
       margin-top: 5px;
+      border: 1px solid transparent;
     }
 
     .product-quantity.out-of-stock {
-      background-color: rgba(231, 76, 60, 0.15);
-      color: #e74c3c;
+      background-color: rgba(220, 20, 60, 0.15);
+      color: var(--gb-red-light);
+      border: 1px solid transparent;
     }
 
-    /* ========== PRODUCT FOOTER & ADD TO CART BUTTON ========== */
+    /* ========== PRODUCT FOOTER & ADD TO CART BUTTON - ROUGE ========== */
     .product-footer {
       display: flex;
       justify-content: space-between;
@@ -395,20 +418,20 @@
       gap: clamp(8px, 2vw, 12px);
       margin-top: auto;
       padding-top: clamp(10px, 2vw, 15px);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid transparent;
       flex-wrap: wrap;
     }
 
     .product-price {
       font-size: clamp(1.1rem, 3.5vw, 1.4rem);
       font-weight: 800;
-      color: #e74c3c;
+      color: var(--gb-red);
       white-space: nowrap;
       flex-shrink: 0;
       min-width: 70px;
     }
 
-    /* 🔴 ADD TO CART BUTTON - FULLY RESPONSIVE */
+    /* 🔴 ADD TO CART BUTTON - ROUGE COMPATIBLE TOUS DEVICES */
     .add-to-cart-btn {
       display: inline-flex;
       align-items: center;
@@ -426,9 +449,9 @@
       white-space: nowrap;
       text-align: center;
       line-height: 1.2;
-      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      background: linear-gradient(135deg, var(--gb-red) 0%, var(--gb-red-dark) 100%);
       color: #ffffff;
-      border: none;
+      border: 1px solid transparent;
       border-radius: 50px;
       cursor: pointer;
       transition: all 0.25s ease-in-out;
@@ -449,21 +472,22 @@
 
     @media (hover: hover) and (pointer: fine) {
       .add-to-cart-btn:hover:not(:disabled) {
-        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+        background: linear-gradient(135deg, var(--gb-red-light) 0%, var(--gb-red) 100%);
+        border-color: var(--gb-red-light);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(231, 76, 60, 0.45);
+        box-shadow: 0 8px 25px var(--gb-red-glow);
       }
     }
 
     .add-to-cart-btn:active:not(:disabled),
     .add-to-cart-btn.active:not(:disabled) {
       transform: scale(0.98) !important;
-      box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3) !important;
+      box-shadow: 0 4px 15px rgba(220, 20, 60, 0.3) !important;
       transition: transform 0.1s ease !important;
     }
 
     .add-to-cart-btn:focus-visible {
-      outline: 3px solid rgba(231, 76, 60, 0.6);
+      outline: 3px solid rgba(220, 20, 60, 0.6);
       outline-offset: 3px;
     }
 
@@ -475,6 +499,7 @@
       transform: none !important;
       box-shadow: none !important;
       pointer-events: none;
+      border: 1px solid transparent;
     }
 
     .add-to-cart-btn::after {
@@ -618,7 +643,7 @@
 
       .add-to-cart-btn:active {
         transform: scale(0.96) !important;
-        background: linear-gradient(135deg, #a93226, #922b21) !important;
+        background: linear-gradient(135deg, var(--gb-red-dark), #6b0000) !important;
       }
 
       .product-card:hover {
@@ -690,7 +715,7 @@
       max-height: 90vh;
       overflow-y: auto;
       position: relative;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      border: 1px solid transparent;
       box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
     }
 
@@ -699,13 +724,13 @@
     }
 
     .modal::-webkit-scrollbar-thumb {
-      background: #e74c3c;
+      background: var(--gb-red);
       border-radius: 3px;
     }
 
     .modal-header {
       padding: clamp(15px, 3vw, 24px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid transparent;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -713,7 +738,7 @@
 
     .modal-title {
       font-size: clamp(1.3rem, 4vw, 1.5rem);
-      color: #e74c3c;
+      color: var(--gb-red);
       font-weight: 700;
     }
 
@@ -743,7 +768,7 @@
 
     .modal-footer {
       padding: clamp(15px, 3vw, 24px);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid transparent;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -782,7 +807,7 @@
     }
 
     .cart-item:hover {
-      border-color: rgba(231, 76, 60, 0.3);
+      border-color: rgba(220, 20, 60, 0.3);
     }
 
     .cart-item-info {
@@ -798,7 +823,7 @@
     }
 
     .cart-item-price {
-      color: #e74c3c;
+      color: var(--gb-red);
       font-size: clamp(0.9rem, 2.5vw, 1rem);
       font-weight: 600;
     }
@@ -813,7 +838,7 @@
     .quantity-btn {
       background-color: #34495e;
       color: white;
-      border: none;
+      border: 1px solid transparent;
       width: clamp(28px, 6vw, 32px);
       height: clamp(28px, 6vw, 32px);
       border-radius: 8px;
@@ -829,14 +854,15 @@
     }
 
     .quantity-btn:hover {
-      background-color: #e74c3c;
+      background-color: var(--gb-red);
+      border-color: var(--gb-red-light);
       transform: scale(1.1);
     }
 
     .remove-btn {
       background-color: transparent;
-      color: #e74c3c;
-      border: 1px solid #e74c3c;
+      color: var(--gb-red);
+      border: 1px solid var(--gb-red);
       padding: clamp(4px, 1.5vw, 6px) clamp(8px, 2vw, 12px);
       border-radius: 6px;
       cursor: pointer;
@@ -848,7 +874,7 @@
     }
 
     .remove-btn:hover {
-      background-color: #e74c3c;
+      background-color: var(--gb-red);
       color: white;
     }
 
@@ -867,7 +893,7 @@
     }
 
     .cart-total span {
-      color: #e74c3c;
+      color: var(--gb-red);
       font-size: clamp(1.3rem, 4.5vw, 1.8rem);
     }
 
@@ -883,17 +909,19 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      border: 1px solid transparent;
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      background: linear-gradient(135deg, var(--gb-red), var(--gb-red-dark));
       color: #fff;
-      border: none;
     }
 
     .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, var(--gb-red-light), var(--gb-red));
+      border-color: var(--gb-red-light);
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(231, 76, 60, 0.4);
+      box-shadow: 0 10px 30px var(--gb-red-glow);
     }
 
     .btn-primary:disabled {
@@ -909,8 +937,8 @@
     }
 
     .btn-outline:hover {
-      border-color: #e74c3c;
-      color: #e74c3c;
+      border-color: var(--gb-red);
+      color: var(--gb-red);
     }
 
     /* ========== FORMULAIRE ========== */
@@ -929,7 +957,7 @@
 
     .form-control {
       padding: clamp(10px, 2.5vw, 14px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid transparent;
       border-radius: 10px;
       font-size: clamp(0.95rem, 2.5vw, 1rem);
       background-color: #121212;
@@ -941,8 +969,8 @@
 
     .form-control:focus {
       outline: none;
-      border-color: #e74c3c;
-      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+      border-color: var(--gb-red);
+      box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
     }
 
     .form-control::placeholder {
@@ -964,10 +992,11 @@
     .shipping-info {
       margin: clamp(15px, 3vw, 25px) 0;
       padding: clamp(12px, 3vw, 18px);
-      background-color: rgba(231, 76, 60, 0.1);
-      border-left: 3px solid #e74c3c;
+      background-color: rgba(220, 20, 60, 0.1);
+      border-left: 3px solid var(--gb-red);
       border-radius: 8px;
       display: none;
+      border: 1px solid transparent;
     }
 
     .shipping-info.active {
@@ -996,7 +1025,7 @@
     }
 
     .shipping-price strong {
-      color: #e74c3c;
+      color: var(--gb-red);
       font-size: clamp(1.1rem, 3.5vw, 1.3rem);
     }
 
@@ -1005,7 +1034,7 @@
       gap: clamp(10px, 2vw, 15px);
       margin-top: clamp(20px, 4vw, 30px);
       padding-top: clamp(15px, 3vw, 20px);
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-top: 1px solid transparent;
       flex-wrap: wrap;
     }
 
@@ -1014,7 +1043,7 @@
       flex: 1;
       min-width: 120px;
       padding: clamp(10px, 2.5vw, 14px);
-      border: none;
+      border: 1px solid transparent;
       border-radius: 50px;
       font-size: clamp(0.95rem, 2.5vw, 1rem);
       font-weight: 600;
@@ -1033,13 +1062,13 @@
     }
 
     .btn-submit {
-      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      background: linear-gradient(135deg, var(--gb-red), var(--gb-red-dark));
       color: white;
     }
 
     .btn-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+      box-shadow: 0 8px 25px var(--gb-red-glow);
     }
 
     /* ========== FOOTER ========== */
@@ -1066,7 +1095,7 @@
     }
 
     .footer-section h3 span {
-      color: #e74c3c;
+      color: var(--gb-red);
     }
 
     .footer-section p,
@@ -1080,19 +1109,19 @@
     }
 
     .footer-section i {
-      color: #e74c3c;
+      color: var(--gb-red);
       width: 20px;
     }
 
     .footer-section a:hover {
-      color: #e74c3c;
+      color: var(--gb-red);
     }
 
     .footer-bottom {
       max-width: 1400px;
       margin: clamp(40px, 8vw, 60px) auto 0;
       padding-top: clamp(15px, 3vw, 24px);
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid transparent;
       text-align: center;
       color: #7f8c8d;
       font-size: clamp(0.85rem, 2.5vw, 0.95rem);
@@ -1184,7 +1213,7 @@
 
   <!-- Products Grid -->
   <div class="products-grid" id="productsGrid">
-    <div style="text-align:center; padding:100px 20px; color:#e74c3c; grid-column:1/-1;">
+    <div style="text-align:center; padding:100px 20px; color:var(--gb-red); grid-column:1/-1;">
       <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; margin-bottom:20px;"></i>
       <p style="font-size:1.2rem; font-family:'Montserrat', sans-serif;">CHARGEMENT DE LA BOUTIQUE...</p>
     </div>
@@ -1263,7 +1292,7 @@
             </div>
             <div class="shipping-price" style="margin-top:10px; font-size:1.3rem;">
               <span style="font-family:'Montserrat', sans-serif; font-weight:800;">TOTAL NET:</span>
-              <strong id="grandTotal" style="font-size:1.6rem; color:#e74c3c;">0 DA</strong>
+              <strong id="grandTotal" style="font-size:1.6rem; color:var(--gb-red);">0 DA</strong>
             </div>
           </div>
         </form>
@@ -1286,11 +1315,11 @@
         </div>
         <h3 style="margin-bottom:20px; font-size:clamp(1.5rem, 5vw, 2rem); color:#1cd072;">VICTOIRE !</h3>
         <p style="color:#bdc3c7; margin-bottom:30px; font-size:clamp(1rem, 3vw, 1.1rem);">La commande a été transmise à notre quartier général.</p>
-        <div style="background:#121212; border:1px solid #e74c3c; padding:25px; border-radius:12px; margin-bottom:30px;">
+        <div style="background:#121212; border:1px solid var(--gb-red); padding:25px; border-radius:12px; margin-bottom:30px;">
           <p style="font-size:0.9rem; color:#95a5a6; margin-bottom:10px; text-transform:uppercase;">CODE D'OPÉRATION</p>
-          <p style="font-size:clamp(1.8rem, 6vw, 2.5rem); font-weight:900; color:#e74c3c; font-family:'Montserrat', sans-serif; letter-spacing:2px;" id="orderNumber"></p>
+          <p style="font-size:clamp(1.8rem, 6vw, 2.5rem); font-weight:900; color:var(--gb-red); font-family:'Montserrat', sans-serif; letter-spacing:2px;" id="orderNumber"></p>
         </div>
-        <p style="font-size:0.9rem; color:#FF6B7A; margin-bottom:30px;"><i class="fa-solid fa-camera"></i> Capturez cet écran pour le suivi.</p>
+        <p style="font-size:0.9rem; color:var(--gb-red-light); margin-bottom:30px;"><i class="fa-solid fa-camera"></i> Capturez cet écran pour le suivi.</p>
         <a href="index.html" class="btn btn-primary" style="width:100%; display:block;">Continuer l'Entraînement</a>
       </div>
     </div>
