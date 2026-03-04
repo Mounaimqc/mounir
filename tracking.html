@@ -8,8 +8,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     :root {
-      --primary: #ffcc00;
-      --primary-dark: #D4AF37;
+      --primary: #ff0000;
+      --primary-dark: #b30000;
       --success: #10b981;
       --bg: #050505;
       --surface: #111111;
@@ -48,14 +48,40 @@
     }
 
     .logo {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text);
-      text-decoration: none
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Montserrat', sans-serif;
+      text-decoration: none;
     }
 
-    .logo span {
-      color: var(--primary)
+    .logo img {
+      height: 40px;
+      width: auto;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .brand-tagline {
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 3px;
     }
 
     .tracking-container {
@@ -249,7 +275,13 @@
 <body>
   <header class="header">
     <div class="header-container">
-      <a href="index.html" class="logo">WAHBI <span>ZOGHBI</span></a>
+      <a href="index.html" class="logo">
+        <img src="logo.jpeg" alt="Logo">
+        <div class="logo-text">
+          <div class="brand-name">Wahbi Zoghbi</div>
+          <div class="brand-tagline">Nutrition</div>
+        </div>
+      </a>
       <a href="index.html" class="back-link" style="margin:0"><i class="fa-solid fa-arrow-left"></i> Retour</a>
     </div>
   </header>
