@@ -19,22 +19,21 @@
   <style>
     /* ========== WAHBI ZOGHBI THEME ========== */
     :root {
-      --gb-gold: #DC143C;              /* Crimson Red - couleur principale */
-      --gb-gold-light: #FF6B7A;        /* Light Red - pour les hover */
-      --gb-gold-dark: #8B0000;         /* Dark Red - pour les bordures/ombres */
+      /* Colors */
+      --gb-gold: #ff0000;
+      --gb-gold-light: #ff6666;
+      --gb-gold-dark: #b30000;
       --gb-black: #050505;
       --gb-dark-grey: #111111;
       --gb-grey: #222222;
-      --gb-light-grey: #666666;
+      --gb-light-grey: #888888;
       --gb-white: #FFFFFF;
-      --gb-off-white: #f8f9fa;         /* Nouveau: fond clair pour le body */
-      --gb-text-dark: #1a1a1a;         /* Nouveau: texte principal sur fond clair */
-      --gb-text-muted: #555555;        /* Nouveau: texte secondaire */
-      --gb-danger: #ff4d4d;
+      --gb-danger: #ffcc00;
       --gb-success: #1cd072;
 
-      --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-      --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.25);
+      /* Layout & Effects */
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.2);
       --radius: 8px;
       --radius-lg: 16px;
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -47,17 +46,21 @@
     }
 
     body {
-      background-color: var(--gb-off-white);
-      color: var(--gb-text-dark);
+      background-color: var(--gb-black);
+      color: var(--gb-white);
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-family: 'Montserrat', sans-serif;
       text-transform: uppercase;
-      color: var(--gb-text-dark);
     }
 
     a {
@@ -74,14 +77,14 @@
       transition: var(--transition);
     }
 
-    /* ========== HEADER / NAV (RESTE SOMBRE) ========== */
+    /* ========== HEADER / NAV ========== */
     .header {
-      background: rgba(17, 17, 17, 0.98);
+      background: rgba(17, 17, 17, 0.95);
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
       z-index: 100;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
     }
 
     .header-container {
@@ -104,7 +107,7 @@
       height: 50px;
       width: auto;
       border-radius: var(--radius);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .logo-text {
@@ -180,22 +183,20 @@
       border: 2px solid var(--gb-dark-grey);
     }
 
-    /* ========== HERO SECTION ========== */
+    /* ========== HERO SECTION (BOUTIQUE) ========== */
     .hero {
-      background: linear-gradient(180deg, rgba(17, 17, 17, 0.85) 0%, rgba(17, 17, 17, 0.7) 100%),
+      background: linear-gradient(180deg, rgba(17, 17, 17, 0.1) 0%, var(--gb-black) 100%),
         url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
       padding: 120px 24px 80px;
       text-align: center;
-      border-bottom: 3px solid var(--gb-gold);
-      margin-bottom: 40px;
+      border-bottom: 2px solid var(--gb-gold);
     }
 
     .hero h1 {
       font-size: 3.5rem;
       margin-bottom: 12px;
-      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8);
       letter-spacing: 1px;
-      color: var(--gb-white);
     }
 
     .hero h1 span {
@@ -204,16 +205,16 @@
 
     .hero p {
       font-size: 1.1rem;
-      color: rgba(255, 255, 255, 0.95);
+      color: var(--gb-white);
       max-width: 600px;
       margin: 0 auto;
-      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
     }
 
     /* ========== FILTERS & SEARCH ========== */
     .shop-controls {
       max-width: 1400px;
-      margin: 0 auto 40px;
+      margin: 40px auto;
       padding: 0 24px;
     }
 
@@ -227,24 +228,22 @@
 
     .filter-btn {
       padding: 10px 24px;
-      background: var(--gb-white);
-      color: var(--gb-text-dark);
-      border: 2px solid var(--gb-gold);
+      background: var(--gb-grey);
+      color: var(--gb-white);
+      border: 1px solid var(--gb-grey);
       border-radius: 30px;
       font-weight: 600;
       text-transform: uppercase;
       font-size: 0.85rem;
       letter-spacing: 1px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
     .filter-btn:hover,
     .filter-btn.active {
-      background: var(--gb-gold);
-      border-color: var(--gb-gold-dark);
-      color: var(--gb-white);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-      transform: translateY(-2px);
+      background: var(--gb-gold-dark);
+      border-color: var(--gb-gold);
+      color: var(--gb-black);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
     .search-container {
@@ -264,26 +263,22 @@
     #searchInput {
       width: 100%;
       padding: 16px 16px 16px 44px;
-      background: var(--gb-white);
-      border: 2px solid #e0e0e0;
+      background: var(--gb-grey);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--radius-lg);
-      color: var(--gb-text-dark);
+      color: var(--gb-white);
       font-size: 1rem;
       transition: var(--transition);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    #searchInput::placeholder {
-      color: var(--gb-text-muted);
     }
 
     #searchInput:focus {
       outline: none;
       border-color: var(--gb-gold);
-      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
     }
 
     /* ========== PRODUCTS GRID & CARDS ========== */
+    /* Preserving the classes generated by JS */
     .products-grid {
       max-width: 1400px;
       margin: 0 auto 80px;
@@ -294,16 +289,15 @@
     }
 
     .product-card {
-      background: var(--gb-white);
+      background: transparent;
       border-radius: var(--radius-lg);
       overflow: hidden;
-      border: 1px solid #e8e8e8;
+      border: 1px solid rgba(255, 255, 255, 0.1);
       transition: var(--transition);
       position: relative;
       display: flex;
       flex-direction: column;
       height: 100%;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
 
     .product-card:hover {
@@ -316,9 +310,8 @@
       width: 100%;
       height: 250px;
       object-fit: contain;
-      background: var(--gb-off-white);
-      border-bottom: 1px solid #f0f0f0;
-      padding: 15px;
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .product-info {
@@ -340,11 +333,12 @@
     .product-name {
       font-size: 1.25rem;
       font-weight: 800;
-      color: var(--gb-text-dark);
+      color: var(--gb-white);
       margin-bottom: 12px;
       line-height: 1.3;
       font-family: 'Montserrat', sans-serif;
       min-height: 3.3rem;
+      /* Ensures consistent height for names */
       display: -webkit-box;
       -webkit-line-clamp: 2;
       line-clamp: 2;
@@ -354,7 +348,7 @@
 
     .product-description {
       font-size: 0.875rem;
-      color: var(--gb-text-muted);
+      color: var(--gb-light-grey);
       margin-bottom: 16px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -369,6 +363,7 @@
       display: block;
       margin-bottom: 16px;
       min-height: 1.2rem;
+      /* Consistent height for quantity line */
     }
 
     .product-quantity.out-of-stock {
@@ -385,14 +380,14 @@
     .product-price {
       font-size: 1.4rem;
       font-weight: 900;
-      color: var(--gb-text-dark);
+      color: var(--gb-white);
       font-family: 'Montserrat', sans-serif;
     }
 
     .add-to-cart-btn {
       padding: 12px 20px;
       background: var(--gb-gold);
-      color: var(--gb-white);
+      color: var(--gb-black);
       font-weight: 800;
       text-transform: uppercase;
       font-size: 0.9rem;
@@ -403,30 +398,110 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
     }
 
     .add-to-cart-btn:hover:not(:disabled) {
-      background: var(--gb-gold-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
+      background: var(--gb-white);
+      box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
     }
 
     .add-to-cart-btn:disabled {
-      background: #cccccc;
-      color: #666666;
+      background: var(--gb-grey);
+      color: var(--gb-light-grey);
       cursor: not-allowed;
-      box-shadow: none;
     }
 
-    /* ========== MODALS (RESTENT SOMBRES POUR CONTRASTE) ========== */
+    /* ========== RESPONSIVE ENHANCEMENTS ========== */
+    @media (max-width: 1024px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        padding: 0 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .header-container {
+        flex-direction: column;
+        gap: 16px;
+        padding: 12px;
+      }
+
+      .logo img {
+        height: 40px;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 0 8px;
+      }
+
+      .product-info {
+        padding: 12px;
+      }
+
+      .product-name {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+
+      .product-price {
+        font-size: 1.1rem;
+      }
+
+      .product-image {
+        height: 150px;
+      }
+
+      .add-to-cart-btn {
+        width: 100%;
+        padding: 10px 5px;
+        font-size: 0.75rem;
+      }
+
+      .product-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .hero {
+        padding: 60px 16px 40px;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.75rem;
+      }
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.75);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -444,16 +519,15 @@
       width: 100%;
       max-width: 550px;
       border-radius: var(--radius-lg);
-      border: 1px solid rgba(212, 175, 55, 0.4);
+      border: 1px solid rgba(212, 175, 55, 0.3);
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-      color: var(--gb-white);
+      box-shadow: var(--shadow-hover);
     }
 
     .modal-header {
       padding: 24px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -480,13 +554,14 @@
 
     .modal-footer {
       padding: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: var(--gb-black);
     }
 
+    /* Detail Modal Specifics */
     #detailImage {
       width: 100%;
       max-height: 350px;
@@ -506,10 +581,7 @@
       color: var(--gb-gold);
     }
 
-    #detailDescription {
-      color: rgba(255, 255, 255, 0.85);
-    }
-
+    /* Cart Modal Specifics */
     .cart-items {
       max-height: 350px;
       overflow-y: auto;
@@ -529,7 +601,7 @@
       display: flex;
       gap: 16px;
       padding: 16px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       align-items: center;
     }
 
@@ -591,17 +663,16 @@
     .cart-total {
       font-size: 1.5rem;
       font-family: 'Montserrat', sans-serif;
-      color: var(--gb-white);
     }
 
     .cart-empty {
       text-align: center;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--gb-light-grey);
       padding: 40px 0;
       font-size: 1.1rem;
     }
 
-    /* Form Elements in Modals */
+    /* Form Elements */
     .form-group {
       margin-bottom: 20px;
     }
@@ -611,27 +682,22 @@
       margin-bottom: 8px;
       font-weight: 600;
       font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.85);
+      color: var(--gb-light-grey);
     }
 
     .form-control {
       width: 100%;
       padding: 14px;
       background: var(--gb-black);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: var(--radius);
       color: var(--gb-white);
       font-size: 1rem;
     }
 
-    .form-control::placeholder {
-      color: rgba(255, 255, 255, 0.5);
-    }
-
     .form-control:focus {
       outline: none;
       border-color: var(--gb-gold);
-      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
     }
 
     .form-row {
@@ -641,7 +707,7 @@
     }
 
     .shipping-info {
-      background: rgba(212, 175, 55, 0.15);
+      background: rgba(212, 175, 55, 0.1);
       padding: 20px;
       border-radius: var(--radius);
       border: 1px dashed var(--gb-gold);
@@ -663,39 +729,37 @@
 
     .btn-primary {
       background: var(--gb-gold);
-      color: var(--gb-white);
+      color: var(--gb-black);
       border: none;
     }
 
     .btn-primary:hover {
       background: var(--gb-gold-light);
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
     }
 
     .btn-primary:disabled {
-      background: #555555;
-      color: #999999;
+      background: var(--gb-grey);
+      color: var(--gb-light-grey);
     }
 
     .btn-outline {
       background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border: 1px solid var(--gb-light-grey);
       color: var(--gb-white);
     }
 
     .btn-outline:hover {
       border-color: var(--gb-white);
       color: var(--gb-white);
-      background: rgba(255, 255, 255, 0.1);
     }
 
-    /* ========== FOOTER (RESTE SOMBRE) ========== */
+    /* ========== FOOTER ========== */
     .footer {
       background: var(--gb-black);
-      border-top: 3px solid var(--gb-gold);
+      border-top: 2px solid var(--gb-gold);
       padding: 60px 24px 20px;
       margin-top: 60px;
-      color: var(--gb-light-grey);
     }
 
     .footer-container {
@@ -732,34 +796,6 @@
       padding-left: 5px;
     }
 
-    /* Social Icons in Footer */
-    .social-links {
-      display: flex;
-      gap: 15px;
-      margin-top: 10px;
-    }
-
-    .social-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 45px;
-      height: 45px;
-      background: var(--gb-grey);
-      border-radius: 50%;
-      color: var(--gb-white);
-      font-size: 1.3rem;
-      transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-
-    .social-link:hover {
-      background: var(--gb-gold);
-      color: var(--gb-black);
-      transform: translateY(-3px);
-      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-    }
-
     .footer-bottom {
       max-width: 1400px;
       margin: 60px auto 0;
@@ -771,54 +807,142 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     /* ========== RESPONSIVE ENHANCEMENTS ========== */
     @media (max-width: 1200px) {
-      .products-grid { grid-template-columns: repeat(3, 1fr); gap: 25px; }
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+      }
     }
 
     @media (max-width: 992px) {
-      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-      .hero h1 { font-size: 3rem; }
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
     }
 
     @media (max-width: 768px) {
-      .header-container { flex-direction: column; gap: 20px; padding: 15px; }
-      .logo img { height: 45px; }
-      .hero { padding: 80px 20px 60px; }
-      .hero h1 { font-size: 2.2rem; }
-      .filters { gap: 8px; }
-      .filter-btn { padding: 8px 16px; font-size: 0.8rem; }
-      .modal { width: 95%; margin: 10px; }
+      .header-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .logo img {
+        height: 45px;
+      }
+
+      .hero {
+        padding: 80px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .filters {
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+
+      .modal {
+        width: 95%;
+        margin: 10px;
+      }
     }
 
     @media (max-width: 480px) {
-      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; }
-      .product-info { padding: 15px; }
-      .product-name { font-size: 0.9rem; min-height: 2.6rem; }
-      .product-description { display: none; }
-      .product-footer { flex-direction: column; align-items: stretch; gap: 12px; }
-      .add-to-cart-btn { width: 100%; font-size: 0.8rem; padding: 10px; }
-      .product-price { font-size: 1.1rem; text-align: center; }
-      .product-image { height: 180px; }
-      .brand-name { font-size: 1.2rem; }
-      .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 10px;
+      }
+
+      .product-info {
+        padding: 15px;
+      }
+
+      .product-name {
+        font-size: 0.9rem;
+        min-height: 2.6rem;
+      }
+
+      .product-description {
+        display: none;
+        /* Hide description on mobile to save space */
+      }
+
+      .product-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .add-to-cart-btn {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 10px;
+      }
+
+      .product-price {
+        font-size: 1.1rem;
+        text-align: center;
+      }
+
+      .product-image {
+        height: 180px;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+
+      .brand-tagline {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+      }
     }
 
     @media (max-width: 360px) {
-      .products-grid { grid-template-columns: 1fr; }
-      .header-actions { flex-direction: column; width: 100%; }
-      .header-btn { width: 100%; justify-content: center; }
+      .products-grid {
+        grid-template-columns: 1fr;
+        /* Single column on very small phones if needed, or stick to 2 */
+      }
+
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .header-btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Header (RESTE SOMBRE) -->
+  <!-- Header -->
   <header class="header">
     <div class="header-container">
       <a href="index.html" class="logo">
@@ -829,6 +953,7 @@
         </div>
       </a>
       <div class="header-actions">
+        <!-- Replaced tracking with something thematic but preserving href -->
         <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck-fast"></i> Suivi</a>
         <button class="header-btn cart-btn" id="cartBtn">
           <i class="fa-solid fa-cart-shopping"></i> Panier
@@ -839,13 +964,14 @@
     </div>
   </header>
 
-  <!-- Hero (Fond sombre pour contraste avec le texte blanc) -->
+  <!-- Hero -->
   <section class="hero">
     <h1>REVEILLEZ LA <span>BÊTE</span> EN VOUS.</h1>
-    <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
+    <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché
+      Algérien.</p>
   </section>
 
-  <!-- Shop Controls -->
+  <!-- Shop Controls (Filters & Search) -->
   <div class="shop-controls">
     <div class="filters">
       <button class="filter-btn active" id="categoryFilter" data-category="all">Tous les produits</button>
@@ -860,15 +986,15 @@
     </div>
   </div>
 
-  <!-- Products Grid -->
+  <!-- Products Grid (ID PRESERVED FOR JS) -->
   <div class="products-grid" id="productsGrid">
     <div style="text-align:center; padding:100px 20px; color:var(--gb-gold); grid-column:1/-1;">
       <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; margin-bottom:20px;"></i>
-      <p style="font-size:1.2rem; font-family:'Montserrat', sans-serif; color:var(--gb-text-dark);">CHARGEMENT DE LA BOUTIQUE...</p>
+      <p style="font-size:1.2rem; font-family:'Montserrat', sans-serif;">CHARGEMENT DE LA BOUTIQUE...</p>
     </div>
   </div>
 
-  <!-- Cart Modal -->
+  <!-- Cart Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="cartModal">
     <div class="modal">
       <div class="modal-header">
@@ -876,7 +1002,9 @@
         <button class="close-modal">&times;</button>
       </div>
       <div class="modal-body">
-        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-items" id="cartItems">
+          <!-- Handled by JS -->
+        </div>
       </div>
       <div class="modal-footer">
         <div class="cart-total">TOTAL: <span id="totalPrice" style="color:var(--gb-gold)">0.00</span> DA</div>
@@ -885,7 +1013,7 @@
     </div>
   </div>
 
-  <!-- Product Detail Modal -->
+  <!-- Product Detail Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="productDetailModal">
     <div class="modal">
       <div class="modal-header">
@@ -895,10 +1023,12 @@
       <div class="modal-body">
         <img id="detailImage" src="" alt="Produit">
         <h2 id="detailName"></h2>
-        <p class="product-category" id="detailCategory" style="color:var(--gb-gold); font-weight:700; font-size:0.9rem; margin-bottom:15px;"></p>
-        <div id="detailDescription" style="margin:20px 0; line-height:1.7;"></div>
+        <p class="product-category" id="detailCategory"
+          style="color:var(--gb-gold); font-weight:700; font-size:0.9rem; margin-bottom:15px;"></p>
+        <div id="detailDescription" style="margin:20px 0; color:var(--gb-light-grey); line-height:1.7;"></div>
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <p style="font-size:2rem; font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);"><span id="detailPrice">0</span> DA</p>
+          <p style="font-size:2rem; font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);"><span
+              id="detailPrice">0</span> DA</p>
         </div>
       </div>
       <div class="modal-footer">
@@ -908,7 +1038,7 @@
     </div>
   </div>
 
-  <!-- Checkout/Order Modal -->
+  <!-- Checkout/Order Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="orderFormModal">
     <div class="modal">
       <div class="modal-header">
@@ -961,7 +1091,8 @@
               <span id="shippingPrice" style="font-weight:700; color:var(--gb-gold)">0 DA</span>
             </div>
             <div style="display:flex; justify-content:space-between; font-size:1.3rem; align-items:center;">
-              <span style="font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);">TOTAL NET:</span>
+              <span style="font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);">TOTAL
+                NET:</span>
               <span id="grandTotal" style="font-size:1.6rem; font-weight:900; color:var(--gb-gold);">0 DA</span>
             </div>
           </div>
@@ -969,56 +1100,53 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline close-modal">Annuler</button>
-        <button class="btn btn-primary" type="submit" form="orderForm">Valider la Commande <i class="fa-solid fa-check-double"></i></button>
+        <button class="btn btn-primary" type="submit" form="orderForm">Valider la Commande <i
+            class="fa-solid fa-check-double"></i></button>
       </div>
     </div>
   </div>
 
-  <!-- Success Modal -->
+  <!-- Success Modal (ID PRESERVED FOR JS) -->
   <div class="modal-overlay" id="confirmModal">
     <div class="modal" style="text-align:center;">
       <div class="modal-body" style="padding: 50px 30px;">
-        <div style="width:100px; height:100px; background:rgba(28,208,114,0.15); border:2px solid var(--gb-success); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
+        <div
+          style="width:100px; height:100px; background:rgba(28,208,114,0.1); border:2px solid var(--gb-success); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
           <i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gb-success);"></i>
         </div>
         <h3 style="margin-bottom:20px; font-size:2rem; color:var(--gb-success);">VICTOIRE !</h3>
-        <p style="color:rgba(255,255,255,0.85); margin-bottom:30px; font-size:1.1rem;">La commande a été transmise à notre quartier général.</p>
-        <div style="background:var(--gb-black); border:1px solid var(--gb-gold); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
-          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); margin-bottom:10px; text-transform:uppercase;">CODE D'OPÉRATION (Numéro)</p>
-          <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;" id="orderNumber"></p>
+        <p style="color:var(--gb-light-grey); margin-bottom:30px; font-size:1.1rem;">La commande a été transmise à notre
+          quartier général.</p>
+
+        <div
+          style="background:var(--gb-black); border:1px solid var(--gb-gold); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
+          <p style="font-size:0.9rem; color:var(--gb-light-grey); margin-bottom:10px; text-transform:uppercase;">CODE
+            D'OPÉRATION (Numéro)</p>
+          <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;"
+            id="orderNumber"></p>
         </div>
-        <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i class="fa-solid fa-camera"></i> Capturez cet écran pour le suivi.</p>
-        <button class="btn btn-primary close-modal" id="continueBtn" style="width:100%;">Continuer l'Entraînement</button>
+
+        <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i class="fa-solid fa-camera"></i>
+          Capturez cet écran pour le suivi.</p>
+        <button class="btn btn-primary close-modal" id="continueBtn" style="width:100%;">Continuer
+          l'Entraînement</button>
       </div>
     </div>
   </div>
 
-  <!-- Footer (RESTE SOMBRE) -->
+  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section">
         <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
-        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
+        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments
+          certifiés premium.</p>
       </div>
       <div class="footer-section">
         <h3>QG COMMANDEMENT</h3>
         <p><i class="fa-solid fa-phone"></i> +213 (0) 669 46 99 56</p>
         <p><i class="fa-solid fa-envelope"></i> contact@wahbizoghbi.dz</p>
         <p><i class="fa-solid fa-location-crosshairs"></i> Algérie</p>
-      </div>
-      <div class="footer-section">
-        <h3>SUIVEZ-NOUS</h3>
-        <div class="social-links">
-          <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Facebook">
-            <i class="fa-brands fa-facebook-f"></i>
-          </a>
-          <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Instagram">
-            <i class="fa-brands fa-instagram"></i>
-          </a>
-          <a href="https://tiktok.com/@wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="TikTok">
-            <i class="fa-brands fa-tiktok"></i>
-          </a>
-        </div>
       </div>
       <div class="footer-section">
         <h3>LOGISTIQUE</h3>
@@ -1031,7 +1159,7 @@
     </div>
   </footer>
 
-  <!-- Firebase & Client Logic -->
+  <!-- Firebase & Client Logic (PRESERVED) -->
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="script.js"></script>
 </body>
