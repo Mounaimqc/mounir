@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Couverture de Livraison | Wahbi Zoghbi</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="icon" href="logo.jpeg" type="image/x-icon">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ========== WAHBI ZOGHBI THEME ========== */
+    :root {
+      --gb-gold: #DC143C;              /* Crimson Red - couleur principale */
+      --gb-gold-light: #FF6B7A;        /* Light Red - hover */
+      --gb-gold-dark: #8B0000;         /* Dark Red - ombres */
+      --gb-black: #050505;
+      --gb-dark-grey: #111111;
+      --gb-grey: #222222;
+      --gb-light-grey: #888888;
+      --gb-white: #FFFFFF;
+      --gb-off-white: #f8f9fa;
+      --gb-text-dark: #1a1a1a;
+      --gb-text-muted: #555555;
+      --gb-danger: #ff4d4d;
+      --gb-success: #1cd072;
+
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.25);
+      --radius: 8px;
+      --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--gb-off-white);
+      color: var(--gb-text-dark);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Montserrat', sans-serif;
+      text-transform: uppercase;
+      color: var(--gb-text-dark);
+    }
+
+    a { text-decoration: none; color: inherit; transition: var(--transition); }
+    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: var(--transition); }
+
+    /* ========== HEADER (SOMBRE) ========== */
+    .header {
+      background: rgba(17, 17, 17, 0.98);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .logo img {
+      height: 50px;
+      width: auto;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gb-white);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .brand-tagline {
+      font-size: 0.9rem;
+      font-weight: 900;
+      color: var(--gb-gold);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .header-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--gb-white);
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid var(--gb-gold);
+    }
+
+    .header-btn:hover {
+      background: var(--gb-gold);
+      color: var(--gb-black);
+    }
+
+    .cart-btn {
+      position: relative;
+      background: var(--gb-gold);
+      color: var(--gb-black);
+    }
+
+    .cart-btn:hover { background: var(--gb-gold-light); }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--gb-danger);
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 2px solid var(--gb-dark-grey);
+    }
+
+    /* ========== COUVERTURE PAGE ========== */
+    .coverage-hero {
+      background: linear-gradient(135deg, var(--gb-black) 0%, var(--gb-dark-grey) 100%);
+      padding: 80px 24px 60px;
+      text-align: center;
+      border-bottom: 3px solid var(--gb-gold);
+      margin-bottom: 40px;
+    }
+
+    .coverage-hero h1 {
+      font-size: 2.8rem;
+      color: var(--gb-white);
+      margin-bottom: 16px;
+    }
+
+    .coverage-hero h1 span { color: var(--gb-gold); }
+
+    .coverage-hero p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .coverage-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* Carte SVG */
+    .map-container {
+      background: var(--gb-white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid #e8e8e8;
+    }
+
+    .map-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gb-text-dark);
+    }
+
+    .map-title i { color: var(--gb-gold); }
+
+    .algeria-map {
+      width: 100%;
+      height: auto;
+      min-height: 500px;
+      background: var(--gb-off-white);
+      border-radius: var(--radius);
+      padding: 10px;
+    }
+
+    .algeria-map svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .wilaya-path {
+      fill: var(--gb-grey);
+      stroke: var(--gb-white);
+      stroke-width: 0.5;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .wilaya-path:hover {
+      fill: var(--gb-gold);
+      stroke: var(--gb-gold-dark);
+      stroke-width: 1;
+      filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.4));
+    }
+
+    .wilaya-path.covered {
+      fill: var(--gb-gold);
+    }
+
+    .wilaya-path.limited {
+      fill: #f39c12;
+    }
+
+    .wilaya-path.coming-soon {
+      fill: var(--gb-light-grey);
+      cursor: not-allowed;
+    }
+
+    /* Sidebar Infos */
+    .coverage-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .info-card {
+      background: var(--gb-white);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      border: 1px solid #e8e8e8;
+    }
+
+    .info-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gb-text-dark);
+    }
+
+    .info-card h3 i { color: var(--gb-gold); }
+
+    .wilaya-detail {
+      display: none;
+    }
+
+    .wilaya-detail.active {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+
+    .wilaya-name {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--gb-gold);
+      margin-bottom: 8px;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .wilaya-code {
+      display: inline-block;
+      background: var(--gb-grey);
+      color: var(--gb-white);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .delivery-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: rgba(28, 208, 114, 0.12);
+      border: 1px solid var(--gb-success);
+      border-radius: var(--radius);
+      margin-bottom: 16px;
+    }
+
+    .delivery-status.limited {
+      background: rgba(243, 156, 18, 0.12);
+      border-color: #f39c12;
+      color: #d35400;
+    }
+
+    .delivery-status.coming {
+      background: rgba(136, 136, 136, 0.12);
+      border-color: var(--gb-light-grey);
+      color: var(--gb-text-muted);
+    }
+
+    .delivery-status i {
+      font-size: 1.3rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .delivery-time {
+      font-size: 0.95rem;
+      color: var(--gb-text-muted);
+      margin-bottom: 20px;
+    }
+
+    .delivery-time strong {
+      color: var(--gb-text-dark);
+      font-weight: 600;
+    }
+
+    .shipping-cost {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-top: 1px dashed #e0e0e0;
+      font-size: 0.95rem;
+    }
+
+    .shipping-cost.total {
+      border-top: 2px solid var(--gb-gold);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--gb-text-dark);
+      margin-top: 8px;
+      padding-top: 16px;
+    }
+
+    .shipping-cost span:last-child {
+      color: var(--gb-gold);
+      font-weight: 800;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .cta-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--gb-gold);
+      color: var(--gb-white);
+      font-weight: 700;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+    }
+
+    .cta-btn:hover {
+      background: var(--gb-gold-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(139, 0, 0, 0.45);
+    }
+
+    .cta-btn:disabled {
+      background: var(--gb-grey);
+      color: var(--gb-light-grey);
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--gb-text-muted);
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .legend-color.covered { background: var(--gb-gold); }
+    .legend-color.limited { background: #f39c12; }
+    .legend-color.coming { background: var(--gb-light-grey); }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 16px;
+      background: var(--gb-off-white);
+      border-radius: var(--radius);
+      border: 1px solid #e8e8e8;
+    }
+
+    .stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--gb-gold);
+      font-family: 'Montserrat', sans-serif;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--gb-text-muted);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Search */
+    .search-box {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gb-light-grey);
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px 16px 14px 44px;
+      background: var(--gb-off-white);
+      border: 2px solid #e0e0e0;
+      border-radius: var(--radius);
+      color: var(--gb-text-dark);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: var(--gb-gold);
+      box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+    }
+
+    .search-box input::placeholder { color: var(--gb-text-muted); }
+
+    /* Footer */
+    .footer {
+      background: var(--gb-black);
+      border-top: 3px solid var(--gb-gold);
+      padding: 60px 24px 20px;
+      margin-top: 40px;
+      color: var(--gb-light-grey);
+    }
+
+    .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+    }
+
+    .footer-section h3 {
+      font-size: 1.25rem;
+      color: var(--gb-white);
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+    }
+
+    .footer-section p,
+    .footer-section a {
+      color: var(--gb-light-grey);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-section i { color: var(--gb-gold); width: 20px; }
+    .footer-section a:hover { color: var(--gb-gold); padding-left: 5px; }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 45px;
+      height: 45px;
+      background: var(--gb-grey);
+      border-radius: 50%;
+      color: var(--gb-white);
+      font-size: 1.3rem;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .social-link:hover {
+      background: var(--gb-gold);
+      color: var(--gb-black);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 60px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      color: var(--gb-light-grey);
+      font-size: 0.85rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .coverage-container {
+        grid-template-columns: 1fr;
+      }
+      .coverage-sidebar {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .info-card {
+        flex: 1 1 calc(50% - 12px);
+        min-width: 280px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+      }
+      .coverage-hero h1 { font-size: 2.2rem; }
+      .coverage-hero p { font-size: 1rem; }
+      .algeria-map { min-height: 400px; }
+      .info-card { flex: 1 1 100%; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .coverage-hero { padding: 60px 16px 40px; }
+      .coverage-hero h1 { font-size: 1.8rem; }
+      .algeria-map { min-height: 350px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .brand-name { font-size: 1.2rem; }
+      .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">
+        <img src="logo.jpeg" alt="Logo">
+        <div class="logo-text">
+          <div class="brand-name">Wahbi Zoghbi</div>
+          <div class="brand-tagline">Nutrition</div>
+        </div>
+      </a>
+      <div class="header-actions">
+        <a href="tracking.html" class="header-btn"><i class="fa-solid fa-truck-fast"></i> Suivi</a>
+        <button class="header-btn cart-btn" id="cartBtn">
+          <i class="fa-solid fa-cart-shopping"></i> Panier
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <a href="login.html" class="header-btn"><i class="fa-solid fa-user-shield"></i> Admin</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="coverage-hero">
+    <h1>COUVERTURE <span>DE LIVRAISON</span></h1>
+    <p>Nous livrons dans les 58 wilayas du territoire national algérien. Sélectionnez votre wilaya pour voir les détails de livraison.</p>
+  </section>
+
+  <!-- Main Content -->
+  <main class="coverage-container">
+    
+    <!-- Map Section -->
+    <div class="map-container">
+      <h2 class="map-title"><i class="fa-solid fa-map-location-dot"></i> Carte de Couverture</h2>
+      
+      <!-- Search -->
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="wilayaSearch" placeholder="Rechercher une wilaya...">
+      </div>
+
+      <!-- SVG Map Container -->
+      <div class="algeria-map" id="algeriaMap">
+        <!-- SVG will be injected here by JavaScript -->
+      </div>
+
+      <!-- Legend -->
+      <div class="legend">
+        <div class="legend-item">
+          <div class="legend-color covered"></div>
+          <span>Livraison 24-48h</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color limited"></div>
+          <span>Livraison 48-72h</span>
+        </div>
+        <div class="legend-item">
+          <div class="legend-color coming"></div>
+          <span>Bientôt disponible</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="coverage-sidebar">
+      
+      <!-- Default Info -->
+      <div class="info-card" id="defaultInfo">
+        <h3><i class="fa-solid fa-circle-info"></i> Informations</h3>
+        <p style="color: var(--gb-text-muted); line-height: 1.7;">
+          Cliquez sur une wilaya sur la carte pour voir les détails de livraison, les délais et les frais applicables.
+        </p>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">58</div>
+            <div class="stat-label">Wilayas couvertes</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">24-48h</div>
+            <div class="stat-label">Délai moyen</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">100%</div>
+            <div class="stat-label">Paiement sécurisé</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">Gratuit</div>
+            <div class="stat-label">Retours</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Wilaya Detail (hidden by default) -->
+      <div class="info-card wilaya-detail" id="wilayaDetail">
+        <h3><i class="fa-solid fa-location-dot"></i> Détails de Livraison</h3>
+        <div class="wilaya-name" id="detailName">Nom de la Wilaya</div>
+        <div class="wilaya-code" id="detailCode">Code: XX</div>
+        
+        <div class="delivery-status" id="detailStatus">
+          <i class="fa-solid fa-check-circle"></i>
+          <span id="statusText">Livraison disponible</span>
+        </div>
+        
+        <div class="delivery-time">
+          <strong>Délai estimé:</strong> <span id="detailTime">24 - 48 heures</span>
+        </div>
+        
+        <div class="shipping-cost">
+          <span>Frais de livraison:</span>
+          <span id="detailCost">Gratuit</span>
+        </div>
+        <div class="shipping-cost total">
+          <span>Total à payer:</span>
+          <span id="detailTotal">0 DA</span>
+        </div>
+        
+        <button class="cta-btn" id="orderBtn" disabled>
+          <i class="fa-solid fa-cart-plus"></i> Commander Maintenant
+        </button>
+      </div>
+
+      <!-- Contact Card -->
+      <div class="info-card">
+        <h3><i class="fa-solid fa-headset"></i> Besoin d'Aide ?</h3>
+        <p style="color: var(--gb-text-muted); margin-bottom: 16px;">
+          Notre équipe est disponible pour répondre à vos questions sur la livraison.
+        </p>
+        <p><i class="fa-solid fa-phone" style="color:var(--gb-gold)"></i> +213 (0) 669 46 99 56</p>
+        <p><i class="fa-solid fa-envelope" style="color:var(--gb-gold)"></i> contact@wahbizoghbi.dz</p>
+        <p><i class="fa-solid fa-clock" style="color:var(--gb-gold)"></i> Lun-Sam: 9h - 18h</p>
+      </div>
+
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
+        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
+      </div>
+      <div class="footer-section">
+        <h3>QG COMMANDEMENT</h3>
+        <p><i class="fa-solid fa-phone"></i> +213 (0) 669 46 99 56</p>
+        <p><i class="fa-solid fa-envelope"></i> contact@wahbizoghbi.dz</p>
+        <p><i class="fa-solid fa-location-crosshairs"></i> Algérie</p>
+      </div>
+      <div class="footer-section">
+        <h3>SUIVEZ-NOUS</h3>
+        <div class="social-links">
+          <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Facebook">
+            <i class="fa-brands fa-facebook-f"></i>
+          </a>
+          <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://tiktok.com/@wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="TikTok">
+            <i class="fa-brands fa-tiktok"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>LOGISTIQUE</h3>
+        <p><i class="fa-solid fa-shield-halved"></i> Paiement 100% sécurisé à la livraison</p>
+        <p><i class="fa-solid fa-truck-fast"></i> Déploiement rapide sur les 58 wilayas</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Wahbi Zoghbi. Tous droits réservés.</p>
+    </div>
+  </footer>
+
+  <!-- Algeria Paths Data -->
+  <script src="algeria_paths.js"></script>
+
+  <script>
+    // Configuration des wilayas (à compléter avec vos données réelles)
+    const WILAYA_CONFIG = {
+      // Format: 'code': { status: 'covered'|'limited'|'coming', time: '24-48h', cost: 0|300|500 }
+      '16': { name: 'Alger', status: 'covered', time: '24-48h', cost: 0 },
+      '31': { name: 'Oran', status: 'covered', time: '24-48h', cost: 0 },
+      '25': { name: 'Constantine', status: 'covered', time: '24-48h', cost: 0 },
+      '19': { name: 'Sétif', status: 'covered', time: '24-48h', cost: 0 },
+      '06': { name: 'Béjaïa', status: 'covered', time: '24-48h', cost: 0 },
+      '15': { name: 'Tizi Ouzou', status: 'covered', time: '24-48h', cost: 0 },
+      '34': { name: 'Bordj Bou Arreridj', status: 'covered', time: '24-48h', cost: 0 },
+      '10': { name: 'Bouira', status: 'limited', time: '48-72h', cost: 300 },
+      '29': { name: 'Mascara', status: 'limited', time: '48-72h', cost: 300 },
+      '13': { name: 'Tlemcen', status: 'limited', time: '48-72h', cost: 300 },
+      '22': { name: 'Sidi Bel Abbès', status: 'limited', time: '48-72h', cost: 300 },
+      '30': { name: 'Ouargla', status: 'limited', time: '48-72h', cost: 500 },
+      '33': { name: 'Illizi', status: 'coming', time: 'Bientôt', cost: null },
+      '08': { name: 'Béchar', status: 'coming', time: 'Bientôt', cost: null },
+      // ... ajouter les 58 wilayas
+    };
+
+    // Générer le SVG de la carte
+    function renderMap() {
+      const mapContainer = document.getElementById('algeriaMap');
+      
+      let pathsHTML = '';
+      if (typeof ALGERIA_PATHS !== 'undefined') {
+        pathsHTML = ALGERIA_PATHS.map(p => {
+          const config = WILAYA_CONFIG[p.code] || { status: 'coming', time: 'Bientôt', cost: null };
+          return `<path class="wilaya-path ${config.status}" 
+                        data-code="${p.code}" 
+                        data-name="${p.name}"
+                        d="${p.d}" 
+                        title="${p.name}"/>`;
+        }).join('\n');
+      }
+
+      mapContainer.innerHTML = `
+        <svg viewBox="0 0 900 760" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+              <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <g id="algeria-paths">
+            ${pathsHTML}
+          </g>
+        </svg>
+      `;
+
+      // Attacher les événements
+      document.querySelectorAll('.wilaya-path').forEach(path => {
+        path.addEventListener('click', handleWilayaClick);
+        path.addEventListener('mouseenter', handleWilayaHover);
+        path.addEventListener('mouseleave', handleWilayaLeave);
+      });
+    }
+
+    // Gestion du clic sur une wilaya
+    function handleWilayaClick(e) {
+      const code = e.currentTarget.dataset.code;
+      const name = e.currentTarget.dataset.name;
+      const config = WILAYA_CONFIG[code] || { status: 'coming', time: 'Bientôt', cost: null };
+      
+      // Mettre à jour l'UI
+      document.getElementById('defaultInfo').style.display = 'none';
+      document.getElementById('wilayaDetail').classList.add('active');
+      
+      document.getElementById('detailName').textContent = name;
+      document.getElementById('detailCode').textContent = `Code: ${code.padStart(2, '0')}`;
+      
+      const statusEl = document.getElementById('detailStatus');
+      const statusText = document.getElementById('statusText');
+      
+      statusEl.className = 'delivery-status ' + config.status;
+      
+      if (config.status === 'covered') {
+        statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>Livraison disponible</span>';
+        document.getElementById('orderBtn').disabled = false;
+      } else if (config.status === 'limited') {
+        statusEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>Livraison limitée</span>';
+        document.getElementById('orderBtn').disabled = false;
+      } else {
+        statusEl.innerHTML = '<i class="fa-solid fa-clock"></i><span>Bientôt disponible</span>';
+        document.getElementById('orderBtn').disabled = true;
+      }
+      
+      document.getElementById('detailTime').textContent = config.time;
+      
+      if (config.cost === 0) {
+        document.getElementById('detailCost').textContent = 'Gratuit';
+        document.getElementById('detailTotal').textContent = '0 DA';
+      } else if (config.cost) {
+        document.getElementById('detailCost').textContent = config.cost + ' DA';
+        document.getElementById('detailTotal').textContent = config.cost + ' DA';
+      } else {
+        document.getElementById('detailCost').textContent = 'N/A';
+        document.getElementById('detailTotal').textContent = 'N/A';
+      }
+      
+      // Scroll vers la sidebar sur mobile
+      if (window.innerWidth < 1024) {
+        document.getElementById('wilayaDetail').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function handleWilayaHover(e) {
+      e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))';
+    }
+
+    function handleWilayaLeave(e) {
+      e.currentTarget.style.filter = 'none';
+    }
+
+    // Recherche de wilaya
+    function setupSearch() {
+      const searchInput = document.getElementById('wilayaSearch');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        document.querySelectorAll('.wilaya-path').forEach(path => {
+          const name = path.dataset.name.toLowerCase();
+          const code = path.dataset.code;
+          if (name.includes(query) || code.includes(query)) {
+            path.style.opacity = '1';
+            path.style.stroke = query ? '#DC143C' : '#FFFFFF';
+            path.style.strokeWidth = query ? '2' : '0.5';
+          } else {
+            path.style.opacity = '0.3';
+            path.style.stroke = '#FFFFFF';
+            path.style.strokeWidth = '0.5';
+          }
+        });
+      });
+    }
+
+    // Bouton Commander
+    function setupOrderButton() {
+      document.getElementById('orderBtn').addEventListener('click', () => {
+        const code = document.querySelector('.wilaya-path[data-code]')?.dataset.code;
+        if (code) {
+          // Rediriger vers la boutique avec la wilaya pré-sélectionnée
+          window.location.href = `index.html?wilaya=${code}`;
+        }
+      });
+    }
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+      renderMap();
+      setupSearch();
+      setupOrderButton();
+    });
+  </script>
+
+</body>
+</html>
