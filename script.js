@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadProductsFromFirebase();
   setupEventListeners();
   loadCartFromStorage();
+  populateShippingTable();
 
   // Modal Add to Cart Button
   const modalBtn = document.getElementById('modalAddToCartBtn');
@@ -415,6 +416,9 @@ function setupEventListeners() {
 
   if (searchInput) searchInput.addEventListener('input', filterProducts);
 
+  const wilayaSearch = document.getElementById('wilayaSearch');
+  if (wilayaSearch) wilayaSearch.addEventListener('input', filterShippingTable);
+
   filterBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       // Retirer active de tous
@@ -442,6 +446,44 @@ function filterProducts() {
   });
 
   loadProducts(filtered);
+}
+
+// ========== FONCTIONS COUVERTURE LIVRAISON ==========
+function populateShippingTable() {
+  const tableBody = document.getElementById('coverageTableBody');
+  if (!tableBody) return;
+
+  tableBody.innerHTML = '';
+
+  // Sort wilayas by code
+  const sortedWilayas = Object.keys(wilayasData).sort((a, b) => parseInt(a) - parseInt(b));
+
+  sortedWilayas.forEach(wilaya => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+            <td>${wilaya}</td>
+            <td class="price-tag">${shippingPrices[wilaya]} DA</td>
+            <td class="price-tag">${stopDeskPrices[wilaya]} DA</td>
+        `;
+    tableBody.appendChild(row);
+  });
+}
+
+function filterShippingTable() {
+  const searchTerm = document.getElementById('wilayaSearch')?.value.toLowerCase() || '';
+  const tableBody = document.getElementById('coverageTableBody');
+  if (!tableBody) return;
+
+  const rows = tableBody.getElementsByTagName('tr');
+
+  for (let row of rows) {
+    const wilayaName = row.cells[0].textContent.toLowerCase();
+    if (wilayaName.includes(searchTerm)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  }
 }
 
 // ========== FORMULAIRE DE COMMANDE ==========
@@ -500,25 +542,107 @@ function updateShippingPrice() {
   if (grandTotalEl) grandTotalEl.textContent = (cartTotal + price).toFixed(2) + ' DA';
 }
 
-// ========== DONNÉES WILAYAS & PRIX ==========
+// ========== DONNÉES WILAYAS & PRIX (58 WILAYAS) ==========
 const wilayasData = {
+  "01 - Adrar": ["Adrar", "Reggane", "Timimoun", "Aoulef"],
+  "02 - Chlef": ["Chlef", "Ténès", "Oued Fodda", "Boukadir"],
+  "03 - Laghouat": ["Laghouat", "Aflou", "Aïn Madhi"],
+  "04 - Oum El Bouaghi": ["Oum El Bouaghi", "Aïn Beïda", "Aïn M'lila"],
+  "05 - Batna": ["Batna", "Arris", "Barika", "Merouana"],
+  "06 - Béjaïa": ["Béjaïa", "Akbou", "El Kseur", "Sidi Aïch"],
+  "07 - Biskra": ["Biskra", "Ouled Djellal", "Tolga"],
+  "08 - Béchar": ["Béchar", "Abadla", "Béni Abbès"],
+  "09 - Blida": ["Blida", "Boufarik", "Oued El Alleug", "Mouzaia"],
+  "10 - Bouira": ["Bouira", "Lakhdaria", "Sour El Ghozlane"],
+  "11 - Tamanrasset": ["Tamanrasset", "In Salah", "In Guezzam"],
+  "12 - Tébessa": ["Tébessa", "Bir el-Ater", "Cheria"],
+  "13 - Tlemcen": ["Tlemcen", "Maghnia", "Remchi", "Ghazaouet"],
+  "14 - Tiaret": ["Tiaret", "Frenda", "Sougueur"],
+  "15 - Tizi Ouzou": ["Tizi Ouzou", "Azeffoun", "Azazga", "Boghni"],
   "16 - Alger": ["Alger Centre", "Bab El Oued", "Hydra", "El Biar", "Bouzareah", "Birkhadem", "Kouba", "Bab Ezzouar"],
-  "31 - Oran": ["Oran", "Es Senia", "Bir El Djir", "Arzew", "Misserghin"],
+  "17 - Djelfa": ["Djelfa", "Hassi Bahbah", "Messaad"],
+  "18 - Jijel": ["Jijel", "Taher", "El Milia"],
   "19 - Sétif": ["Sétif", "El Eulma", "Aïn Oulmene", "Béni Ourtilane"],
-  "15 - Tizi Ouzou": ["Tizi Ouzou", "Draâ Ben Khedda", "Azazga", "Boghni"],
+  "20 - Saïda": ["Saïda", "Hassasna", "Youb"],
+  "21 - Skikda": ["Skikda", "Collo", "Azzaba", "El Harrouch"],
+  "22 - Sidi Bel Abbès": ["Sidi Bel Abbès", "Sfisef", "Telagh"],
+  "23 - Annaba": ["Annaba", "El Bouni", "Berrahal"],
+  "24 - Guelma": ["Guelma", "Bouchegouf", "Oued Zenati"],
   "25 - Constantine": ["Constantine", "El Khroub", "Hamma Bouziane", "Aïn Smara"],
-  "09 - Blida": ["Blida", "Boufarik", "Oued El Alleug", "Mouzaia"]
+  "26 - Médéa": ["Médéa", "Beni Slimane", "Berrouaghia"],
+  "27 - Mostaganem": ["Mostaganem", "Ain Nouissy", "Bouguirat"],
+  "28 - M'Sila": ["M'Sila", "Bou Saâda", "Sidi Aïssa"],
+  "29 - Mascara": ["Mascara", "Sig", "Mohammadia"],
+  "30 - Ouargla": ["Ouargla", "Hassi Messaoud", "Touggourt"],
+  "31 - Oran": ["Oran", "Es Senia", "Bir El Djir", "Arzew", "Misserghin"],
+  "32 - El Bayadh": ["El Bayadh", "Bougtob", "Rogassa"],
+  "33 - Illizi": ["Illizi", "Djanet", "In Amenas"],
+  "34 - Bordj Bou Arréridj": ["Bordj Bou Arréridj", "Mansoura", "Ras El Oued"],
+  "35 - Boumerdès": ["Boumerdès", "Boudouaou", "Dellys"],
+  "36 - El Tarf": ["El Tarf", "El Kala", "Dréan"],
+  "37 - Tindouf": ["Tindouf"],
+  "38 - Tissemsilt": ["Tissemsilt", "Lardjem", "Theniet El Had"],
+  "39 - El Oued": ["El Oued", "Guemar", "Debila"],
+  "40 - Khenchela": ["Khenchela", "Kais", "Chechar"],
+  "41 - Souk Ahras": ["Souk Ahras", "Sedrata", "M'daourouch"],
+  "42 - Tipaza": ["Tipaza", "Cherchell", "Kolea", "Hadjeret Ennous"],
+  "43 - Mila": ["Mila", "Chelghoum Laïd", "Grarem Gouga"],
+  "44 - Aïn Defla": ["Aïn Defla", "Miliana", "Khemis Miliana"],
+  "45 - Naâma": ["Naâma", "Mécheria", "Aïn Séfra"],
+  "46 - Aïn Témouchent": ["Aïn Témouchent", "Beni Saf", "Hammam Bou Hadjar"],
+  "47 - Ghardaïa": ["Ghardaïa", "Metlili", "El Guerrara"],
+  "48 - Relizane": ["Relizane", "Mazouna", "Oued Rhiou"],
+  "49 - El M'Ghair": ["El M'Ghair", "Djamaa"],
+  "50 - El Menia": ["El Menia", "Hassi Gara"],
+  "51 - Ouled Djellal": ["Ouled Djellal", "Sidi Khaled"],
+  "52 - Bordj Badji Mokhtar": ["Bordj Badji Mokhtar"],
+  "53 - Béni Abbès": ["Béni Abbès", "Igli"],
+  "54 - Timimoun": ["Timimoun", "Aoulef"],
+  "55 - Touggourt": ["Touggourt", "Temacine"],
+  "56 - Djanet": ["Djanet"],
+  "57 - In Salah": ["In Salah"],
+  "58 - In Guezzam": ["In Guezzam"]
 };
 
-const shippingPrices = {
-  "16 - Alger": 600, "31 - Oran": 700, "19 - Sétif": 550,
-  "15 - Tizi Ouzou": 700, "25 - Constantine": 650, "09 - Blida": 700
-};
+// Pricing Tiers based on geography
+const shippingPrices = {};
+const stopDeskPrices = {};
 
-const stopDeskPrices = {
-  "16 - Alger": 400, "31 - Oran": 500, "19 - Sétif": 400,
-  "15 - Tizi Ouzou": 500, "25 - Constantine": 450, "09 - Blida": 500
-};
+// Default pricing by wilaya code ranges (general proxy for distance)
+Object.keys(wilayasData).forEach(wilaya => {
+  const code = parseInt(wilaya.substring(0, 2));
+
+  // Tier 1: Center & Hubs (Alger, Blida, Tipaza, Boumerdes, Oran, Constantine)
+  if ([16, 9, 42, 35, 31, 25].includes(code)) {
+    shippingPrices[wilaya] = 500;
+    stopDeskPrices[wilaya] = 300;
+  }
+  // Tier 2: Large North/Coast (Mosta, Chlef, Jijel, Skikda, Annaba, Bejaia, Tizi)
+  else if ([2, 6, 15, 18, 21, 23, 27].includes(code)) {
+    shippingPrices[wilaya] = 600;
+    stopDeskPrices[wilaya] = 400;
+  }
+  // Tier 3: High Plateaus / Proximity South (Setif, Batna, Tiaret, Djelfa, Msila, Biskra)
+  else if ([5, 7, 14, 17, 19, 28, 34, 43].includes(code)) {
+    shippingPrices[wilaya] = 700;
+    stopDeskPrices[wilaya] = 450;
+  }
+  // Tier 4: South (Ghardaia, Ouargla, El Oued, Bechar)
+  else if ([8, 30, 39, 47, 49, 50, 51, 55].includes(code)) {
+    shippingPrices[wilaya] = 900;
+    stopDeskPrices[wilaya] = 600;
+  }
+  // Tier 5: Far South / Sahara (Adrar, Tamanrasset, Illizi, Tindouf, etc.)
+  else if ([1, 11, 33, 37, 52, 53, 54, 56, 57, 58].includes(code)) {
+    shippingPrices[wilaya] = 1200;
+    stopDeskPrices[wilaya] = 800;
+  }
+  // Default fallback (Tier 2/3 Mix)
+  else {
+    shippingPrices[wilaya] = 750;
+    stopDeskPrices[wilaya] = 500;
+  }
+});
 
 // ========== SOUMISSION COMMANDE ==========
 async function submitOrderForm() {
