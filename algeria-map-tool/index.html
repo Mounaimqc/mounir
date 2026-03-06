@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algeria Map Customization Tool</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Algeria Map Customization Tool</h1>
+            <p>Customize delivery details for each wilaya</p>
+        </header>
+
+        <main>
+            <div id="map-container">
+                <!-- SVG map will be injected here -->
+                <div class="loader">Loading Map...</div>
+            </div>
+
+            <div id="sidebar">
+                <div class="card glass">
+                    <h2>Wilaya Details</h2>
+                    <div id="wilaya-info">
+                        <p class="placeholder-text">Hover over a wilaya to see details</p>
+                    </div>
+                </div>
+
+                <div class="card glass">
+                    <h2>Global Customization</h2>
+                    <div class="form-group">
+                        <label for="default-price-home">Default Home Price (DA)</label>
+                        <input type="number" id="default-price-home" value="600">
+                    </div>
+                    <div class="form-group">
+                        <label for="default-price-desk">Default Desk Price (DA)</label>
+                        <input type="number" id="default-price-desk" value="400">
+                    </div>
+                    <button id="save-settings" class="btn">Save All</button>
+                </div>
+            </div>
+        </main>
+
+        <div id="tooltip" class="tooltip hidden"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
