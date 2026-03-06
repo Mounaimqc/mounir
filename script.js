@@ -422,8 +422,8 @@ function setupEventListeners() {
 
   closeButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const modal = btn.closest('.modal');
-      if (modal) modal.classList.remove('active');
+      const modalOverlay = btn.closest('.modal-overlay');
+      if (modalOverlay) modalOverlay.classList.remove('active');
     });
   });
 
