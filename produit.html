@@ -83,7 +83,55 @@
             outline: none;
             transition: var(--transition);
         }
+/* Social Links in Footer */
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
 
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  background: var(--gb-grey);
+  border-radius: 50%;
+  color: var(--gb-white);
+  font-size: 1.3rem;
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.social-link:hover {
+  background: var(--gb-gold);
+  color: var(--gb-black);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+/* Footer links hover */
+.footer-section a {
+  color: var(--gb-light-grey);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: var(--transition);
+}
+
+.footer-section a:hover {
+  color: var(--gb-gold);
+  padding-left: 5px;
+}
+
+.footer-section i {
+  color: var(--gb-gold);
+  width: 20px;
+  flex-shrink: 0;
+}
         /* ========== HEADER / NAV ========== */
         .header {
             background: rgba(17, 17, 17, 0.95);
@@ -960,6 +1008,7 @@
 
 
 </html>
+
 
 
 
