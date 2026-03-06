@@ -5,8 +5,19 @@ import { db } from './firebase-config.js';
 
 // ========== VARIABLES GLOBALES ==========
 let products = [];
+let allFilteredProducts = []; // To store current filter/search results for pagination
+let displayedCount = 10;
+const itemsPerPage = 10;
 let cart = [];
 let currentProductId = null;
+
+// Utility: Shuffle Array
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
 
 // ========== PLACEHOLDER IMAGE (SVG Inline) ==========
 const PLACEHOLDER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='200' viewBox='0 0 300 200'%3E%3Crect fill='%23f3f4f6' width='300' height='200'/%3E%3Ccircle cx='150' cy='80' r='40' fill='%23d1d5db'/%3E%3Crect x='60' y='140' width='180' height='20' rx='10' fill='%23d1d5db'/%3E%3Ctext x='50%25' y='185' font-family='Arial' font-size='12' fill='%236b7280' text-anchor='middle'%3EImage non disponible%3C/text%3E%3C/svg%3E`;
@@ -80,7 +91,11 @@ async function loadProductsFromFirebase() {
           <p style="font-size:0.875rem; margin-top:8px;">Veuillez contacter l'administrateur ou ajouter des produits via le panel admin.</p>
         </div>`;
     } else {
-      loadProducts(products);
+      // Shuffle products on load
+      shuffleArray(products);
+      allFilteredProducts = [...products];
+      displayedCount = itemsPerPage;
+      loadProducts();
     }
   } catch (error) {
     console.error("❌ Erreur chargement produits:", error);
@@ -93,22 +108,26 @@ async function loadProductsFromFirebase() {
   }
 }
 // ========== AFFICHAGE DES PRODUITS ==========
-function loadProducts(productsToDisplay) {
+function loadProducts() {
   const grid = document.getElementById('productsGrid');
   if (!grid) {
     console.error("❌ productsGrid non trouvé");
     return;
   }
 
-  if (!productsToDisplay || productsToDisplay.length === 0) {
+  const paginationContainer = document.getElementById('paginationContainer');
+
+  if (!allFilteredProducts || allFilteredProducts.length === 0) {
     grid.innerHTML = `
       <div style="text-align:center; padding:60px; color:#6b7280; grid-column:1/-1;">
         <i class="fa-solid fa-search" style="font-size:3rem; margin-bottom:16px;"></i>
         <p>Aucun produit trouvé.</p>
       </div>`;
+    if (paginationContainer) paginationContainer.style.display = 'none';
     return;
   }
 
+  const productsToDisplay = allFilteredProducts.slice(0, displayedCount);
   grid.innerHTML = '';
 
   productsToDisplay.forEach(product => {
@@ -177,6 +196,21 @@ function loadProducts(productsToDisplay) {
   });
 
   console.log(`✅ ${productsToDisplay.length} produits affichés`);
+
+  // Update "Show More" visibility
+  if (paginationContainer) {
+    if (displayedCount < allFilteredProducts.length) {
+      paginationContainer.style.display = 'block';
+    } else {
+      paginationContainer.style.display = 'none';
+    }
+  }
+}
+
+// Function to show more products
+function handleShowMore() {
+  displayedCount += itemsPerPage;
+  loadProducts();
 }
 
 // ========== UTILITAIRE: TRONQUER DESCRIPTION ==========
@@ -428,6 +462,11 @@ function setupEventListeners() {
       filterProducts();
     });
   });
+
+  const showMoreBtn = document.getElementById('showMoreBtn');
+  if (showMoreBtn) {
+    showMoreBtn.addEventListener('click', handleShowMore);
+  }
 }
 
 function filterProducts() {
@@ -435,7 +474,7 @@ function filterProducts() {
   const activeBtn = document.querySelector('.filter-btn.active');
   const selectedCategory = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
 
-  const filtered = products.filter(product => {
+  allFilteredProducts = products.filter(product => {
     const matchesSearch = product.name?.toLowerCase().includes(searchTerm) ||
       (product.description && product.description.toLowerCase().includes(searchTerm));
 
@@ -445,7 +484,8 @@ function filterProducts() {
     return matchesSearch && matchesCategory;
   });
 
-  loadProducts(filtered);
+  displayedCount = itemsPerPage; // Reset pagination on filter
+  loadProducts();
 }
 
 // ========== FONCTIONS COUVERTURE LIVRAISON ==========

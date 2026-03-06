@@ -53,7 +53,7 @@
     }
 
     body {
-      background-color: var(--gb-off-white);
+      background-color: var(--gb-white);
       color: var(--gb-text-dark);
       font-family: 'Inter', sans-serif;
       line-height: 1.6;
@@ -1111,6 +1111,13 @@
     </div>
   </div>
 
+  <!-- Pagination -->
+  <div id="paginationContainer" style="text-align:center; padding:40px 0; display:none;">
+    <button id="showMoreBtn" class="btn btn-primary" style="min-width: 250px;">
+      AFFICHER PLUS <i class="fa-solid fa-plus-circle"></i>
+    </button>
+  </div>
+
   <!-- Cart Modal -->
   <div class="modal-overlay" id="cartModal">
     <div class="modal">
@@ -1143,7 +1150,8 @@
         <div id="detailDescription" style="margin:20px 0; line-height:1.7;"></div>
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <p style="font-size:2rem; font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-text-dark);">
-            <span id="detailPrice">0</span> DA</p>
+            <span id="detailPrice">0</span> DA
+          </p>
         </div>
       </div>
       <div class="modal-footer">
