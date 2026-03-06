@@ -8,39 +8,28 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="logo.jpeg" type="image/x-icon">
     <link
         href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- CSS Copied from index.html -> Custom adjustments for single product -->
     <style>
         /* ========== WAHBI ZOGHBI THEME ========== */
         :root {
-            /* Couleurs principales */
-            --gb-gold: #DC143C;
-            --gb-gold-light: #FF6B7A;
-            --gb-gold-dark: #8B0000;
-            
-            /* Thème sombre (Header/Footer/Modals) */
+            --gb-gold: #ff0000;
+            --gb-gold-light: #ff6666;
+            --gb-gold-dark: #b30000;
             --gb-black: #050505;
             --gb-dark-grey: #111111;
             --gb-grey: #222222;
-            --gb-light-grey: #666666;
+            --gb-light-grey: #888888;
             --gb-white: #FFFFFF;
-            
-            /* Thème clair (Body/Contenu) */
-            --gb-off-white: #f8f9fa;
-            --gb-text-dark: #1a1a1a;
-            --gb-text-muted: #555555;
-            
-            /* États */
-            --gb-danger: #ff4d4d;
+            --gb-danger: #ffcc00;
+            /* Yellow */
             --gb-success: #1cd072;
 
-            /* Effets */
-            --shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-            --shadow-hover: 0 12px 40px rgba(212, 175, 55, 0.25);
+            --shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
             --radius: 8px;
             --radius-lg: 16px;
             --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -60,10 +49,14 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4, h5, h6 {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
             font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            color: var(--gb-text-dark);
         }
 
         a {
@@ -80,14 +73,14 @@
             transition: var(--transition);
         }
 
-        /* ========== HEADER / NAV (RESTE SOMBRE) ========== */
+        /* ========== HEADER / NAV ========== */
         .header {
-            background: rgba(17, 17, 17, 0.98);
+            background: rgba(17, 17, 17, 0.95);
             backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
         }
 
         .header-container {
@@ -110,7 +103,7 @@
             height: 50px;
             width: auto;
             border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo-text {
@@ -195,20 +188,17 @@
             grid-template-columns: 1fr 1fr;
             gap: 60px;
             min-height: 60vh;
-            align-items: start;
+            align-items: center;
         }
 
         .product-image-container {
-            background: var(--gb-white);
+            background: transparent;
             border-radius: var(--radius-lg);
             padding: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid #e8e8e8;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .product-image-container img {
@@ -217,19 +207,10 @@
             object-fit: contain;
         }
 
-        .product-details {
-            background: var(--gb-white);
-            border-radius: var(--radius-lg);
-            padding: 40px;
-            border: 1px solid #e8e8e8;
-            box-shadow: var(--shadow);
-        }
-
         .product-details h1 {
             font-size: 2.5rem;
             margin-bottom: 10px;
-            color: var(--gb-text-dark);
-            line-height: 1.2;
+            color: black;
         }
 
         .product-details .category {
@@ -238,7 +219,6 @@
             margin-bottom: 20px;
             font-size: 1rem;
             letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .product-details .price {
@@ -250,7 +230,7 @@
         }
 
         .product-details .description {
-            color: var(--gb-text-muted);
+            color: var(--gb-light-grey);
             font-size: 1.1rem;
             line-height: 1.8;
             margin-bottom: 30px;
@@ -258,23 +238,21 @@
 
         .status-badge {
             display: inline-block;
-            padding: 6px 16px;
+            padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 700;
             margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .in-stock {
-            background: rgba(28, 208, 114, 0.12);
+            background: rgba(28, 208, 114, 0.1);
             color: var(--gb-success);
             border: 1px solid var(--gb-success);
         }
 
         .out-of-stock {
-            background: rgba(255, 77, 77, 0.12);
+            background: rgba(255, 204, 0, 0.1);
             color: var(--gb-danger);
             border: 1px solid var(--gb-danger);
         }
@@ -283,7 +261,7 @@
             width: 100%;
             padding: 20px;
             background: var(--gb-gold);
-            color: var(--gb-white);
+            color: var(--gb-black);
             font-weight: 800;
             border: none;
             border-radius: var(--radius);
@@ -296,55 +274,28 @@
             gap: 12px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
         }
 
         .add-to-cart-hero:hover:not(:disabled) {
-            background: var(--gb-gold-dark);
-            box-shadow: 0 6px 25px rgba(139, 0, 0, 0.45);
+            background: var(--gb-white);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
 
         .add-to-cart-hero:disabled {
-            background: #cccccc;
-            color: #666666;
+            background: var(--gb-grey);
+            color: var(--gb-light-grey);
             cursor: not-allowed;
-            box-shadow: none;
         }
 
-        /* Flavor Selector Buttons */
-        .flavor-selector-btn {
-            padding: 10px 18px;
-            background: var(--gb-off-white);
-            color: var(--gb-text-dark);
-            border: 2px solid #e0e0e0;
-            border-radius: var(--radius);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .flavor-selector-btn:hover {
-            border-color: var(--gb-gold);
-            color: var(--gb-gold);
-        }
-
-        .flavor-selector-btn.active {
-            background: var(--gb-gold);
-            color: var(--gb-white);
-            border-color: var(--gb-gold);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
-        }
-
-        /* ========== MODALS (RESTENT SOMBRES) ========== */
+        /* Modals & Default UI CSS (Cart, Checkout) Copied from Index */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(8px);
             display: none;
             align-items: center;
@@ -362,16 +313,15 @@
             width: 100%;
             max-width: 550px;
             border-radius: var(--radius-lg);
-            border: 1px solid rgba(212, 175, 55, 0.4);
+            border: 1px solid rgba(212, 175, 55, 0.3);
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            color: var(--gb-white);
+            box-shadow: var(--shadow);
         }
 
         .modal-header {
             padding: 24px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -398,7 +348,7 @@
 
         .modal-footer {
             padding: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -424,20 +374,19 @@
             display: flex;
             gap: 16px;
             padding: 16px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             align-items: center;
         }
 
         .cart-item-name {
             font-weight: 700;
-            color: var(--gb-white);
+            color: var(--gb-text-dark);
             font-size: 1.1rem;
         }
 
         .cart-total {
             font-size: 1.5rem;
             font-family: 'Montserrat', sans-serif;
-            color: var(--gb-white);
         }
 
         .btn {
@@ -450,30 +399,23 @@
 
         .btn-primary {
             background: var(--gb-gold);
-            color: var(--gb-white);
+            color: var(--gb-black);
             border: none;
         }
 
         .btn-primary:hover:not(:disabled) {
             background: var(--gb-gold-light);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         .btn-primary:disabled {
-            background: #555555;
-            color: #999999;
+            background: var(--gb-grey);
+            color: var(--gb-light-grey);
         }
 
         .btn-outline {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            border: 1px solid var(--gb-light-grey);
             color: var(--gb-white);
-        }
-
-        .btn-outline:hover {
-            border-color: var(--gb-white);
-            color: var(--gb-white);
-            background: rgba(255, 255, 255, 0.1);
         }
 
         .form-group {
@@ -485,27 +427,22 @@
             margin-bottom: 8px;
             font-weight: 600;
             font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: var(--gb-text-muted);
         }
 
         .form-control {
             width: 100%;
             padding: 14px;
             background: var(--gb-black);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--radius);
             color: var(--gb-white);
             font-size: 1rem;
         }
 
-        .form-control::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
         .form-control:focus {
             outline: none;
             border-color: var(--gb-gold);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
         }
 
         .form-row {
@@ -515,7 +452,7 @@
         }
 
         .shipping-info {
-            background: rgba(212, 175, 55, 0.15);
+            background: rgba(212, 175, 55, 0.1);
             padding: 20px;
             border-radius: var(--radius);
             border: 1px dashed var(--gb-gold);
@@ -527,13 +464,11 @@
             display: block;
         }
 
-        /* ========== FOOTER (RESTE SOMBRE) ========== */
         .footer {
             background: var(--gb-black);
-            border-top: 3px solid var(--gb-gold);
+            border-top: 2px solid var(--gb-gold);
             padding: 60px 24px 20px;
             margin-top: 60px;
-            color: var(--gb-light-grey);
         }
 
         .footer-container {
@@ -565,39 +500,6 @@
             width: 20px;
         }
 
-        .footer-section a:hover {
-            color: var(--gb-gold);
-            padding-left: 5px;
-        }
-
-        /* Social Icons in Footer */
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 45px;
-            height: 45px;
-            background: var(--gb-grey);
-            border-radius: 50%;
-            color: var(--gb-white);
-            font-size: 1.3rem;
-            transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-        }
-
-        .social-link:hover {
-            background: var(--gb-gold);
-            color: var(--gb-black);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
-        }
-
         .footer-bottom {
             max-width: 1400px;
             margin: 60px auto 0;
@@ -609,8 +511,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         /* ========== RESPONSIVE ENHANCEMENTS ========== */
@@ -619,7 +526,10 @@
                 gap: 40px;
                 padding: 40px 24px;
             }
-            .product-details h1 { font-size: 2.2rem; }
+
+            .product-details h1 {
+                font-size: 2.2rem;
+            }
         }
 
         @media (max-width: 768px) {
@@ -628,45 +538,69 @@
                 gap: 20px;
                 padding: 15px;
             }
+
             .single-product-container {
                 grid-template-columns: 1fr;
                 gap: 30px;
                 padding: 20px 16px;
             }
-            .product-image-container {
-                position: static;
-                padding: 30px;
+
+            .product-image-container img {
+                max-height: 400px;
             }
-            .product-image-container img { max-height: 400px; }
-            .product-details { padding: 30px; }
-            .product-details h1 { font-size: 1.8rem; }
-            .product-details .price { font-size: 1.8rem; }
-            .logo img { height: 45px; }
+
+            .product-details h1 {
+                font-size: 1.8rem;
+            }
+
+            .product-details .price {
+                font-size: 1.5rem;
+            }
+
+            .logo img {
+                height: 45px;
+            }
         }
 
         @media (max-width: 480px) {
-            .product-image-container { padding: 20px; }
-            .product-image-container img { max-height: 300px; }
-            .product-details { padding: 24px; }
-            .product-details h1 { font-size: 1.6rem; }
-            .product-details .price { font-size: 1.5rem; }
-            .add-to-cart-hero { padding: 15px; font-size: 1.1rem; }
-            .flavor-selector-btn { flex: 1 1 140px; font-size: 0.9rem; padding: 12px !important; }
-            .brand-name { font-size: 1.2rem; }
-            .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
-        }
+            .product-image-container {
+                padding: 20px;
+            }
 
-        @media (max-width: 360px) {
-            .header-actions { flex-direction: column; width: 100%; }
-            .header-btn { width: 100%; justify-content: center; }
-            .form-row { grid-template-columns: 1fr; }
+            .product-image-container img {
+                max-height: 300px;
+            }
+
+            .product-details h1 {
+                font-size: 1.6rem;
+            }
+
+            .add-to-cart-hero {
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+
+            .flavor-selector-btn {
+                flex: 1 1 140px;
+                font-size: 0.9rem;
+                padding: 12px !important;
+            }
+
+            .brand-name {
+                font-size: 1.2rem;
+            }
+
+            .brand-tagline {
+                font-size: 0.7rem;
+                letter-spacing: 2px;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <!-- Header (RESTE SOMBRE) -->
+    <!-- Header -->
     <header class="header">
         <div class="header-container">
             <a href="index.html" class="logo">
@@ -687,14 +621,15 @@
         </div>
     </header>
 
-    <!-- Hidden productsGrid for script.js compatibility -->
+    <!-- IMPORTANT: Hidden productsGrid so script.js doesn't crash and fetches products for cart -->
     <div id="productsGrid" style="display:none;"></div>
 
     <!-- Single Product Section -->
     <main class="single-product-container" id="single-product-container">
         <div style="grid-column: 1/-1; text-align:center; padding: 100px 0;">
-            <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; color:var(--gb-gold); margin-bottom:20px;"></i>
-            <h2 style="color:var(--gb-text-dark);">Chargement des données du produit...</h2>
+            <i class="fa-solid fa-dumbbell fa-spin"
+                style="font-size:3rem; color:var(--gb-gold); margin-bottom:20px;"></i>
+            <h2>Chargement des données du produit...</h2>
         </div>
     </main>
 
@@ -710,7 +645,8 @@
             </div>
             <div class="modal-footer">
                 <div class="cart-total">TOTAL: <span id="totalPrice" style="color:var(--gb-gold)">0.00</span> DA</div>
-                <button class="btn btn-primary" id="checkoutBtn" disabled>COMMANDER <i class="fa-solid fa-bolt"></i></button>
+                <button class="btn btn-primary" id="checkoutBtn" disabled>COMMANDER <i
+                        class="fa-solid fa-bolt"></i></button>
             </div>
         </div>
     </div>
@@ -763,20 +699,25 @@
                         </div>
                     </div>
                     <div class="shipping-info" id="shippingInfo">
-                        <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--gb-white);">
+                        <div
+                            style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--gb-text-dark);">
                             <span>Frais de livraison d'élite:</span>
                             <span id="shippingPrice" style="font-weight:700; color:var(--gb-gold)">0 DA</span>
                         </div>
                         <div style="display:flex; justify-content:space-between; font-size:1.3rem; align-items:center;">
-                            <span style="font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-white);">TOTAL NET:</span>
-                            <span id="grandTotal" style="font-size:1.6rem; font-weight:900; color:var(--gb-gold);">0 DA</span>
+                            <span
+                                style="font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-text-dark);">TOTAL
+                                NET:</span>
+                            <span id="grandTotal" style="font-size:1.6rem; font-weight:900; color:var(--gb-gold);">0
+                                DA</span>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline close-modal">Annuler</button>
-                <button class="btn btn-primary" type="submit" form="orderForm">Valider la Commande <i class="fa-solid fa-check-double"></i></button>
+                <button class="btn btn-primary" type="submit" form="orderForm">Valider la Commande <i
+                        class="fa-solid fa-check-double"></i></button>
             </div>
         </div>
     </div>
@@ -785,47 +726,42 @@
     <div class="modal-overlay" id="confirmModal">
         <div class="modal" style="text-align:center;">
             <div class="modal-body" style="padding: 50px 30px;">
-                <div style="width:100px; height:100px; background:rgba(28,208,114,0.15); border:2px solid var(--gb-success); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
+                <div
+                    style="width:100px; height:100px; background:rgba(28,208,114,0.1); border:2px solid var(--gb-success); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
                     <i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gb-success);"></i>
                 </div>
                 <h3 style="margin-bottom:20px; font-size:2rem; color:var(--gb-success);">VICTOIRE !</h3>
-                <p style="color:rgba(255,255,255,0.85); margin-bottom:30px; font-size:1.1rem;">La commande a été transmise à notre quartier général.</p>
-                <div style="background:var(--gb-black); border:1px solid var(--gb-gold); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
-                    <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); margin-bottom:10px; text-transform:uppercase;">CODE D'OPÉRATION (Numéro)</p>
-                    <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;" id="orderNumber"></p>
+                <p style="color:var(--gb-light-grey); margin-bottom:30px; font-size:1.1rem;">La commande a été transmise
+                    à notre quartier général.</p>
+                <div
+                    style="background:var(--gb-black); border:1px solid var(--gb-gold); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
+                    <p
+                        style="font-size:0.9rem; color:var(--gb-light-grey); margin-bottom:10px; text-transform:uppercase;">
+                        CODE D'OPÉRATION (Numéro)</p>
+                    <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;"
+                        id="orderNumber"></p>
                 </div>
-                <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i class="fa-solid fa-camera"></i> Capturez cet écran pour le suivi.</p>
-                <a href="index.html" class="btn btn-primary" style="width:100%; display:block;">Continuer l'Entraînement</a>
+                <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i
+                        class="fa-solid fa-camera"></i> Capturez cet écran pour le suivi.</p>
+                <a href="index.html" class="btn btn-primary" style="width:100%; display:block;">Continuer
+                    l'Entraînement</a>
             </div>
         </div>
     </div>
 
-    <!-- Footer avec Réseaux Sociaux (RESTE SOMBRE) -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
                 <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
-                <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
+                <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos
+                    suppléments certifiés premium.</p>
             </div>
             <div class="footer-section">
                 <h3>QG COMMANDEMENT</h3>
                 <p><i class="fa-solid fa-phone"></i> +213 (0) 669 46 99 56</p>
                 <p><i class="fa-solid fa-envelope"></i> contact@wahbizoghbi.dz</p>
                 <p><i class="fa-solid fa-location-crosshairs"></i> Algérie</p>
-            </div>
-            <div class="footer-section">
-                <h3>SUIVEZ-NOUS</h3>
-                <div class="social-links">
-                    <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Facebook">
-                        <i class="fa-brands fa-facebook-f"></i>
-                    </a>
-                    <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://tiktok.com/@wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="TikTok">
-                        <i class="fa-brands fa-tiktok"></i>
-                    </a>
-                </div>
             </div>
             <div class="footer-section">
                 <h3>LOGISTIQUE</h3>
@@ -838,7 +774,6 @@
         </div>
     </footer>
 
-    <!-- Firebase & Client Logic -->
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="script.js"></script>
 
@@ -853,10 +788,10 @@
 
             if (!productId) {
                 container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 100px 0;">
-                    <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem; color:var(--gb-danger); margin-bottom:20px;"></i>
-                    <h2 style="color:var(--gb-text-dark);">Produit introuvable</h2>
-                    <a href="index.html" class="btn btn-outline" style="margin-top:20px; display:inline-block;">Retour à la boutique</a>
-                </div>`;
+          <i class="fa-solid fa-triangle-exclamation" style="font-size:3rem; color:var(--gb-danger); margin-bottom:20px;"></i>
+          <h2>Produit introuvable</h2>
+          <a href="index.html" class="btn btn-outline" style="margin-top:20px; display:inline-block;">Retour à la boutique</a>
+        </div>`;
                 return;
             }
 
@@ -881,55 +816,68 @@
 
                     const cartBtnHTML = pQty > 0
                         ? `<button class="add-to-cart-hero" onclick="addToCartFromPage('${docSnap.id}')">
-                            <i class="fa-solid fa-cart-plus"></i> Ajouter au Panier
-                        </button>`
+                 <i class="fa-solid fa-cart-plus"></i> Ajouter à l'Arsenal
+               </button>`
                         : `<button class="add-to-cart-hero" disabled>
-                            <i class="fa-solid fa-ban"></i> Indisponible
-                        </button>`;
+                 <i class="fa-solid fa-ban"></i> Indisponible
+               </button>`;
 
                     container.innerHTML = `
-                        <div class="product-image-container">
-                            <img id="main-product-image" src="${pImage}" alt="${pName}" onerror="this.src='https://via.placeholder.com/600x600?text=Produit'">
-                        </div>
-                        <div class="product-details">
-                            <div class="category">${pCategory}</div>
-                            <h1>${pName}</h1>
-                            <div class="price">${pPrice.toFixed(2)} DA</div>
-                            ${stockHTML}
-                            <div class="description">${pDesc}</div>
+            <div class="product-image-container">
+              <img id="main-product-image" src="${pImage}" alt="${pName}" onerror="this.src='https://via.placeholder.com/600x600?text=Produit'">
+            </div>
+            <div class="product-details">
+              <div class="category">${pCategory}</div>
+              <h1>${pName}</h1>
+              <div class="price">${pPrice.toFixed(2)} DA</div>
+              ${stockHTML}
+              <div class="description">${pDesc}</div>
 
-                            ${(product.flavors && product.flavors.length > 0) ? `
-                            <div class="flavors-selection" style="margin: 20px 0;">
-                                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--gb-text-dark);">Goûts disponibles :</h3>
-                                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                                ${product.flavors.map((f, i) => `
-                                    <button class="flavor-selector-btn ${i === 0 ? 'active' : ''}" 
-                                            data-image="${f.image || pImage}">
-                                    ${f.name}
-                                    </button>
-                                `).join('')}
-                                </div>
-                            </div>` : ''}
+              ${(product.flavors && product.flavors.length > 0) ? `
+              <div class="flavors-selection" style="margin: 20px 0;">
+                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--gb-white);">Goûts disponibles :</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                  ${product.flavors.map((f, i) => `
+                    <button class="flavor-selector-btn ${i === 0 ? 'active' : ''}" 
+                            data-image="${f.image || pImage}"
+                            style="padding: 10px 15px; background: ${i === 0 ? 'var(--gb-gold)' : 'var(--gb-grey)'}; color: ${i === 0 ? 'var(--gb-black)' : 'var(--gb-white)'}; border: 1px solid var(--gb-gold); border-radius: var(--radius); cursor: pointer; font-weight: 700; transition: var(--transition);">
+                      ${f.name}
+                    </button>
+                  `).join('')}
+                </div>
+              </div>` : ''}
 
-                            <div style="margin-top: 40px;">
-                                ${cartBtnHTML}
-                            </div>
-                        </div>
-                    `;
+              <div style="margin-top: 40px;">
+                ${cartBtnHTML}
+              </div>
+            </div>
+          `;
 
-                    // Flavor selector logic
+                    // Add event listeners for flavor selectors
                     if (product.flavors && product.flavors.length > 0) {
                         const mainImg = document.getElementById('main-product-image');
                         const btns = document.querySelectorAll('.flavor-selector-btn');
 
+                        // Set first flavor image if available
                         if (product.flavors[0].image) {
                             mainImg.src = product.flavors[0].image;
                         }
 
                         btns.forEach(btn => {
                             btn.addEventListener('click', (e) => {
-                                btns.forEach(b => b.classList.remove('active'));
+                                // Remove active class
+                                btns.forEach(b => {
+                                    b.classList.remove('active');
+                                    b.style.background = 'var(--gb-grey)';
+                                    b.style.color = 'var(--gb-white)';
+                                });
+
+                                // Add active to current
                                 btn.classList.add('active');
+                                btn.style.background = 'var(--gb-gold)';
+                                btn.style.color = 'var(--gb-black)';
+
+                                // Update image
                                 const newImgSrc = btn.getAttribute('data-image');
                                 if (newImgSrc && newImgSrc !== 'undefined' && newImgSrc !== '') {
                                     mainImg.src = newImgSrc;
@@ -939,16 +887,16 @@
                     }
                 } else {
                     container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 100px 0;">
-                        <i class="fa-solid fa-box-open" style="font-size:3rem; color:var(--gb-light-grey); margin-bottom:20px;"></i>
-                        <h2 style="color:var(--gb-text-dark);">Ce produit n'existe plus</h2>
-                        <a href="index.html" class="btn btn-outline" style="margin-top:20px; display:inline-block;">Retour à la boutique</a>
-                    </div>`;
+            <i class="fa-solid fa-box-open" style="font-size:3rem; color:var(--gb-light-grey); margin-bottom:20px;"></i>
+            <h2>Ce produit n'existe plus</h2>
+            <a href="index.html" class="btn btn-outline" style="margin-top:20px; display:inline-block;">Retour à la boutique</a>
+          </div>`;
                 }
             } catch (error) {
                 console.error("Erreur de chargement:", error);
                 container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; padding: 100px 0;">
-                    <h2 style="color:var(--gb-danger);">Erreur de connexion</h2>
-                </div>`;
+          <h2 style="color:var(--gb-danger);">Erreur de connexion</h2>
+        </div>`;
             }
         });
 

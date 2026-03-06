@@ -148,7 +148,7 @@ function loadProducts(productsToDisplay) {
       : `<span class="product-quantity out-of-stock">Rupture de stock</span>`;
 
     info.innerHTML = `
-      <h3 class="product-name" style="font-size:1.1rem; font-family:'Montserrat', sans-serif; font-weight:700; margin-bottom:8px; color:var(--gb-white); text-transform:uppercase;">${product.name}</h3>
+      <h3 class="product-name" style="font-size:1.1rem; font-family:'Montserrat', sans-serif; font-weight:700; margin-bottom:8px; text-transform:uppercase;">${product.name}</h3>
       <p class="product-category" style="font-size:0.75rem; color:var(--gb-gold); text-transform:uppercase; font-weight:700; margin-bottom:8px; letter-spacing:1px;">${product.category}</p>
       <p class="product-description" style="font-size:0.875rem; color:var(--gb-light-grey); margin-bottom:16px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${shortDesc}</p>
       ${quantityHTML}

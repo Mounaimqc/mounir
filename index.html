@@ -4,31 +4,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Couverture de Livraison | Wahbi Zoghbi</title>
+  <title>Wahbi Zoghbi | Premium Supplements</title>
 
-  <!-- Fonts -->
+  <!-- Fonts: Montserrat for HEADINGS, Inter for BODY -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="icon" href="logo.jpeg" type="image/x-icon">
   <link
     href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet">
+
+  <!-- FontAwesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     /* ========== WAHBI ZOGHBI THEME ========== */
     :root {
       --gb-gold: #DC143C;
+      /* Crimson Red - couleur principale */
       --gb-gold-light: #FF6B7A;
+      /* Light Red - pour les hover */
       --gb-gold-dark: #8B0000;
+      /* Dark Red - pour les bordures/ombres */
       --gb-black: #050505;
       --gb-dark-grey: #111111;
       --gb-grey: #222222;
       --gb-light-grey: #666666;
       --gb-white: #FFFFFF;
       --gb-off-white: #f8f9fa;
+      /* Nouveau: fond clair pour le body */
       --gb-text-dark: #1a1a1a;
+      /* Nouveau: texte principal sur fond clair */
       --gb-text-muted: #555555;
+      /* Nouveau: texte secondaire */
       --gb-danger: #ff4d4d;
       --gb-success: #1cd072;
 
@@ -39,7 +46,11 @@
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background-color: var(--gb-off-white);
@@ -49,16 +60,32 @@
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-family: 'Montserrat', sans-serif;
       text-transform: uppercase;
       color: var(--gb-text-dark);
     }
 
-    a { text-decoration: none; color: inherit; transition: var(--transition); }
-    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: var(--transition); }
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
 
-    /* ========== HEADER ========== */
+    button {
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    /* ========== HEADER / NAV (RESTE SOMBRE) ========== */
     .header {
       background: rgba(17, 17, 17, 0.98);
       backdrop-filter: blur(10px);
@@ -143,7 +170,9 @@
       color: var(--gb-black);
     }
 
-    .cart-btn:hover { background: var(--gb-gold-light); }
+    .cart-btn:hover {
+      background: var(--gb-gold-light);
+    }
 
     .cart-count {
       position: absolute;
@@ -162,337 +191,521 @@
       border: 2px solid var(--gb-dark-grey);
     }
 
-    /* ========== COVERAGE HERO ========== */
-    .coverage-hero {
-      background: linear-gradient(135deg, var(--gb-black) 0%, var(--gb-dark-grey) 100%);
-      padding: 80px 24px 60px;
+    /* ========== HERO SECTION ========== */
+    .hero {
+      background: linear-gradient(180deg, rgba(17, 17, 17, 0.85) 0%, rgba(17, 17, 17, 0.7) 100%),
+        url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop') no-repeat center center/cover;
+      padding: 120px 24px 80px;
       text-align: center;
       border-bottom: 3px solid var(--gb-gold);
       margin-bottom: 40px;
     }
 
-    .coverage-hero h1 {
-      font-size: 2.8rem;
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+      letter-spacing: 1px;
       color: var(--gb-white);
-      margin-bottom: 16px;
     }
 
-    .coverage-hero h1 span { color: var(--gb-gold); }
-    .coverage-hero p {
-      font-size: 1.2rem;
-      color: rgba(255, 255, 255, 0.9);
-      max-width: 700px;
+    .hero h1 span {
+      color: var(--gb-gold);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.95);
+      max-width: 600px;
       margin: 0 auto;
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
     }
 
-    /* ========== COVERAGE MAIN ========== */
-    .coverage-main {
+    /* ========== FILTERS & SEARCH ========== */
+    .shop-controls {
       max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 24px 60px;
-      display: grid;
-      grid-template-columns: 1fr 380px;
-      gap: 40px;
-      align-items: start;
+      margin: 0 auto 40px;
+      padding: 0 24px;
     }
 
-    /* Map Container */
-    .map-container {
-      background: var(--gb-white);
-      border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow);
-      border: 1px solid #e8e8e8;
-    }
-
-    .map-title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      margin-bottom: 20px;
+    .filters {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .filter-btn {
+      padding: 10px 24px;
+      background: var(--gb-white);
       color: var(--gb-text-dark);
+      border: 2px solid var(--gb-gold);
+      border-radius: 30px;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
 
-    .map-title i { color: var(--gb-gold); }
-
-    .algeria-map {
-      width: 100%;
-      height: auto;
-      min-height: 500px;
-      background: var(--gb-off-white);
-      border-radius: var(--radius);
-      padding: 10px;
-      overflow: hidden;
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--gb-gold);
+      border-color: var(--gb-gold-dark);
+      color: var(--gb-white);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+      transform: translateY(-2px);
     }
 
-    .algeria-map svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .wilaya-path {
-      fill: var(--gb-grey);
-      stroke: var(--gb-white);
-      stroke-width: 0.5;
-      transition: var(--transition);
-      cursor: pointer;
-    }
-
-    .wilaya-path:hover {
-      fill: var(--gb-gold);
-      stroke: var(--gb-gold-dark);
-      stroke-width: 1;
-      filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.4));
-    }
-
-    .wilaya-path.covered { fill: var(--gb-gold); }
-    .wilaya-path.limited { fill: #f39c12; }
-    .wilaya-path.coming-soon { fill: var(--gb-light-grey); cursor: not-allowed; }
-
-    /* Search Box */
-    .search-box {
+    .search-container {
       position: relative;
-      margin-bottom: 20px;
+      max-width: 500px;
+      margin: 0 auto;
     }
 
-    .search-box i {
+    .search-container i {
       position: absolute;
       left: 16px;
       top: 50%;
       transform: translateY(-50%);
-      color: var(--gb-gold);
+      color: var(--gb-light-grey);
     }
 
-    #wilayaSearch {
+    #searchInput {
       width: 100%;
-      padding: 14px 16px 14px 44px;
-      background: var(--gb-off-white);
+      padding: 16px 16px 16px 44px;
+      background: var(--gb-white);
       border: 2px solid #e0e0e0;
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       color: var(--gb-text-dark);
       font-size: 1rem;
       transition: var(--transition);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
-    #wilayaSearch:focus {
+    #searchInput::placeholder {
+      color: var(--gb-text-muted);
+    }
+
+    #searchInput:focus {
       outline: none;
       border-color: var(--gb-gold);
       box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
     }
 
-    #wilayaSearch::placeholder { color: var(--gb-text-muted); }
-
-    /* Sidebar */
-    .coverage-sidebar {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+    /* ========== PRODUCTS GRID & CARDS ========== */
+    .products-grid {
+      max-width: 1400px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
     }
 
-    .info-card {
+    .product-card {
       background: var(--gb-white);
       border-radius: var(--radius-lg);
-      padding: 24px;
-      box-shadow: var(--shadow);
+      overflow: hidden;
       border: 1px solid #e8e8e8;
-    }
-
-    .info-card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 16px;
+      transition: var(--transition);
+      position: relative;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--gb-text-dark);
+      flex-direction: column;
+      height: 100%;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
 
-    .info-card h3 i { color: var(--gb-gold); }
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--gb-gold);
+      box-shadow: var(--shadow-hover);
+    }
 
-    .wilaya-detail { display: none; }
-    .wilaya-detail.active { display: block; animation: fadeIn 0.3s; }
+    .product-image {
+      width: 100%;
+      height: 250px;
+      object-fit: contain;
+      background: var(--gb-off-white);
+      border-bottom: 1px solid #f0f0f0;
+      padding: 15px;
+    }
 
-    .wilaya-name {
-      font-size: 1.5rem;
-      font-weight: 800;
+    .product-info {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .product-category {
+      font-size: 0.75rem;
       color: var(--gb-gold);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
       margin-bottom: 8px;
-      font-family: 'Montserrat', sans-serif;
     }
 
-    .wilaya-code {
-      display: inline-block;
-      background: var(--gb-grey);
-      color: var(--gb-white);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 16px;
-    }
-
-    .delivery-status {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 16px;
-      background: rgba(28, 208, 114, 0.12);
-      border: 1px solid var(--gb-success);
-      border-radius: var(--radius);
-      margin-bottom: 16px;
-    }
-
-    .delivery-status.limited {
-      background: rgba(243, 156, 18, 0.12);
-      border-color: #f39c12;
-      color: #d35400;
-    }
-
-    .delivery-status.coming {
-      background: rgba(136, 136, 136, 0.12);
-      border-color: var(--gb-light-grey);
-      color: var(--gb-text-muted);
-    }
-
-    .delivery-status i {
-      font-size: 1.3rem;
-      width: 24px;
-      text-align: center;
-    }
-
-    .delivery-time {
-      font-size: 0.95rem;
-      color: var(--gb-text-muted);
-      margin-bottom: 20px;
-    }
-
-    .delivery-time strong {
+    .product-name {
+      font-size: 1.25rem;
+      font-weight: 800;
       color: var(--gb-text-dark);
-      font-weight: 600;
+      margin-bottom: 12px;
+      line-height: 1.3;
+      font-family: 'Montserrat', sans-serif;
+      min-height: 3.3rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
-    .shipping-cost {
+    .product-description {
+      font-size: 0.875rem;
+      color: var(--gb-text-muted);
+      margin-bottom: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-quantity {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gb-success);
+      display: block;
+      margin-bottom: 16px;
+      min-height: 1.2rem;
+    }
+
+    .product-quantity.out-of-stock {
+      color: var(--gb-danger);
+    }
+
+    .product-footer {
       display: flex;
       justify-content: space-between;
-      padding: 12px 0;
-      border-top: 1px dashed #e0e0e0;
-      font-size: 0.95rem;
+      align-items: center;
+      margin-top: auto;
     }
 
-    .shipping-cost.total {
-      border-top: 2px solid var(--gb-gold);
-      font-weight: 700;
-      font-size: 1.1rem;
+    .product-price {
+      font-size: 1.4rem;
+      font-weight: 900;
       color: var(--gb-text-dark);
-      margin-top: 8px;
-      padding-top: 16px;
-    }
-
-    .shipping-cost span:last-child {
-      color: var(--gb-gold);
-      font-weight: 800;
       font-family: 'Montserrat', sans-serif;
     }
 
-    .cta-btn {
-      width: 100%;
-      padding: 14px;
+    .add-to-cart-btn {
+      padding: 12px 20px;
       background: var(--gb-gold);
       color: var(--gb-white);
-      font-weight: 700;
-      border-radius: var(--radius);
-      font-size: 1rem;
+      font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-top: 16px;
-      display: flex;
+      font-size: 0.9rem;
+      border-radius: var(--radius);
+      width: auto;
+      transition: var(--transition);
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
     }
 
-    .cta-btn:hover {
+    .add-to-cart-btn:hover:not(:disabled) {
       background: var(--gb-gold-dark);
       transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(139, 0, 0, 0.45);
+      box-shadow: 0 6px 20px rgba(139, 0, 0, 0.4);
     }
 
-    .cta-btn:disabled {
-      background: var(--gb-grey);
-      color: var(--gb-light-grey);
+    .add-to-cart-btn:disabled {
+      background: #cccccc;
+      color: #666666;
       cursor: not-allowed;
-      transform: none;
       box-shadow: none;
     }
 
-    /* Legend */
-    .legend {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 16px;
+    /* ========== MODALS (RESTENT SOMBRES POUR CONTRASTE) ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
 
-    .legend-item {
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s;
+    }
+
+    .modal {
+      background: var(--gb-off-white);
+      width: 100%;
+      max-width: 550px;
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      color: var(--gb-text-dark);
+    }
+
+    .modal-header {
+      padding: 24px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.5rem;
+      color: var(--gb-gold);
+    }
+
+    .close-modal {
+      background: none;
+      color: var(--gb-light-grey);
+      font-size: 1.8rem;
+    }
+
+    .close-modal:hover {
+      color: var(--gb-text-dark);
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-footer {
+      padding: 24px;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #eee;
+    }
+
+    #detailImage {
+      width: 100%;
+      max-height: 350px;
+      object-fit: contain;
+      border-radius: var(--radius);
+      background: #fff;
+      margin-bottom: 20px;
+    }
+
+    #detailName {
+      font-size: 2rem;
+      color: black;
+      margin-bottom: 10px;
+    }
+
+    #detailPrice {
+      color: var(--gb-gold);
+    }
+
+    #detailDescription {
+      color: var(--gb-text-dark);
+    }
+
+    .cart-items {
+      max-height: 350px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .cart-items::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .cart-items::-webkit-scrollbar-thumb {
+      background: var(--gb-gold);
+      border-radius: 4px;
+    }
+
+    .cart-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      align-items: center;
+    }
+
+    .cart-item-info {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: 700;
+      color: var(--gb-text-dark);
+      font-size: 1.1rem;
+    }
+
+    .cart-item-price {
+      color: var(--gb-gold);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .cart-item-quantity {
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.85rem;
-      color: var(--gb-text-muted);
+      gap: 12px;
+      margin-top: 10px;
     }
 
-    .legend-color {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      border: 1px solid rgba(0,0,0,0.1);
-    }
-
-    .legend-color.covered { background: var(--gb-gold); }
-    .legend-color.limited { background: #f39c12; }
-    .legend-color.coming { background: var(--gb-light-grey); }
-
-    /* Stats */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-      margin-top: 16px;
-    }
-
-    .stat-item {
-      text-align: center;
-      padding: 16px;
-      background: var(--gb-off-white);
+    .quantity-btn {
+      width: 32px;
+      height: 32px;
+      background: var(--gb-grey);
+      color: var(--gb-white);
       border-radius: var(--radius);
-      border: 1px solid #e8e8e8;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .stat-value {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--gb-gold);
+    .quantity-btn:hover {
+      background: var(--gb-gold);
+      color: var(--gb-black);
+    }
+
+    .remove-btn {
+      background: transparent;
+      color: var(--gb-danger);
+      border: 1px solid var(--gb-danger);
+      padding: 6px 12px;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .remove-btn:hover {
+      background: var(--gb-danger);
+      color: white;
+    }
+
+    .cart-total {
+      font-size: 1.5rem;
       font-family: 'Montserrat', sans-serif;
-      line-height: 1;
+      color: var(--gb-text-dark);
     }
 
-    .stat-label {
-      font-size: 0.85rem;
+    .cart-empty {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      padding: 40px 0;
+      font-size: 1.1rem;
+    }
+
+    /* Form Elements in Modals */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
       color: var(--gb-text-muted);
-      margin-top: 6px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
-    /* Footer */
+    .form-control {
+      width: 100%;
+      padding: 14px;
+      background: var(--gb-black);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: var(--radius);
+      color: var(--gb-white);
+      font-size: 1rem;
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--gb-gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.25);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .shipping-info {
+      background: rgba(212, 175, 55, 0.15);
+      padding: 20px;
+      border-radius: var(--radius);
+      border: 1px dashed var(--gb-gold);
+      margin-top: 20px;
+      display: none;
+    }
+
+    .shipping-info.active {
+      display: block;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: var(--gb-gold);
+      color: var(--gb-white);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--gb-gold-light);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+    }
+
+    .btn-primary:disabled {
+      background: #555555;
+      color: #999999;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: var(--gb-white);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--gb-white);
+      color: var(--gb-white);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* ========== FOOTER (RESTE SOMBRE) ========== */
     .footer {
       background: var(--gb-black);
       border-top: 3px solid var(--gb-gold);
       padding: 60px 24px 20px;
-      margin-top: 40px;
+      margin-top: 60px;
       color: var(--gb-light-grey);
     }
 
@@ -520,9 +733,17 @@
       gap: 10px;
     }
 
-    .footer-section i { color: var(--gb-gold); width: 20px; }
-    .footer-section a:hover { color: var(--gb-gold); padding-left: 5px; }
+    .footer-section i {
+      color: var(--gb-gold);
+      width: 20px;
+    }
 
+    .footer-section a:hover {
+      color: var(--gb-gold);
+      padding-left: 5px;
+    }
+
+    /* Social Icons in Footer */
     .social-links {
       display: flex;
       gap: 15px;
@@ -561,40 +782,284 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .coverage-main { grid-template-columns: 1fr; }
-      .coverage-sidebar { flex-direction: row; flex-wrap: wrap; }
-      .info-card { flex: 1 1 calc(50% - 12px); min-width: 280px; }
+    /* ========== SHIPPING COVERAGE SECTION ========== */
+    .shipping-coverage {
+      background: var(--gb-white);
+      padding: 80px 24px;
+      margin-top: 40px;
+      border-top: 1px solid #e8e8e8;
+    }
+
+    .coverage-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .coverage-info h2 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+      color: var(--gb-text-dark);
+    }
+
+    .coverage-info p {
+      color: var(--gb-text-muted);
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+
+    .wilaya-search-box {
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .wilaya-search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--gb-gold);
+    }
+
+    #wilayaSearch {
+      width: 100%;
+      padding: 14px 14px 14px 44px;
+      border: 2px solid #eee;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    #wilayaSearch:focus {
+      border-color: var(--gb-gold);
+      box-shadow: 0 0 10px rgba(220, 20, 60, 0.1);
+    }
+
+    .table-container {
+      max-height: 450px;
+      overflow-y: auto;
+      border: 1px solid #eee;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    }
+
+    .coverage-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .coverage-table th {
+      background: #fcfcfc;
+      padding: 16px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #f0f0f0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .coverage-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f5f5f5;
+      font-size: 0.95rem;
+    }
+
+    .coverage-table tr:hover {
+      background: #f9f9f9;
+    }
+
+    .price-tag {
+      font-weight: 700;
+      color: var(--gb-gold);
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .map-visual {
+      position: relative;
+      text-align: center;
+    }
+
+    .map-visual img {
+      max-width: 100%;
+      height: auto;
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
+    }
+
+    .map-overlay-card {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: var(--gb-white);
+      padding: 20px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-left: 4px solid var(--gb-gold);
+      text-align: left;
+      max-width: 250px;
+    }
+
+    .map-overlay-card h4 {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+    }
+
+    .map-overlay-card p {
+      font-size: 0.8rem;
+      color: var(--gb-text-muted);
+      margin: 0;
+    }
+
+    @media (max-width: 992px) {
+      .coverage-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .coverage-info h2 {
+        font-size: 2rem;
+      }
+    }
+
+    /* ========== RESPONSIVE ENHANCEMENTS ========== */
+    @media (max-width: 1200px) {
+      .products-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+      }
     }
 
     @media (max-width: 768px) {
-      .header-container { flex-direction: column; gap: 20px; padding: 15px; }
-      .coverage-hero h1 { font-size: 2.2rem; }
-      .coverage-hero p { font-size: 1rem; }
-      .algeria-map { min-height: 400px; }
-      .info-card { flex: 1 1 100%; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .header-container {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+      }
+
+      .logo img {
+        height: 45px;
+      }
+
+      .hero {
+        padding: 80px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .filters {
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+      }
+
+      .modal {
+        width: 95%;
+        margin: 10px;
+      }
     }
 
     @media (max-width: 480px) {
-      .coverage-hero { padding: 60px 16px 40px; }
-      .coverage-hero h1 { font-size: 1.8rem; }
-      .algeria-map { min-height: 350px; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .brand-name { font-size: 1.2rem; }
-      .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        padding: 0 10px;
+      }
+
+      .product-info {
+        padding: 15px;
+      }
+
+      .product-name {
+        font-size: 0.9rem;
+        min-height: 2.6rem;
+      }
+
+      .product-description {
+        display: none;
+      }
+
+      .product-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .add-to-cart-btn {
+        width: 100%;
+        font-size: 0.8rem;
+        padding: 10px;
+      }
+
+      .product-price {
+        font-size: 1.1rem;
+        text-align: center;
+      }
+
+      .product-image {
+        height: 180px;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+
+      .brand-tagline {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header-actions {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .header-btn {
+        width: 100%;
+        justify-content: center;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Header -->
+  <!-- Header (RESTE SOMBRE) -->
   <header class="header">
     <div class="header-container">
       <a href="index.html" class="logo">
@@ -615,125 +1080,219 @@
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="coverage-hero">
-    <h1>COUVERTURE <span>DE LIVRAISON</span></h1>
-    <p>Nous livrons dans les 58 wilayas du territoire national algérien. Sélectionnez votre wilaya pour voir les détails de livraison.</p>
+  <!-- Hero (Fond sombre pour contraste avec le texte blanc) -->
+  <section class="hero">
+    <h1>REVEILLEZ LA <span>BÊTE</span> EN VOUS.</h1>
+    <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché
+      Algérien.</p>
   </section>
 
-  <!-- Main Content -->
-  <main class="coverage-main">
-    
-    <!-- Map Section -->
-    <div class="map-container">
-      <h2 class="map-title"><i class="fa-solid fa-map-location-dot"></i> Carte de Couverture</h2>
-      
-      <!-- Search -->
-      <div class="search-box">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="wilayaSearch" placeholder="Rechercher une wilaya...">
+  <!-- Shop Controls -->
+  <div class="shop-controls">
+    <div class="filters">
+      <button class="filter-btn active" id="categoryFilter" data-category="all">Tous les produits</button>
+      <button class="filter-btn" data-category="Protéines whey">Whey Protein</button>
+      <button class="filter-btn" data-category="Masse / Gainer">Mass Gainer</button>
+      <button class="filter-btn" data-category="Acide aminé">Acides Aminés</button>
+      <button class="filter-btn" data-category="Pre-Workout">Pre-Workout</button>
+    </div>
+    <div class="search-container">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="searchInput" placeholder="Rechercher votre supplément explosif...">
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div class="products-grid" id="productsGrid">
+    <div style="text-align:center; padding:100px 20px; color:var(--gb-gold); grid-column:1/-1;">
+      <i class="fa-solid fa-dumbbell fa-spin" style="font-size:3rem; margin-bottom:20px;"></i>
+      <p style="font-size:1.2rem; font-family:'Montserrat', sans-serif; color:var(--gb-text-dark);">CHARGEMENT DE LA
+        BOUTIQUE...</p>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal-overlay" id="cartModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-cart-shopping"></i> PANIER</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="cart-items" id="cartItems"></div>
+      </div>
+      <div class="modal-footer">
+        <div class="cart-total">TOTAL: <span id="totalPrice" style="color:var(--gb-gold)">0.00</span> DA</div>
+        <button class="btn btn-primary" id="checkoutBtn" disabled>COMMANDER <i class="fa-solid fa-bolt"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Detail Modal -->
+  <div class="modal-overlay" id="productDetailModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">Détails Supérieurs</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <img id="detailImage" src="" alt="Produit">
+        <h2 id="detailName"></h2>
+        <p class="product-category" id="detailCategory"
+          style="color:var(--gb-gold); font-weight:700; font-size:0.9rem; margin-bottom:15px;"></p>
+        <div id="detailDescription" style="margin:20px 0; line-height:1.7;"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <p style="font-size:2rem; font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-text-dark);">
+            <span id="detailPrice">0</span> DA</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline close-modal">Retour</button>
+        <button class="btn btn-primary" id="modalAddToCartBtn">Ajouter à l'Arsenal</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout/Order Modal -->
+  <div class="modal-overlay" id="orderFormModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">FINALISER LA COMMANDE</h3>
+        <button class="close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="orderForm">
+          <div class="form-group">
+            <label class="form-label">MÉTHODE DE LIVRAISON *</label>
+            <select class="form-control" id="orderType" required>
+              <option value="">Sélectionner</option>
+              <option value="domicile">Livraison à domicile</option>
+              <option value="stopdesk">Stop Desk (Point relais)</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">PRÉNOM *</label>
+              <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">NOM *</label>
+              <input type="text" class="form-control" id="lastName" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">TÉLÉPHONE 1 *</label>
+              <input type="tel" class="form-control" id="phone1" required placeholder="05/06/07...">
+            </div>
+            <div class="form-group">
+              <label class="form-label">TÉLÉPHONE 2</label>
+              <input type="tel" class="form-control" id="phone2" placeholder="Optionnel">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">WILAYA *</label>
+              <select class="form-control" id="wilaya" required></select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">COMMUNE *</label>
+              <select class="form-control" id="commune" required></select>
+            </div>
+          </div>
+          <div class="shipping-info" id="shippingInfo">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; color:var(--gb-text-dark);">
+              <span>Frais de livraison d'élite:</span>
+              <span id="shippingPrice" style="font-weight:700; color:var(--gb-gold)">0 DA</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:1.3rem; align-items:center;">
+              <span style="font-family:'Montserrat', sans-serif; font-weight:800; color:var(--gb-text-dark);">TOTAL
+                NET:</span>
+              <span id="grandTotal" style="font-size:1.6rem; font-weight:900; color:var(--gb-gold);">0 DA</span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline close-modal">Annuler</button>
+        <button class="btn btn-primary" type="submit" form="orderForm">Valider la Commande <i
+            class="fa-solid fa-check-double"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal" style="text-align:center;">
+      <div class="modal-body" style="padding: 50px 30px;">
+        <div
+          style="width:100px; height:100px; background:rgba(28,208,114,0.15); border:2px solid var(--gb-success); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
+          <i class="fa-solid fa-trophy" style="font-size:3rem; color:var(--gb-success);"></i>
+        </div>
+        <h3 style="margin-bottom:20px; font-size:2rem; color:var(--gb-success);">VICTOIRE !</h3>
+        <p style="color:rgba(255,255,255,0.85); margin-bottom:30px; font-size:1.1rem;">La commande a été transmise à
+          notre quartier général.</p>
+        <div
+          style="background:var(--gb-black); border:1px solid var(--gb-gold); padding:25px; border-radius:var(--radius); margin-bottom:30px;">
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); margin-bottom:10px; text-transform:uppercase;">CODE
+            D'OPÉRATION (Numéro)</p>
+          <p style="font-size:2.5rem; font-weight:900; color:var(--gb-gold); font-family:'Montserrat', sans-serif; letter-spacing:2px;"
+            id="orderNumber"></p>
+        </div>
+        <p style="font-size:0.9rem; color:var(--gb-gold-dark); margin-bottom:30px;"><i class="fa-solid fa-camera"></i>
+          Capturez cet écran pour le suivi.</p>
+        <button class="btn btn-primary close-modal" id="continueBtn" style="width:100%;">Continuer
+          l'Entraînement</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Couverture de Livraison Section -->
+  <section class="shipping-coverage" id="coverage">
+    <div class="coverage-container">
+      <div class="coverage-info">
+        <h2>Couverture de Livraison</h2>
+        <p>Nous livrons vos suppléments préférés à travers les 58 wilayas d'Algérie. Qualité et rapidité garanties, peu
+          importe votre position.</p>
+
+        <div class="wilaya-search-box">
+          <i class="fa-solid fa-location-dot"></i>
+          <input type="text" id="wilayaSearch" placeholder="Rechercher votre wilaya...">
+        </div>
+
+        <div class="table-container">
+          <table class="coverage-table">
+            <thead>
+              <tr>
+                <th>Wilaya</th>
+                <th>Domicile</th>
+                <th>Stop-Desk</th>
+              </tr>
+            </thead>
+            <tbody id="coverageTableBody">
+              <!-- Dynamically populated by script.js -->
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <!-- SVG Map -->
-      <div class="algeria-map" id="algeriaMap">
-        <!-- SVG injected by JS -->
-      </div>
-
-      <!-- Legend -->
-      <div class="legend">
-        <div class="legend-item">
-          <div class="legend-color covered"></div>
-          <span>Livraison 24-48h</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color limited"></div>
-          <span>Livraison 48-72h</span>
-        </div>
-        <div class="legend-item">
-          <div class="legend-color coming"></div>
-          <span>Bientôt disponible</span>
+      <div class="map-visual">
+        <img src="algeria_map.png" alt="Algeria Shipping Map">
+        <div class="map-overlay-card">
+          <h4>Déploiement National</h4>
+          <p>Nos agents logistiques couvrent 100% du territoire algérien avec suivi en temps réel.</p>
         </div>
       </div>
     </div>
+  </section>
 
-    <!-- Sidebar -->
-    <aside class="coverage-sidebar">
-      
-      <!-- Default Info -->
-      <div class="info-card" id="defaultInfo">
-        <h3><i class="fa-solid fa-circle-info"></i> Informations</h3>
-        <p style="color: var(--gb-text-muted); line-height: 1.7;">
-          Cliquez sur une wilaya sur la carte pour voir les détails de livraison, les délais et les frais applicables.
-        </p>
-        <div class="stats-grid">
-          <div class="stat-item">
-            <div class="stat-value">58</div>
-            <div class="stat-label">Wilayas couvertes</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">24-48h</div>
-            <div class="stat-label">Délai moyen</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">100%</div>
-            <div class="stat-label">Paiement sécurisé</div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">Gratuit</div>
-            <div class="stat-label">Retours</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Wilaya Detail (hidden by default) -->
-      <div class="info-card wilaya-detail" id="wilayaDetail">
-        <h3><i class="fa-solid fa-location-dot"></i> Détails de Livraison</h3>
-        <div class="wilaya-name" id="detailName">Nom de la Wilaya</div>
-        <div class="wilaya-code" id="detailCode">Code: XX</div>
-        
-        <div class="delivery-status" id="detailStatus">
-          <i class="fa-solid fa-check-circle"></i>
-          <span id="statusText">Livraison disponible</span>
-        </div>
-        
-        <div class="delivery-time">
-          <strong>Délai estimé:</strong> <span id="detailTime">24 - 48 heures</span>
-        </div>
-        
-        <div class="shipping-cost">
-          <span>Frais de livraison:</span>
-          <span id="detailCost">Gratuit</span>
-        </div>
-        <div class="shipping-cost total">
-          <span>Total à payer:</span>
-          <span id="detailTotal">0 DA</span>
-        </div>
-        
-        <button class="cta-btn" id="orderBtn" disabled>
-          <i class="fa-solid fa-cart-plus"></i> Commander Maintenant
-        </button>
-      </div>
-
-      <!-- Contact Card -->
-      <div class="info-card">
-        <h3><i class="fa-solid fa-headset"></i> Besoin d'Aide ?</h3>
-        <p style="color: var(--gb-text-muted); margin-bottom: 16px;">
-          Notre équipe est disponible pour répondre à vos questions sur la livraison.
-        </p>
-        <p><i class="fa-solid fa-phone" style="color:var(--gb-gold)"></i> +213 (0) 669 46 99 56</p>
-        <p><i class="fa-solid fa-envelope" style="color:var(--gb-gold)"></i> contact@wahbizoghbi.dz</p>
-        <p><i class="fa-solid fa-clock" style="color:var(--gb-gold)"></i> Lun-Sam: 9h - 18h</p>
-      </div>
-
-    </aside>
-  </main>
-
-  <!-- Footer -->
+  <!-- Footer (RESTE SOMBRE) -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section">
         <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
-        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
+        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments
+          certifiés premium.</p>
       </div>
       <div class="footer-section">
         <h3>QG COMMANDEMENT</h3>
@@ -744,10 +1303,12 @@
       <div class="footer-section">
         <h3>SUIVEZ-NOUS</h3>
         <div class="social-links">
-          <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Facebook">
+          <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link"
+            title="Facebook">
             <i class="fa-brands fa-facebook-f"></i>
           </a>
-          <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Instagram">
+          <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link"
+            title="Instagram">
             <i class="fa-brands fa-instagram"></i>
           </a>
           <a href="https://tiktok.com/@wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="TikTok">
@@ -766,207 +1327,9 @@
     </div>
   </footer>
 
-  <!-- Algeria Paths Data -->
-  <script src="algeria_paths.js"></script>
-
-  <script>
-    // Configuration des wilayas (à compléter avec vos données réelles)
-    const WILAYA_CONFIG = {
-      // Format: 'code': { name, status, time, cost }
-      '01': { name: 'Adrar', status: 'limited', time: '48-72h', cost: 500 },
-      '02': { name: 'Chlef', status: 'covered', time: '24-48h', cost: 0 },
-      '03': { name: 'Laghouat', status: 'limited', time: '48-72h', cost: 300 },
-      '04': { name: 'Oum El Bouaghi', status: 'covered', time: '24-48h', cost: 0 },
-      '05': { name: 'Batna', status: 'covered', time: '24-48h', cost: 0 },
-      '06': { name: 'Béjaïa', status: 'covered', time: '24-48h', cost: 0 },
-      '07': { name: 'Biskra', status: 'limited', time: '48-72h', cost: 300 },
-      '08': { name: 'Béchar', status: 'coming', time: 'Bientôt', cost: null },
-      '09': { name: 'Blida', status: 'covered', time: '24-48h', cost: 0 },
-      '10': { name: 'Bouira', status: 'limited', time: '48-72h', cost: 300 },
-      '11': { name: 'Tamanrasset', status: 'coming', time: 'Bientôt', cost: null },
-      '12': { name: 'Tébessa', status: 'limited', time: '48-72h', cost: 300 },
-      '13': { name: 'Tlemcen', status: 'limited', time: '48-72h', cost: 300 },
-      '14': { name: 'Tiaret', status: 'covered', time: '24-48h', cost: 0 },
-      '15': { name: 'Tizi Ouzou', status: 'covered', time: '24-48h', cost: 0 },
-      '16': { name: 'Alger', status: 'covered', time: '24-48h', cost: 0 },
-      '17': { name: 'Djelfa', status: 'covered', time: '24-48h', cost: 0 },
-      '18': { name: 'Jijel', status: 'covered', time: '24-48h', cost: 0 },
-      '19': { name: 'Sétif', status: 'covered', time: '24-48h', cost: 0 },
-      '20': { name: 'Saïda', status: 'limited', time: '48-72h', cost: 300 },
-      '21': { name: 'Skikda', status: 'covered', time: '24-48h', cost: 0 },
-      '22': { name: 'Sidi Bel Abbès', status: 'limited', time: '48-72h', cost: 300 },
-      '23': { name: 'Annaba', status: 'covered', time: '24-48h', cost: 0 },
-      '24': { name: 'Guelma', status: 'covered', time: '24-48h', cost: 0 },
-      '25': { name: 'Constantine', status: 'covered', time: '24-48h', cost: 0 },
-      '26': { name: 'Médéa', status: 'covered', time: '24-48h', cost: 0 },
-      '27': { name: 'Mostaganem', status: 'covered', time: '24-48h', cost: 0 },
-      '28': { name: "M'Sila", status: 'covered', time: '24-48h', cost: 0 },
-      '29': { name: 'Mascara', status: 'limited', time: '48-72h', cost: 300 },
-      '30': { name: 'Ouargla', status: 'limited', time: '48-72h', cost: 500 },
-      '31': { name: 'Oran', status: 'covered', time: '24-48h', cost: 0 },
-      '32': { name: 'El Bayadh', status: 'limited', time: '48-72h', cost: 300 },
-      '33': { name: 'Illizi', status: 'coming', time: 'Bientôt', cost: null },
-      '34': { name: 'Bordj Bou Arreridj', status: 'covered', time: '24-48h', cost: 0 },
-      '35': { name: 'Boumerdès', status: 'covered', time: '24-48h', cost: 0 },
-      '36': { name: 'El Tarf', status: 'covered', time: '24-48h', cost: 0 },
-      '37': { name: 'Tindouf', status: 'coming', time: 'Bientôt', cost: null },
-      '38': { name: 'Tissemsilt', status: 'limited', time: '48-72h', cost: 300 },
-      '39': { name: 'El Oued', status: 'limited', time: '48-72h', cost: 500 },
-      '40': { name: 'Khenchela', status: 'limited', time: '48-72h', cost: 300 },
-      '41': { name: 'Souk Ahras', status: 'covered', time: '24-48h', cost: 0 },
-      '42': { name: 'Tipaza', status: 'covered', time: '24-48h', cost: 0 },
-      '43': { name: 'Mila', status: 'covered', time: '24-48h', cost: 0 },
-      '44': { name: 'Aïn Defla', status: 'covered', time: '24-48h', cost: 0 },
-      '45': { name: 'Naâma', status: 'limited', time: '48-72h', cost: 300 },
-      '46': { name: 'Aïn Témouchent', status: 'covered', time: '24-48h', cost: 0 },
-      '47': { name: 'Ghardaïa', status: 'limited', time: '48-72h', cost: 500 },
-      '48': { name: 'Relizane', status: 'covered', time: '24-48h', cost: 0 },
-      '49': { name: 'Timimoune', status: 'coming', time: 'Bientôt', cost: null },
-      '50': { name: 'Bordj Badji Mokhtar', status: 'coming', time: 'Bientôt', cost: null },
-      '51': { name: 'Ouled Djellal', status: 'limited', time: '48-72h', cost: 300 },
-      '52': { name: 'Béni Abbès', status: 'coming', time: 'Bientôt', cost: null },
-      '53': { name: 'In Salah', status: 'coming', time: 'Bientôt', cost: null },
-      '54': { name: 'In Guezzam', status: 'coming', time: 'Bientôt', cost: null },
-      '55': { name: 'Touggourt', status: 'limited', time: '48-72h', cost: 500 },
-      '56': { name: 'Djanet', status: 'coming', time: 'Bientôt', cost: null },
-      '57': { name: 'El M\'Ghair', status: 'limited', time: '48-72h', cost: 300 },
-      '58': { name: 'El Menia', status: 'limited', time: '48-72h', cost: 500 },
-    };
-
-    // Render the map
-    function renderMap() {
-      const mapContainer = document.getElementById('algeriaMap');
-      
-      let pathsHTML = '';
-      if (typeof ALGERIA_PATHS !== 'undefined') {
-        pathsHTML = ALGERIA_PATHS.map(p => {
-          const config = WILAYA_CONFIG[p.code] || { status: 'coming', time: 'Bientôt', cost: null };
-          return `<path class="wilaya-path ${config.status}" 
-                        data-code="${p.code}" 
-                        data-name="${p.name}"
-                        d="${p.d}" 
-                        title="${p.name}"/>`;
-        }).join('\n');
-      }
-
-      mapContainer.innerHTML = `
-        <svg viewBox="0 0 900 760" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
-          <defs>
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <g id="algeria-paths">
-            ${pathsHTML}
-          </g>
-        </svg>
-      `;
-
-      // Attach event listeners
-      document.querySelectorAll('.wilaya-path').forEach(path => {
-        path.addEventListener('click', handleWilayaClick);
-        path.addEventListener('mouseenter', handleWilayaHover);
-        path.addEventListener('mouseleave', handleWilayaLeave);
-      });
-    }
-
-    // Handle wilaya click
-    function handleWilayaClick(e) {
-      const code = e.currentTarget.dataset.code;
-      const name = e.currentTarget.dataset.name;
-      const config = WILAYA_CONFIG[code] || { status: 'coming', time: 'Bientôt', cost: null };
-      
-      // Update UI
-      document.getElementById('defaultInfo').style.display = 'none';
-      document.getElementById('wilayaDetail').classList.add('active');
-      
-      document.getElementById('detailName').textContent = name;
-      document.getElementById('detailCode').textContent = `Code: ${code.padStart(2, '0')}`;
-      
-      const statusEl = document.getElementById('detailStatus');
-      
-      statusEl.className = 'delivery-status ' + config.status;
-      
-      if (config.status === 'covered') {
-        statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>Livraison disponible</span>';
-        document.getElementById('orderBtn').disabled = false;
-      } else if (config.status === 'limited') {
-        statusEl.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i><span>Livraison limitée</span>';
-        document.getElementById('orderBtn').disabled = false;
-      } else {
-        statusEl.innerHTML = '<i class="fa-solid fa-clock"></i><span>Bientôt disponible</span>';
-        document.getElementById('orderBtn').disabled = true;
-      }
-      
-      document.getElementById('detailTime').textContent = config.time;
-      
-      if (config.cost === 0) {
-        document.getElementById('detailCost').textContent = 'Gratuit';
-        document.getElementById('detailTotal').textContent = '0 DA';
-      } else if (config.cost) {
-        document.getElementById('detailCost').textContent = config.cost + ' DA';
-        document.getElementById('detailTotal').textContent = config.cost + ' DA';
-      } else {
-        document.getElementById('detailCost').textContent = 'N/A';
-        document.getElementById('detailTotal').textContent = 'N/A';
-      }
-      
-      // Scroll on mobile
-      if (window.innerWidth < 1024) {
-        document.getElementById('wilayaDetail').scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-
-    function handleWilayaHover(e) {
-      e.currentTarget.style.filter = 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))';
-    }
-
-    function handleWilayaLeave(e) {
-      e.currentTarget.style.filter = 'none';
-    }
-
-    // Search functionality
-    function setupSearch() {
-      const searchInput = document.getElementById('wilayaSearch');
-      searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        document.querySelectorAll('.wilaya-path').forEach(path => {
-          const name = path.dataset.name.toLowerCase();
-          const code = path.dataset.code;
-          if (name.includes(query) || code.includes(query)) {
-            path.style.opacity = '1';
-            path.style.stroke = query ? '#DC143C' : '#FFFFFF';
-            path.style.strokeWidth = query ? '2' : '0.5';
-          } else {
-            path.style.opacity = '0.3';
-            path.style.stroke = '#FFFFFF';
-            path.style.strokeWidth = '0.5';
-          }
-        });
-      });
-    }
-
-    // Order button
-    function setupOrderButton() {
-      document.getElementById('orderBtn').addEventListener('click', () => {
-        const code = document.querySelector('.wilaya-path[data-code]')?.dataset.code;
-        if (code) {
-          window.location.href = `index.html?wilaya=${code}`;
-        }
-      });
-    }
-
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      renderMap();
-      setupSearch();
-      setupOrderButton();
-    });
-  </script>
-
+  <!-- Firebase & Client Logic -->
+  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
+
 </html>
