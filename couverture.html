@@ -18,9 +18,12 @@
   <style>
     /* ========== WAHBI ZOGHBI THEME ========== */
     :root {
-      --gb-gold: #DC143C;              /* Crimson Red - couleur principale */
-      --gb-gold-light: #FF6B7A;        /* Light Red - hover */
-      --gb-gold-dark: #8B0000;         /* Dark Red - ombres */
+      --gb-gold: #DC143C;
+      /* Crimson Red - couleur principale */
+      --gb-gold-light: #FF6B7A;
+      /* Light Red - hover */
+      --gb-gold-dark: #8B0000;
+      /* Dark Red - ombres */
       --gb-black: #050505;
       --gb-dark-grey: #111111;
       --gb-grey: #222222;
@@ -39,7 +42,11 @@
       --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background-color: var(--gb-off-white);
@@ -49,14 +56,30 @@
       overflow-x: hidden;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
       font-family: 'Montserrat', sans-serif;
       text-transform: uppercase;
       color: var(--gb-text-dark);
     }
 
-    a { text-decoration: none; color: inherit; transition: var(--transition); }
-    button { font-family: 'Inter', sans-serif; cursor: pointer; border: none; outline: none; transition: var(--transition); }
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    button {
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: var(--transition);
+    }
 
     /* ========== HEADER (SOMBRE) ========== */
     .header {
@@ -143,7 +166,9 @@
       color: var(--gb-black);
     }
 
-    .cart-btn:hover { background: var(--gb-gold-light); }
+    .cart-btn:hover {
+      background: var(--gb-gold-light);
+    }
 
     .cart-count {
       position: absolute;
@@ -177,7 +202,9 @@
       margin-bottom: 16px;
     }
 
-    .coverage-hero h1 span { color: var(--gb-gold); }
+    .coverage-hero h1 span {
+      color: var(--gb-gold);
+    }
 
     .coverage-hero p {
       font-size: 1.2rem;
@@ -215,7 +242,9 @@
       color: var(--gb-text-dark);
     }
 
-    .map-title i { color: var(--gb-gold); }
+    .map-title i {
+      color: var(--gb-gold);
+    }
 
     .algeria-map {
       width: 100%;
@@ -284,7 +313,9 @@
       color: var(--gb-text-dark);
     }
 
-    .info-card h3 i { color: var(--gb-gold); }
+    .info-card h3 i {
+      color: var(--gb-gold);
+    }
 
     .wilaya-detail {
       display: none;
@@ -429,12 +460,20 @@
       width: 20px;
       height: 20px;
       border-radius: 4px;
-      border: 1px solid rgba(0,0,0,0.1);
+      border: 1px solid rgba(0, 0, 0, 0.1);
     }
 
-    .legend-color.covered { background: var(--gb-gold); }
-    .legend-color.limited { background: #f39c12; }
-    .legend-color.coming { background: var(--gb-light-grey); }
+    .legend-color.covered {
+      background: var(--gb-gold);
+    }
+
+    .legend-color.limited {
+      background: #f39c12;
+    }
+
+    .legend-color.coming {
+      background: var(--gb-light-grey);
+    }
 
     /* Stats */
     .stats-grid {
@@ -499,7 +538,9 @@
       box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
     }
 
-    .search-box input::placeholder { color: var(--gb-text-muted); }
+    .search-box input::placeholder {
+      color: var(--gb-text-muted);
+    }
 
     /* Footer */
     .footer {
@@ -534,8 +575,15 @@
       gap: 10px;
     }
 
-    .footer-section i { color: var(--gb-gold); width: 20px; }
-    .footer-section a:hover { color: var(--gb-gold); padding-left: 5px; }
+    .footer-section i {
+      color: var(--gb-gold);
+      width: 20px;
+    }
+
+    .footer-section a:hover {
+      color: var(--gb-gold);
+      padding-left: 5px;
+    }
 
     .social-links {
       display: flex;
@@ -575,8 +623,15 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* Responsive */
@@ -584,10 +639,12 @@
       .coverage-container {
         grid-template-columns: 1fr;
       }
+
       .coverage-sidebar {
         flex-direction: row;
         flex-wrap: wrap;
       }
+
       .info-card {
         flex: 1 1 calc(50% - 12px);
         min-width: 280px;
@@ -600,20 +657,53 @@
         gap: 20px;
         padding: 15px;
       }
-      .coverage-hero h1 { font-size: 2.2rem; }
-      .coverage-hero p { font-size: 1rem; }
-      .algeria-map { min-height: 400px; }
-      .info-card { flex: 1 1 100%; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
+
+      .coverage-hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .coverage-hero p {
+        font-size: 1rem;
+      }
+
+      .algeria-map {
+        min-height: 400px;
+      }
+
+      .info-card {
+        flex: 1 1 100%;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (max-width: 480px) {
-      .coverage-hero { padding: 60px 16px 40px; }
-      .coverage-hero h1 { font-size: 1.8rem; }
-      .algeria-map { min-height: 350px; }
-      .stats-grid { grid-template-columns: 1fr; }
-      .brand-name { font-size: 1.2rem; }
-      .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
+      .coverage-hero {
+        padding: 60px 16px 40px;
+      }
+
+      .coverage-hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .algeria-map {
+        min-height: 350px;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-name {
+        font-size: 1.2rem;
+      }
+
+      .brand-tagline {
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+      }
     }
   </style>
 </head>
@@ -644,16 +734,17 @@
   <!-- Hero -->
   <section class="coverage-hero">
     <h1>COUVERTURE <span>DE LIVRAISON</span></h1>
-    <p>Nous livrons dans les 58 wilayas du territoire national algérien. Sélectionnez votre wilaya pour voir les détails de livraison.</p>
+    <p>Nous livrons dans les 58 wilayas du territoire national algérien. Sélectionnez votre wilaya pour voir les détails
+      de livraison.</p>
   </section>
 
   <!-- Main Content -->
   <main class="coverage-container">
-    
+
     <!-- Map Section -->
     <div class="map-container">
       <h2 class="map-title"><i class="fa-solid fa-map-location-dot"></i> Carte de Couverture</h2>
-      
+
       <!-- Search -->
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
@@ -684,7 +775,7 @@
 
     <!-- Sidebar -->
     <aside class="coverage-sidebar">
-      
+
       <!-- Default Info -->
       <div class="info-card" id="defaultInfo">
         <h3><i class="fa-solid fa-circle-info"></i> Informations</h3>
@@ -716,25 +807,25 @@
         <h3><i class="fa-solid fa-location-dot"></i> Détails de Livraison</h3>
         <div class="wilaya-name" id="detailName">Nom de la Wilaya</div>
         <div class="wilaya-code" id="detailCode">Code: XX</div>
-        
+
         <div class="delivery-status" id="detailStatus">
           <i class="fa-solid fa-check-circle"></i>
           <span id="statusText">Livraison disponible</span>
         </div>
-        
+
         <div class="delivery-time">
           <strong>Délai estimé:</strong> <span id="detailTime">24 - 48 heures</span>
         </div>
-        
+
         <div class="shipping-cost">
-          <span>Frais de livraison:</span>
-          <span id="detailCost">Gratuit</span>
+          <span>Livraison Domicile:</span>
+          <span id="detailHomeCost">N/A</span>
         </div>
-        <div class="shipping-cost total">
-          <span>Total à payer:</span>
-          <span id="detailTotal">0 DA</span>
+        <div class="shipping-cost">
+          <span>StopDesk (Point Relais):</span>
+          <span id="detailDeskCost">N/A</span>
         </div>
-        
+
         <button class="cta-btn" id="orderBtn" disabled>
           <i class="fa-solid fa-cart-plus"></i> Commander Maintenant
         </button>
@@ -759,7 +850,8 @@
     <div class="footer-container">
       <div class="footer-section">
         <h3><span style="color:var(--gb-gold)">WAHBI</span>ZOGHBI</h3>
-        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments certifiés premium.</p>
+        <p>L'excellence n'est pas un acte, mais une habitude. Rejoignez le cercle des champions avec nos suppléments
+          certifiés premium.</p>
       </div>
       <div class="footer-section">
         <h3>QG COMMANDEMENT</h3>
@@ -770,10 +862,12 @@
       <div class="footer-section">
         <h3>SUIVEZ-NOUS</h3>
         <div class="social-links">
-          <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Facebook">
+          <a href="https://facebook.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link"
+            title="Facebook">
             <i class="fa-brands fa-facebook-f"></i>
           </a>
-          <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="Instagram">
+          <a href="https://instagram.com/wahbizoghbi" target="_blank" rel="noopener" class="social-link"
+            title="Instagram">
             <i class="fa-brands fa-instagram"></i>
           </a>
           <a href="https://tiktok.com/@wahbizoghbi" target="_blank" rel="noopener" class="social-link" title="TikTok">
@@ -798,28 +892,418 @@
   <script>
     // Configuration des wilayas (à compléter avec vos données réelles)
     const WILAYA_CONFIG = {
-      // Format: 'code': { status: 'covered'|'limited'|'coming', time: '24-48h', cost: 0|300|500 }
-      '16': { name: 'Alger', status: 'covered', time: '24-48h', cost: 0 },
-      '31': { name: 'Oran', status: 'covered', time: '24-48h', cost: 0 },
-      '25': { name: 'Constantine', status: 'covered', time: '24-48h', cost: 0 },
-      '19': { name: 'Sétif', status: 'covered', time: '24-48h', cost: 0 },
-      '06': { name: 'Béjaïa', status: 'covered', time: '24-48h', cost: 0 },
-      '15': { name: 'Tizi Ouzou', status: 'covered', time: '24-48h', cost: 0 },
-      '34': { name: 'Bordj Bou Arreridj', status: 'covered', time: '24-48h', cost: 0 },
-      '10': { name: 'Bouira', status: 'limited', time: '48-72h', cost: 300 },
-      '29': { name: 'Mascara', status: 'limited', time: '48-72h', cost: 300 },
-      '13': { name: 'Tlemcen', status: 'limited', time: '48-72h', cost: 300 },
-      '22': { name: 'Sidi Bel Abbès', status: 'limited', time: '48-72h', cost: 300 },
-      '30': { name: 'Ouargla', status: 'limited', time: '48-72h', cost: 500 },
-      '33': { name: 'Illizi', status: 'coming', time: 'Bientôt', cost: null },
-      '08': { name: 'Béchar', status: 'coming', time: 'Bientôt', cost: null },
-      // ... ajouter les 58 wilayas
+      "10": {
+        "name": "Bouira",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "11": {
+        "name": "Tamanrasset",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 2000,
+        "desk": 1500
+      },
+      "12": {
+        "name": "Tébessa",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 850,
+        "desk": 500
+      },
+      "13": {
+        "name": "Tlemcen",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "14": {
+        "name": "Tiaret",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "15": {
+        "name": "Tizi Ouzou",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "16": {
+        "name": "Alger",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 600,
+        "desk": 400
+      },
+      "17": {
+        "name": "Djelfa",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 900,
+        "desk": 600
+      },
+      "18": {
+        "name": "Jijel",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "19": {
+        "name": "Sétif",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 550,
+        "desk": 300
+      },
+      "20": {
+        "name": "Saïda",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 900,
+        "desk": 500
+      },
+      "21": {
+        "name": "Skikda",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "22": {
+        "name": "Sidi Bel Abbès",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "23": {
+        "name": "Annaba",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "24": {
+        "name": "Guelma",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 850,
+        "desk": 500
+      },
+      "25": {
+        "name": "Constantine",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 650,
+        "desk": 400
+      },
+      "26": {
+        "name": "Médéa",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "27": {
+        "name": "Mostaganem",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "28": {
+        "name": "M'Sila",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "29": {
+        "name": "Mascara",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "30": {
+        "name": "Ouargla",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1000,
+        "desk": 600
+      },
+      "31": {
+        "name": "Oran",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "32": {
+        "name": "El Bayadh",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1200,
+        "desk": 800
+      },
+      "33": {
+        "name": "Illizi",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 1900,
+        "desk": 1500
+      },
+      "34": {
+        "name": "Bordj Bou Arréridj",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 600,
+        "desk": 400
+      },
+      "35": {
+        "name": "Boumerdès",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "36": {
+        "name": "El Tarf",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 850,
+        "desk": 500
+      },
+      "37": {
+        "name": "Tindouf",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 1700,
+        "desk": 1000
+      },
+      "38": {
+        "name": "Tissemsilt",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 850,
+        "desk": 500
+      },
+      "39": {
+        "name": "El Oued",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1000,
+        "desk": 600
+      },
+      "40": {
+        "name": "Khenchela",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 600,
+        "desk": 500
+      },
+      "41": {
+        "name": "Souk Ahras",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 850,
+        "desk": 500
+      },
+      "42": {
+        "name": "Tipaza",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 600,
+        "desk": 450
+      },
+      "43": {
+        "name": "Mila",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 600,
+        "desk": 500
+      },
+      "44": {
+        "name": "Aïn Defla",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "45": {
+        "name": "Naâma",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1200,
+        "desk": 800
+      },
+      "46": {
+        "name": "Aïn Témouchent",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "47": {
+        "name": "Ghardaïa",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1000,
+        "desk": 600
+      },
+      "48": {
+        "name": "Relizane",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "49": {
+        "name": "Timimoun",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 1500,
+        "desk": 1000
+      },
+      "50": {
+        "name": "Bordj Badji Mokhtar",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 600,
+        "desk": 1500
+      },
+      "51": {
+        "name": "Ouled Djellal",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 900,
+        "desk": 500
+      },
+      "52": {
+        "name": "Béni Abbès",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1200,
+        "desk": 800
+      },
+      "53": {
+        "name": "In Salah",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 1800,
+        "desk": 1200
+      },
+      "54": {
+        "name": "In Guezzam",
+        "status": "coming",
+        "time": "Bientôt",
+        "home": 3500,
+        "desk": 3500
+      },
+      "55": {
+        "name": "Touggourt",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1000,
+        "desk": 600
+      },
+      "56": {
+        "name": "Djanet",
+        "status": "coming",
+        "time": "Bientôt",
+        "home": 3500,
+        "desk": 3500
+      },
+      "57": {
+        "name": "El M'Ghair",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 1800,
+        "desk": 1800
+      },
+      "58": {
+        "name": "El Meniaa",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1000,
+        "desk": 600
+      },
+      "01": {
+        "name": "Adrar",
+        "status": "limited",
+        "time": "72-96h",
+        "home": 1500,
+        "desk": 1000
+      },
+      "02": {
+        "name": "Chlef",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "03": {
+        "name": "Laghouat",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 900,
+        "desk": 600
+      },
+      "04": {
+        "name": "Oum El Bouaghi",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 800,
+        "desk": 500
+      },
+      "05": {
+        "name": "Batna",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "06": {
+        "name": "Béjaïa",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      },
+      "07": {
+        "name": "Biskra",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 900,
+        "desk": 500
+      },
+      "08": {
+        "name": "Béchar",
+        "status": "limited",
+        "time": "48-72h",
+        "home": 1200,
+        "desk": 800
+      },
+      "09": {
+        "name": "Blida",
+        "status": "covered",
+        "time": "24-48h",
+        "home": 700,
+        "desk": 450
+      }
     };
 
     // Générer le SVG de la carte
     function renderMap() {
       const mapContainer = document.getElementById('algeriaMap');
-      
+
       let pathsHTML = '';
       if (typeof ALGERIA_PATHS !== 'undefined') {
         pathsHTML = ALGERIA_PATHS.map(p => {
@@ -862,19 +1346,19 @@
       const code = e.currentTarget.dataset.code;
       const name = e.currentTarget.dataset.name;
       const config = WILAYA_CONFIG[code] || { status: 'coming', time: 'Bientôt', cost: null };
-      
+
       // Mettre à jour l'UI
       document.getElementById('defaultInfo').style.display = 'none';
       document.getElementById('wilayaDetail').classList.add('active');
-      
+
       document.getElementById('detailName').textContent = name;
       document.getElementById('detailCode').textContent = `Code: ${code.padStart(2, '0')}`;
-      
+
       const statusEl = document.getElementById('detailStatus');
       const statusText = document.getElementById('statusText');
-      
+
       statusEl.className = 'delivery-status ' + config.status;
-      
+
       if (config.status === 'covered') {
         statusEl.innerHTML = '<i class="fa-solid fa-check-circle"></i><span>Livraison disponible</span>';
         document.getElementById('orderBtn').disabled = false;
@@ -885,20 +1369,20 @@
         statusEl.innerHTML = '<i class="fa-solid fa-clock"></i><span>Bientôt disponible</span>';
         document.getElementById('orderBtn').disabled = true;
       }
-      
+
       document.getElementById('detailTime').textContent = config.time;
-      
-      if (config.cost === 0) {
-        document.getElementById('detailCost').textContent = 'Gratuit';
-        document.getElementById('detailTotal').textContent = '0 DA';
-      } else if (config.cost) {
-        document.getElementById('detailCost').textContent = config.cost + ' DA';
-        document.getElementById('detailTotal').textContent = config.cost + ' DA';
-      } else {
-        document.getElementById('detailCost').textContent = 'N/A';
-        document.getElementById('detailTotal').textContent = 'N/A';
-      }
-      
+
+      const homeCostEl = document.getElementById('detailHomeCost');
+      const deskCostEl = document.getElementById('detailDeskCost');
+
+      if (config.home === 0) homeCostEl.textContent = 'Gratuit';
+      else if (config.home) homeCostEl.textContent = config.home + ' DA';
+      else homeCostEl.textContent = 'N/A';
+
+      if (config.desk === 0) deskCostEl.textContent = 'Gratuit';
+      else if (config.desk) deskCostEl.textContent = config.desk + ' DA';
+      else deskCostEl.textContent = 'N/A';
+
       // Scroll vers la sidebar sur mobile
       if (window.innerWidth < 1024) {
         document.getElementById('wilayaDetail').scrollIntoView({ behavior: 'smooth' });
@@ -954,4 +1438,5 @@
   </script>
 
 </body>
+
 </html>
