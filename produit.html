@@ -470,7 +470,7 @@
 
                     const cartBtnHTML = pQty > 0
                         ? `<button class="add-to-cart-hero" onclick="addToCartFromPage('${docSnap.id}')">
-                            <i class="fa-solid fa-cart-plus"></i> Ajouter à l'Arsenal
+                            <i class="fa-solid fa-cart-plus"></i> Ajouter à Panier
                         </button>`
                         : `<button class="add-to-cart-hero" disabled>
                             <i class="fa-solid fa-ban"></i> Indisponible
@@ -489,7 +489,7 @@
 
                             ${(product.flavors && product.flavors.length > 0) ? `
                             <div class="flavors-selection" style="margin: 20px 0;">
-                                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--gb-white);">Goûts disponibles :</h3>
+                                <h3 style="font-size: 1.1rem; margin-bottom: 10px; color: var(--gb-black);">Goûts disponibles :</h3>
                                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                                     ${product.flavors.map((f, i) => `
                                         <button class="flavor-selector-btn ${i === 0 ? 'active' : ''}" 
@@ -559,3 +559,4 @@
     </script>
 </body>
 </html>
+
