@@ -17,8 +17,4 @@ export const db = getFirestore(app);
 
 console.log("✅ Firebase connecté avec succès!");
 
-export const produitsCollection = collection(db, "produits");
-export const commandesCollection = collection(db, "commande"); // ← اسم الكوليكشن الصحيح
 
-// Export what we need
-export { db, collection, query, where, orderBy, getDocs, doc, updateDoc };
