@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion Livraisons - Wahbi Zoghbi Admin</title>
+  <link rel="icon" href="logo.jpeg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Use same CSS variables as clients.html - copy the :root and base styles */
+    :root {
+      --primary: #DC143C; --primary-dark: #b30000; --primary-light: #FF6B7A;
+      --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+      --bg: #050505; --surface: #111111; --surface-hover: #1a1a1a;
+      --text: #fff; --text-light: #888; --border: #333;
+      --shadow: 0 8px 30px rgba(0,0,0,.5); --radius: 8px; --radius-lg: 16px;
+      --transition: all 0.3s cubic-bezier(0.25,0.8,0.25,1);
+      --sidebar-width: 250px; --header-height: 70px;
+    }
+    /* ... [Copy all base CSS from clients.html up to .table-container] ... */
+    
+    /* Livraison Specific Styles */
+    .delivery-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .delivery-card { background: var(--surface); padding: 16px; border-radius: var(--radius); border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+    .delivery-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .delivery-info h4 { font-size: 0.8rem; color: var(--text-light); font-weight: 500; }
+    .delivery-info p { font-size: 1.3rem; font-weight: 700; font-family: 'Montserrat', sans-serif; }
+    
+    .status-pending-delivery { background: rgba(245,158,11,0.15); color: var(--warning); }
+    .status-in-transit { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+    .status-delivered { background: rgba(16,185,129,0.15); color: var(--success); }
+    .status-failed { background: rgba(239,68,68,0.15); color: var(--danger); }
+    
+    .delivery-row { display: flex; align-items: center; gap: 12px; }
+    .delivery-address { font-size: 0.8rem; color: var(--text-light); margin-top: 4px; }
+    .driver-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--bg); border-radius: 20px; font-size: 0.75rem; }
+    .driver-badge i { color: var(--primary); }
+    
+    .map-container { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 24px; overflow: hidden; }
+    .map-header { padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .map-view { height: 300px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); display: flex; align-items: center; justify-content: center; color: var(--text-light); position: relative; }
+    .map-placeholder { text-align: center; }
+    .map-placeholder i { font-size: 3rem; margin-bottom: 12px; opacity: 0.5; }
+    .map-legend { position: absolute; bottom: 16px; right: 16px; background: var(--bg); padding: 12px; border-radius: var(--radius); font-size: 0.75rem; }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+    
+    .batch-actions { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+    .batch-btn { padding: 8px 16px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 0.8rem; display: flex; align-items: center; gap: 6px; }
+    .batch-btn:hover { border-color: var(--primary); }
+    .batch-btn.selected { background: var(--primary); border-color: var(--primary); color: #fff; }
+    
+    .delivery-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 768px) { .delivery-detail-grid { grid-template-columns: 1fr; } }
+    
+    .timeline { position: relative; padding-left: 24px; }
+    .timeline::before { content: ''; position: absolute; left: 7px; top: 8px; bottom: 8px; width: 2px; background: var(--border); }
+    .timeline-item { position: relative; padding: 12px 0 12px 20px; }
+    .timeline-item::before { content: ''; position: absolute; left: -19px; top: 18px; width: 12px; height: 12px; border-radius: 50%; background: var(--primary); border: 3px solid var(--bg); }
+    .timeline-item.active::before { background: var(--success); }
+    .timeline-time { font-size: 0.75rem; color: var(--text-light); }
+    .timeline-title { font-weight: 500; margin: 4px 0; }
+    .timeline-desc { font-size: 0.8rem; color: var(--text-light); }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .delivery-stats { grid-template-columns: repeat(2, 1fr); }
+      .map-view { height: 200px; }
+      .batch-actions { flex-direction: column; }
+      .batch-btn { width: 100%; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .delivery-stats { grid-template-columns: 1fr; }
+      .delivery-card { flex-direction: column; text-align: center; }
+    }
+    
+    /* Copy all responsive media queries from clients.html here */
+    @media (max-width: 1024px) { :root { --sidebar-width: 220px; } .main-content { padding: 20px; } }
+    @media (max-width: 768px) {
+      .menu-toggle { display: flex; }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.active { transform: translateX(0); }
+      .main-content { margin-left: 0; padding: 16px; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
+      .top-bar-left { width: 100%; justify-content: space-between; }
+      .actions-bar { flex-direction: column; align-items: stretch; }
+      .filters { flex-direction: column; }
+      .input-group { max-width: 100%; }
+      .modal { max-width: 95vw; }
+      .modal-footer { flex-direction: column-reverse; }
+      .modal-footer .btn { width: 100%; justify-content: center; }
+      .detail-row { flex-direction: column; align-items: flex-start; }
+      .detail-value { text-align: left; width: 100%; }
+    }
+    @media (max-width: 480px) {
+      .stats-grid, .delivery-stats { grid-template-columns: 1fr; }
+      .btn i { display: none; }
+      .user-info { display: none; }
+    }
+    @media (hover: none) and (pointer: coarse) { .nav-link:active, .btn:active, .icon-btn:active { transform: scale(0.98); } }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar (Same as clients.html) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <a href="index.html" class="logo"><img src="logo.jpeg" alt="Logo"><div class="logo-text"><div class="brand-name">Wahbi Zoghbi</div><div class="brand-tagline">Admin</div></div></a>
+    </div>
+    <ul class="nav-links">
+      <li class="nav-item"><a href="admin.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+      <li class="nav-item"><a href="gerer-produits.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Produits</a></li>
+      <li class="nav-item"><a href="clients.html" class="nav-link"><i class="fa-solid fa-users"></i> Clients</a></li>
+      <li class="nav-item"><a href="livraisons.html" class="nav-link active"><i class="fa-solid fa-truck-fast"></i> Livraisons</a></li>
+      <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fa-solid fa-store"></i> Voir Site</a></li>
+      <li class="nav-item" style="margin-top:auto;"><a href="login.html" class="nav-link" style="color:var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a></li>
+    </ul>
+    <div class="sidebar-footer"><p>v2.0 • © <span id="currentYear"></span></p></div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="top-bar">
+      <div class="top-bar-left">
+        <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars"></i></button>
+        <div class="page-title"><h1>🚚 Gestion des Livraisons</h1><p>Suivez et gérez vos livraisons en temps réel</p></div>
+      </div>
+      <div class="user-profile"><div class="user-avatar">W</div><div class="user-info"><div class="user-name">Wahbi</div><div class="user-role">Super Admin</div></div></div>
+    </div>
+
+    <!-- Delivery Stats -->
+    <div class="delivery-stats">
+      <div class="delivery-card">
+        <div class="delivery-icon" style="background:rgba(245,158,11,0.15);color:var(--warning)"><i class="fa-solid fa-clock"></i></div>
+        <div class="delivery-info"><h4>En Attente</h4><p id="pendingCount">0</p></div>
+      </div>
+      <div class="delivery-card">
+        <div class="delivery-icon" style="background:rgba(139,92,246,0.15);color:#8b5cf6"><i class="fa-solid fa-truck"></i></div>
+        <div class="delivery-info"><h4>En Route</h4><p id="transitCount">0</p></div>
+      </div>
+      <div class="delivery-card">
+        <div class="delivery-icon" style="background:rgba(16,185,129,0.15);color:var(--success)"><i class="fa-solid fa-check"></i></div>
+        <div class="delivery-info"><h4>Livrées</h4><p id="deliveredCount">0</p></div>
+      </div>
+      <div class="delivery-card">
+        <div class="delivery-icon" style="background:rgba(239,68,68,0.15);color:var(--danger)"><i class="fa-solid fa-rotate-left"></i></div>
+        <div class="delivery-info"><h4>Échouées</h4><p id="failedCount">0</p></div>
+      </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="map-container">
+      <div class="map-header">
+        <h3 style="font-family:'Montserrat',sans-serif;">🗺️ Carte des Livraisons</h3>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="refreshMap()"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+          <button class="btn btn-primary" style="padding:6px 12px; font-size:0.8rem;" onclick="openAssignModal()"><i class="fa-solid fa-user-plus"></i> Assigner</button>
+        </div>
+      </div>
+      <div class="map-view">
+        <div class="map-placeholder">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <p>Intégration Google Maps / Mapbox ici</p>
+          <small style="color:var(--primary);">58 wilayas couvertes ✓</small>
+        </div>
+        <div class="map-legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span> En Attente</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span> En Route</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--success)"></span> Livrée</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters & Actions -->
+    <div class="actions-bar">
+      <div class="filters">
+        <div class="input-group"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="searchDelivery" placeholder="Rechercher commande, client..."></div>
+        <div class="input-group"><select id="filterStatus"><option value="">Tous statuts</option><option value="pending">⏳ En Attente</option><option value="transit">🚚 En Route</option><option value="delivered">✓ Livrée</option><option value="failed">✕ Échouée</option></select></div>
+        <div class="input-group"><select id="filterWilaya"><option value="">Toutes wilayas</option></select></div>
+        <div class="input-group"><select id="filterDate"><option value="">Toutes dates</option><option value="today">Aujourd'hui</option><option value="week">Cette semaine</option><option value="month">Ce mois</option></select></div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-outline" onclick="clearFilters()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+        <button class="btn btn-outline" onclick="exportDeliveries()"><i class="fa-solid fa-file-csv"></i> Export</button>
+        <button class="btn btn-primary" onclick="openBulkAssign()"><i class="fa-solid fa-users"></i> Assignation Multiple</button>
+      </div>
+    </div>
+
+    <!-- Batch Actions -->
+    <div class="batch-actions" id="batchActions" style="display:none;">
+      <span style="color:var(--text-light); font-size:0.85rem;"><i class="fa-solid fa-check-circle"></i> <span id="selectedCount">0</span> sélectionnée(s)</span>
+      <button class="batch-btn" onclick="batchUpdateStatus('transit')"><i class="fa-solid fa-truck"></i> Mettre en Route</button>
+      <button class="batch-btn" onclick="batchUpdateStatus('delivered')"><i class="fa-solid fa-check"></i> Marquer Livrée</button>
+      <button class="batch-btn" style="color:var(--danger); border-color:var(--danger);" onclick="batchUpdateStatus('failed')"><i class="fa-solid fa-xmark"></i> Marquer Échouée</button>
+      <button class="batch-btn" onclick="clearSelection()"><i class="fa-solid fa-xmark"></i> Désélectionner</button>
+    </div>
+
+    <!-- Deliveries Table -->
+    <div class="table-container">
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
+              <th>Commande</th>
+              <th>Client</th>
+              <th>Adresse</th>
+              <th>Wilaya</th>
+              <th>Type</th>
+              <th>Chauffeur</th>
+              <th>Statut</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="deliveriesTableBody">
+            <tr><td colspan="9" style="text-align:center; padding:40px; color:var(--text-light);"><i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delivery Detail Modal -->
+  <div class="modal-overlay" id="deliveryDetailModal">
+    <div class="modal" style="max-width:700px;">
+      <div class="modal-header"><h3>📦 Livraison #<span id="detailDeliveryNumber"></span></h3><button class="close-modal" onclick="closeDeliveryDetail()">&times;</button></div>
+      <div class="modal-body">
+        <div class="delivery-detail-grid">
+          <div>
+            <h4 style="margin-bottom:12px; font-family:'Montserrat',sans-serif;">👤 Client</h4>
+            <div class="detail-row"><span class="detail-label">Nom</span><span class="detail-value" id="detailClientName"></span></div>
+            <div class="detail-row"><span class="detail-label">📞 Téléphone</span><span class="detail-value"><a href="tel:" id="detailPhone"></a></span></div>
+            <div class="detail-row"><span class="detail-label">📍 Adresse</span><span class="detail-value" id="detailAddress"></span></div>
+            <div class="detail-row"><span class="detail-label">🏘️ Wilaya/Commune</span><span class="detail-value" id="detailLocation"></span></div>
+          </div>
+          <div>
+            <h4 style="margin-bottom:12px; font-family:'Montserrat',sans-serif;">📋 Détails</h4>
+            <div class="detail-row"><span class="detail-label">Type</span><span class="detail-value" id="detailType"></span></div>
+            <div class="detail-row"><span class="detail-label">🚚 Chauffeur</span><span class="detail-value" id="detailDriver"></span></div>
+            <div class="detail-row"><span class="detail-label">📅 Date Commande</span><span class="detail-value" id="detailOrderDate"></span></div>
+            <div class="detail-row"><span class="detail-label">💰 Total</span><span class="detail-value" style="color:var(--primary);" id="detailTotal"></span></div>
+          </div>
+        </div>
+        
+        <h4 style="margin:24px 0 12px; font-family:'Montserrat',sans-serif;">📍 Suivi en Temps Réel</h4>
+        <div class="timeline" id="deliveryTimeline">
+          <div class="timeline-item active"><div class="timeline-time">10:30</div><div class="timeline-title">Commande Confirmée</div><div class="timeline-desc">Préparation en cours</div></div>
+          <div class="timeline-item"><div class="timeline-time">-</div><div class="timeline-title">En Route</div><div class="timeline-desc">Affecté au chauffeur</div></div>
+          <div class="timeline-item"><div class="timeline-time">-</div><div class="timeline-title">En Livraison</div><div class="timeline-desc">Proche du destinataire</div></div>
+          <div class="timeline-item"><div class="timeline-time">-</div><div class="timeline-title">✅ Livrée</div><div class="timeline-desc">Confirmée par le client</div></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <select id="updateStatus" class="form-control" style="max-width:200px; padding:8px 12px;">
+          <option value="pending">⏳ En Attente</option>
+          <option value="transit">🚚 En Route</option>
+          <option value="delivered">✓ Livrée</option>
+          <option value="failed">✕ Échouée</option>
+        </select>
+        <button class="btn btn-primary" onclick="updateDeliveryStatus()"><i class="fa-solid fa-check"></i> Mettre à Jour</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assign Driver Modal -->
+  <div class="modal-overlay" id="assignModal">
+    <div class="modal">
+      <div class="modal-header"><h3>👨‍✈️ Assigner un Chauffeur</h3><button class="close-modal" onclick="closeAssignModal()">&times;</button></div>
+      <div class="modal-body">
+        <form id="assignForm">
+          <input type="hidden" id="assignDeliveryId">
+          <div class="form-group"><label class="form-label">Chauffeur *</label><select id="driverSelect" class="form-control" required><option value="">Sélectionner...</option><option value="driver1">Ahmed K. - Alger Centre</option><option value="driver2">Yacine M. - Oran</option><option value="driver3">Samir B. - Constantine</option></select></div>
+          <div class="form-group"><label class="form-label">Note pour le chauffeur</label><textarea id="driverNote" class="form-control" rows="3" placeholder="Instructions spéciales..."></textarea></div>
+          <div class="form-group"><label class="form-label">Date de Livraison Estimée</label><input type="date" id="estimatedDate" class="form-control"></div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeAssignModal()">Annuler</button>
+        <button class="btn btn-primary" type="submit" form="assignForm"><i class="fa-solid fa-check"></i> Assigner</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer"></div>
+
+  <script>
+    // ===== Same init functions as clients.html =====
+    let deliveries = [], selectedDeliveries = [], drivers = [], wilayas = [];
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+      initSidebar();
+      loadWilayas();
+      loadDeliveries();
+      initEventListeners();
+    });
+    
+    function initSidebar() {
+      const toggle = document.getElementById('menuToggle'), sidebar = document.getElementById('sidebar');
+      toggle?.addEventListener('click', () => sidebar.classList.toggle('active'));
+      document.addEventListener('click', (e) => {
+        if(window.innerWidth <= 768 && sidebar.classList.contains('active') && !sidebar.contains(e.target) && !toggle.contains(e.target)) {
+          sidebar.classList.remove('active');
+        }
+      });
+    }
+    
+    function initEventListeners() {
+      document.getElementById('searchDelivery')?.addEventListener('input', filterDeliveries);
+      document.getElementById('filterStatus')?.addEventListener('change', filterDeliveries);
+      document.getElementById('filterWilaya')?.addEventListener('change', filterDeliveries);
+      document.getElementById('filterDate')?.addEventListener('change', filterDeliveries);
+      document.getElementById('assignForm')?.addEventListener('submit', saveAssignment);
+      document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', (e) => { if(e.target === m) { m.classList.remove('active'); document.body.style.overflow=''; }}));
+      document.addEventListener('keydown', (e) => { if(e.key === 'Escape') { document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active')); document.body.style.overflow=''; }});
+    }
+    
+    function loadWilayas() {
+      wilayas = ['Alger','Oran','Constantine','Annaba','Blida','Sétif','Batna','Tlemcen','Béjaïa','Mostaganem'];
+      const select = document.getElementById('filterWilaya');
+      if(select) wilayas.forEach(w => { const opt = document.createElement('option'); opt.value = w; opt.textContent = w; select.appendChild(opt); });
+    }
+    
+    async function loadDeliveries() {
+      // Replace with Firebase call
+      deliveries = [ /* Sample delivery data */ ];
+      renderDeliveries(deliveries);
+      updateStats();
+    }
+    
+    function renderDeliveries(data) {
+      const tbody = document.getElementById('deliveriesTableBody');
+      if(!data.length) { tbody.innerHTML = '<tr><td colspan="9" style="text-align:center; padding:40px;">Aucune livraison trouvée</td></tr>'; return; }
+      tbody.innerHTML = data.map(d => {
+        const statusClass = `status-${d.status==='pending'?'pending-delivery':d.status==='transit'?'in-transit':d.status==='delivered'?'delivered':'failed'}`;
+        const statusText = d.status==='pending'?'⏳ En Attente':d.status==='transit'?'🚚 En Route':d.status==='delivered'?'✓ Livrée':'✕ Échouée';
+        return `<tr>
+          <td><input type="checkbox" class="delivery-checkbox" value="${d.id}" onchange="toggleSelection('${d.id}')"></td>
+          <td><strong style="color:var(--primary);">#${d.orderNumber}</strong></td>
+          <td><div style="font-weight:500;">${d.clientName}</div><small class="client-phone"><a href="tel:${d.phone}">${d.phone}</a></small></td>
+          <td><div>${d.address}</div><div class="delivery-address">${d.commune}</div></td>
+          <td>${d.wilaya}</td>
+          <td><span style="padding:4px 10px; background:var(--bg); border-radius:20px; font-size:0.75rem;">${d.type==='domicile'?'🏠 Domicile':'📦 Stop Desk'}</span></td>
+          <td>${d.driver ? `<span class="driver-badge"><i class="fa-solid fa-user"></i> ${d.driver}</span>` : '<span style="color:var(--text-light);">Non assigné</span>'}</td>
+          <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+          <td><div class="action-btns">
+            <button class="icon-btn" onclick="viewDelivery('${d.id}')" title="Voir"><i class="fa-solid fa-eye"></i></button>
+            <button class="icon-btn" onclick="openAssignModal('${d.id}')" title="Assigner"><i class="fa-solid fa-user-plus"></i></button>
+            <button class="icon-btn" onclick="updateDeliveryStatusDirect('${d.id}')" title="Mettre à jour"><i class="fa-solid fa-pen"></i></button>
+          </div></td>
+        </tr>`;
+      }).join('');
+    }
+    
+    function updateStats() {
+      document.getElementById('pendingCount').textContent = deliveries.filter(d => d.status === 'pending').length;
+      document.getElementById('transitCount').textContent = deliveries.filter(d => d.status === 'transit').length;
+      document.getElementById('deliveredCount').textContent = deliveries.filter(d => d.status === 'delivered').length;
+      document.getElementById('failedCount').textContent = deliveries.filter(d => d.status === 'failed').length;
+    }
+    
+    function filterDeliveries() {
+      const search = document.getElementById('searchDelivery').value.toLowerCase();
+      const status = document.getElementById('filterStatus').value;
+      const wilaya = document.getElementById('filterWilaya').value;
+      const date = document.getElementById('filterDate').value;
+      const filtered = deliveries.filter(d => {
+        const matchSearch = !search || (d.orderNumber?.toLowerCase().includes(search) || d.clientName?.toLowerCase().includes(search));
+        const matchStatus = !status || d.status === status;
+        const matchWilaya = !wilaya || d.wilaya === wilaya;
+        return matchSearch && matchStatus && matchWilaya;
+      });
+      renderDeliveries(filtered);
+    }
+    
+    function clearFilters() {
+      document.getElementById('searchDelivery').value = '';
+      document.getElementById('filterStatus').value = '';
+      document.getElementById('filterWilaya').value = '';
+      document.getElementById('filterDate').value = '';
+      renderDeliveries(deliveries);
+      showToast('Filtres réinitialisés');
+    }
+    
+    // ===== Selection & Batch Actions =====
+    function toggleSelectAll() {
+      const checked = document.getElementById('selectAll').checked;
+      document.querySelectorAll('.delivery-checkbox').forEach(cb => { cb.checked = checked; toggleSelection(cb.value, false); });
+      updateBatchActions();
+    }
+    
+    function toggleSelection(id, updateUI = true) {
+      const idx = selectedDeliveries.indexOf(id);
+      if(idx === -1) selectedDeliveries.push(id); else selectedDeliveries.splice(idx, 1);
+      if(updateUI) {
+        document.getElementById('selectAll').checked = selectedDeliveries.length === document.querySelectorAll('.delivery-checkbox').length;
+        updateBatchActions();
+      }
+    }
+    
+    function updateBatchActions() {
+      const batchBar = document.getElementById('batchActions');
+      if(selectedDeliveries.length > 0) {
+        batchBar.style.display = 'flex';
+        document.getElementById('selectedCount').textContent = selectedDeliveries.length;
+      } else {
+        batchBar.style.display = 'none';
+      }
+    }
+    
+    function clearSelection() {
+      selectedDeliveries = [];
+      document.querySelectorAll('.delivery-checkbox').forEach(cb => cb.checked = false);
+      document.getElementById('selectAll').checked = false;
+      updateBatchActions();
+    }
+    
+    function batchUpdateStatus(newStatus) {
+      if(!selectedDeliveries.length) return;
+      deliveries = deliveries.map(d => selectedDeliveries.includes(d.id) ? { ...d, status: newStatus } : d);
+      renderDeliveries(deliveries);
+      updateStats();
+      showToast(`${selectedDeliveries.length} livraison(s) mise(s) à jour`, 'success');
+      clearSelection();
+    }
+    
+    // ===== Modals =====
+    function openModal(id) { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
+    function closeDeliveryDetail() { closeModal('deliveryDetailModal'); }
+    function closeAssignModal() { closeModal('assignModal'); document.getElementById('assignForm')?.reset(); }
+    
+    function openAssignModal(deliveryId = null) {
+      document.getElementById('assignDeliveryId').value = deliveryId || '';
+      openModal('assignModal');
+    }
+    
+    function viewDelivery(id) {
+      const d = deliveries.find(x => x.id === id);
+      if(!d) return;
+      document.getElementById('detailDeliveryNumber').textContent = d.orderNumber;
+      document.getElementById('detailClientName').textContent = d.clientName;
+      document.getElementById('detailPhone').textContent = d.phone;
+      document.getElementById('detailPhone').href = `tel:${d.phone}`;
+      document.getElementById('detailAddress').textContent = d.address;
+      document.getElementById('detailLocation').textContent = `${d.wilaya} - ${d.commune}`;
+      document.getElementById('detailType').textContent = d.type === 'domicile' ? '🏠 Livraison à domicile' : '📦 Stop Desk';
+      document.getElementById('detailDriver').textContent = d.driver || 'Non assigné';
+      document.getElementById('detailOrderDate').textContent = d.orderDate ? new Date(d.orderDate).toLocaleDateString('fr-DZ') : '-';
+      document.getElementById('detailTotal').textContent = new Intl.NumberFormat('fr-DZ').format(d.total) + ' DA';
+      document.getElementById('updateStatus').value = d.status;
+      openModal('deliveryDetailModal');
+    }
+    
+    function updateDeliveryStatusDirect(id) { viewDelivery(id); }
+    
+    async function updateDeliveryStatus() {
+      const id = document.getElementById('detailDeliveryNumber').textContent;
+      const newStatus = document.getElementById('updateStatus').value;
+      const idx = deliveries.findIndex(d => d.orderNumber === id);
+      if(idx !== -1) {
+        deliveries[idx].status = newStatus;
+        renderDeliveries(deliveries);
+        updateStats();
+        showToast('Statut mis à jour ✓', 'success');
+        closeDeliveryDetail();
+      }
+    }
+    
+    async function saveAssignment(e) {
+      e.preventDefault();
+      const id = document.getElementById('assignDeliveryId').value;
+      const driver = document.getElementById('driverSelect').value;
+      const note = document.getElementById('driverNote').value;
+      const estimated = document.getElementById('estimatedDate').value;
+      
+      if(id) {
+        const idx = deliveries.findIndex(d => d.id === id);
+        if(idx !== -1) {
+          deliveries[idx].driver = driver;
+          deliveries[idx].driverNote = note;
+          deliveries[idx].estimatedDate = estimated;
+          deliveries[idx].status = 'transit';
+          showToast('Chauffeur assigné ✓', 'success');
+        }
+      }
+      closeAssignModal();
+      renderDeliveries(deliveries);
+      updateStats();
+    }
+    
+    function openBulkAssign() {
+      if(selectedDeliveries.length === 0) { showToast('Sélectionnez des livraisons d\'abord', 'error'); return; }
+      // Open modal with multi-select for drivers
+      showToast(`${selectedDeliveries.length} livraison(s) prêtes pour assignation`, 'success');
+    }
+    
+    function refreshMap() { showToast('Carte actualisée', 'success'); }
+    function exportDeliveries() { showToast('Export CSV en préparation...', 'success'); }
+    
+    // ===== Toast =====
+    function showToast(msg, type='success') {
+      const container = document.getElementById('toastContainer'), toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<i class="fa-solid ${type==='success'?'fa-circle-check':'fa-circle-exclamation'}"></i><span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => { toast.style.animation='slideIn 0.3s ease reverse'; setTimeout(()=>toast.remove(),300); }, 3000);
+    }
+  </script>
+  <script type="module" src="firebase-config.js"></script>
+</body>
+</html>
