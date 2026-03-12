@@ -4,10 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="logo.jpeg" type="image/x-icon">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#050505">
     <title>Gérer les Produits - Wahbi Zoghbi</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css  ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #DC143C;
@@ -189,7 +190,8 @@
             border-radius: var(--radius);
             outline: none;
             background: var(--bg);
-            color: var(--text)
+            color: var(--text);
+            font-size: 1rem;
         }
 
         .btn {
@@ -263,6 +265,7 @@
             object-fit: cover;
             border-radius: 4px;
             background: #fff;
+            display: block;
         }
 
         .status-badge {
@@ -381,7 +384,8 @@
             border: 1px solid var(--border);
             border-radius: var(--radius);
             background: var(--bg);
-            color: var(--text)
+            color: var(--text);
+            font-size: 1rem;
         }
 
         .form-row {
@@ -430,28 +434,228 @@
             }
         }
 
-        @media(max-width:768px) {
+        /* ========== Responsive Enhancements ========== */
+
+        .menu-toggle {
+            display: none !important;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            
             .menu-toggle {
                 display: block !important;
             }
+        }
 
-            .sidebar {
-                transform: translateX(-100%);
-                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
             }
-
-            .sidebar.active {
-                transform: translateX(0)
+            
+            .page-title h1 {
+                font-size: 1.25rem;
             }
-
-            .main-content {
-                margin-left: 0
+            
+            .actions-bar {
+                flex-direction: column;
+                align-items: stretch;
             }
-
+            
             .filters {
-                flex-direction: column
+                flex-direction: column;
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .input-group input,
+            .input-group select {
+                padding: 12px 12px 12px 36px;
+                font-size: 1rem;
+            }
+            
+            .actions-bar div[style*="gap:10px"] {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+            
+            th, td {
+                padding: 12px 8px;
+                font-size: 0.8rem;
+            }
+            
+            .product-img-td {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .action-btns {
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .icon-btn {
+                padding: 6px;
+            }
+            
+            .modal {
+                width: 95%;
+                max-width: 100%;
+                max-height: 95vh;
+                margin: 10px;
+            }
+            
+            .modal-body {
+                padding: 16px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .toast {
+                left: 10px;
+                right: 10px;
+                width: auto;
+                max-width: 90%;
             }
         }
+
+        @media (max-width: 480px) {
+            .sidebar-header {
+                padding: 16px;
+            }
+            
+            .brand-name {
+                font-size: 1rem;
+            }
+            
+            .brand-tagline {
+                font-size: 0.65rem;
+                letter-spacing: 2px;
+            }
+            
+            .nav-link {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+            
+            .nav-link i {
+                font-size: 1rem;
+            }
+            
+            .page-title h1 {
+                font-size: 1.1rem;
+            }
+            
+            .page-title p {
+                font-size: 0.8rem;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+            
+            .btn i {
+                font-size: 0.9rem;
+            }
+            
+            td:nth-child(2) {
+                max-width: 120px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            
+            .status-badge {
+                padding: 3px 8px;
+                font-size: 0.7rem;
+            }
+            
+            .modal-header h3 {
+                font-size: 1.1rem;
+            }
+            
+            .close-modal {
+                font-size: 1.3rem;
+                padding: 4px 8px;
+            }
+            
+            .form-label {
+                font-size: 0.8rem;
+            }
+            
+            .form-control {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            .modal {
+                max-height: 100vh;
+                border-radius: 0;
+            }
+            
+            .modal-body {
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+        }
+
+        @media print {
+            .sidebar, .actions-bar, .action-btns {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .table-container {
+                box-shadow: none;
+            }
+        }
+
+        /* Card view for mobile (Optional - uncomment to use) */
+        /*
+        @media (max-width: 600px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { position: absolute; top: -9999px; left: -9999px; }
+            tr { margin-bottom: 16px; background: var(--bg); border-radius: var(--radius); padding: 12px; border: 1px solid var(--border); }
+            td { border: none; padding: 8px 0; display: flex; justify-content: space-between; align-items: center; text-align: right; border-bottom: 1px dashed var(--border); }
+            td:last-child { border-bottom: none; }
+            td::before { content: attr(data-label); font-weight: 600; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; margin-right: 10px; }
+            .product-img-td { margin: 0 auto 10px; display: block; }
+            .action-btns { justify-content: center; flex-direction: row; }
+        }
+        */
     </style>
 </head>
 
@@ -467,33 +671,29 @@
             </a>
         </div>
         <ul class="nav-links">
-            <li class="nav-item"><a href="admin.html" class="nav-link"><i class="fa-solid fa-chart-line"></i>
-                    Dashboard</a></li>
-            <li class="nav-item"><a href="gerer-produits.html" class="nav-link active"><i
-                        class="fa-solid fa-boxes-stacked"></i> Gérer les Produits</a></li>
-            <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fa-solid fa-store"></i>
-                    Voir
-                    le Site</a></li>
-            <li class="nav-item"><a href="login.html" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i>
-                    Déconnexion</a></li>
+            <li class="nav-item"><a href="admin.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+            <li class="nav-item"><a href="gerer-produits.html" class="nav-link active"><i class="fa-solid fa-boxes-stacked"></i> Gérer les Produits</a></li>
+            <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fa-solid fa-store"></i> Voir le Site</a></li>
+            <li class="nav-item"><a href="login.html" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a></li>
         </ul>
     </aside>
 
     <main class="main-content">
         <div class="top-bar">
             <div style="display:flex; align-items:center; gap: 15px;">
-                <button class="menu-toggle" onclick="document.querySelector('.sidebar').classList.toggle('active')"
-                    style="display:none; background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer;"><i
-                        class="fa-solid fa-bars"></i></button>
+                <button class="menu-toggle" 
+                        onclick="toggleSidebar()" 
+                        aria-label="Toggle menu"
+                        style="display:none; background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer; padding: 8px;">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
                 <div class="page-title">
                     <h1>📦 Gérer les Produits</h1>
                     <p>Gérez votre inventaire, modifiez les prix, et mettez à jour les stocks.</p>
                 </div>
             </div>
             <div style="display:flex;align-items:center;gap:12px">
-                <div
-                    style="width:40px;height:40px;background:var(--primary);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700">
-                    W</div>
+                <div style="width:40px;height:40px;background:var(--primary);color:#000;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700">W</div>
                 <div>
                     <div style="font-weight:600;font-size:.875rem">Wahbi</div>
                     <div style="font-size:.75rem;color:var(--text-light)">Super Utilisateur</div>
@@ -503,8 +703,7 @@
 
         <div class="actions-bar">
             <div class="filters">
-                <div class="input-group"><i class="fa-solid fa-search"></i><input type="text" id="searchInput"
-                        placeholder="Rechercher par nom..."></div>
+                <div class="input-group"><i class="fa-solid fa-search"></i><input type="text" id="searchInput" placeholder="Rechercher par nom..."></div>
                 <div class="input-group">
                     <select id="filterCategory">
                         <option value="">Toutes les catégories</option>
@@ -518,8 +717,7 @@
                 </div>
             </div>
             <div style="display:flex;gap:10px">
-                <button class="btn btn-outline" onclick="clearFilters()"><i class="fa-solid fa-rotate-right"></i>
-                    Reset</button>
+                <button class="btn btn-outline" onclick="clearFilters()"><i class="fa-solid fa-rotate-right"></i> Reset</button>
             </div>
         </div>
 
@@ -537,8 +735,7 @@
                 </thead>
                 <tbody id="productsTableBody">
                     <tr>
-                        <td colspan="6" style="text-align:center;padding:40px;color:var(--text-light)"><i
-                                class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</td>
+                        <td colspan="6" style="text-align:center;padding:40px;color:var(--text-light)"><i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</td>
                     </tr>
                 </tbody>
             </table>
@@ -549,18 +746,14 @@
     <div class="modal-overlay" id="editProductModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>✏️ Modifier Produit</h3><button class="close-modal"
-                    onclick="closeEditProductModal()">&times;</button>
+                <h3>✏️ Modifier Produit</h3><button class="close-modal" onclick="closeEditProductModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="editProductForm">
                     <input type="hidden" id="editProductId">
-                    <div class="form-group"><label class="form-label">Nom du produit *</label><input type="text"
-                            id="editProductName" class="form-control" required></div>
-                    <div class="form-group"><label class="form-label">URL de l'image *</label><input type="url"
-                            id="editProductImage" class="form-control" required></div>
-                    <div class="form-group"><label class="form-label">Catégorie *</label><select
-                            id="editProductCategory" class="form-control" required>
+                    <div class="form-group"><label class="form-label">Nom du produit *</label><input type="text" id="editProductName" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">URL de l'image *</label><input type="url" id="editProductImage" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">Catégorie *</label><select id="editProductCategory" class="form-control" required>
                             <option value="">Sélectionner...</option>
                             <option value="Protéines whey">Protéines whey</option>
                             <option value="Masse / Gainer">Masse / Gainer</option>
@@ -568,21 +761,15 @@
                             <option value="Pre-Workout">Pre-Workout</option>
                             <option value="Autre">Autre</option>
                         </select></div>
-                    <div class="form-group"><label class="form-label">Description</label><textarea
-                            id="editProductDescription" class="form-control" rows="3"></textarea></div>
-                    <div class="form-group"><label class="form-label">Inventaire (Stock) *</label><input type="number"
-                            id="editProductQuantity" class="form-control" required min="0"></div>
-                    <div class="form-group"><label class="form-label">Prix (DA) *</label><input type="number"
-                            id="editProductPrice" class="form-control" required min="0"></div>
+                    <div class="form-group"><label class="form-label">Description</label><textarea id="editProductDescription" class="form-control" rows="3"></textarea></div>
+                    <div class="form-group"><label class="form-label">Inventaire (Stock) *</label><input type="number" id="editProductQuantity" class="form-control" required min="0"></div>
+                    <div class="form-group"><label class="form-label">Prix (DA) *</label><input type="number" id="editProductPrice" class="form-control" required min="0"></div>
 
                     <!-- Section Goûts -->
-                    <div class="form-group"
-                        style="border: 1px solid var(--border); padding: 15px; border-radius: var(--radius); margin-top: 15px;">
-                        <label class="form-label"
-                            style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="form-group" style="border: 1px solid var(--border); padding: 15px; border-radius: var(--radius); margin-top: 15px;">
+                        <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
                             Goûts / Variantes (Optionnel)
-                            <button type="button" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;"
-                                onclick="addEditFlavorField()">+ Ajouter un goût</button>
+                            <button type="button" class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem;" onclick="addEditFlavorField()">+ Ajouter un goût</button>
                         </label>
                         <div id="editFlavorsList" style="display:flex; flex-direction:column; gap:10px;"></div>
                     </div>
@@ -597,7 +784,54 @@
 
     <script type="module" src="firebase-config.js"></script>
     <script type="module" src="gerer-produits.js"></script>
+    
+    <!-- Scripts Responsive -->
+    <script>
+        // Toggle sidebar on mobile
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', (e) => {
+            const sidebar = document.querySelector('.sidebar');
+            const toggle = document.querySelector('.menu-toggle');
+            
+            if (window.innerWidth <= 1024 && 
+                sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                toggle && !toggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Close modal when clicking outside
+        document.getElementById('editProductModal').addEventListener('click', (e) => {
+            if (e.target.id === 'editProductModal') {
+                closeEditProductModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeEditProductModal();
+                if (window.innerWidth <= 1024) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                }
+            }
+        });
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (window.innerWidth > 1024) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                }
+            }, 250);
+        });
+    </script>
 </body>
-
 </html>
-
