@@ -18,12 +18,5 @@ export const db = getFirestore(app);
 console.log("✅ Firebase connecté avec succès!");
 
 
-// ✅ Collections references - أسماء الكوليكشن الصحيحة حسب Firebase عندك
-export const produitsCollection = collection(databases, "produits");
-export const commandesCollection = collection(databases, "commandes"); // ← اسم الكوليكشن الصحيح
 
-// ✅ Export كل اللي تحتاجه
-export { databases, collection, query, where, orderBy, getDocs, doc, updateDoc };
-
-console.log('✅ Firebase initialized successfully');
 
