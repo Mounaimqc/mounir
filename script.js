@@ -5,7 +5,7 @@ import { db } from './firebase-config.js';
 
 // ========== VARIABLES GLOBALES ==========
 let products = [];
-let allFilteredProducts = []; // To store current filter/search results for pagination
+let allFilteredProducts = [];
 let displayedCount = 10;
 const itemsPerPage = 10;
 let cart = [];
@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
   loadCartFromStorage();
   populateShippingTable();
 
-  // Modal Add to Cart Button
   const modalBtn = document.getElementById('modalAddToCartBtn');
   if (modalBtn) {
     modalBtn.addEventListener('click', () => {
@@ -41,6 +40,45 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+// ========== عَد المنتجات حسب القسم ==========
+function countProductsByCategory(productList = products) {
+  const counts = {
+    'all': 0,
+    'Protéines whey': 0,
+    'Masse / Gainer': 0,
+    'Acide aminé': 0,
+    'Force / Energie': 0,
+    'Brûleur de graisse': 0
+  };
+  
+  productList.forEach(product => {
+    const cat = product.category;
+    if (counts[cat] !== undefined) {
+      counts[cat]++;
+    }
+    counts['all']++;
+  });
+  
+  return counts;
+}
+
+function updateCategoryCounts(productList = products) {
+  const counts = countProductsByCategory(productList);
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  
+  filterBtns.forEach(btn => {
+    const category = btn.getAttribute('data-category');
+    const count = counts[category] ?? 0;
+    
+    if (!btn.dataset.baseName) {
+      btn.dataset.baseName = btn.textContent.trim();
+    }
+    const baseName = btn.dataset.baseName;
+    
+    btn.innerHTML = `${baseName} <span class="category-count" style="margin-left:6px; background:var(--gb-gold); color:var(--gb-black); padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:700; min-width:20px; text-align:center; display:inline-block;">${count}</span>`;
+  });
+}
 
 // ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
 async function loadProductsFromFirebase() {
@@ -59,7 +97,6 @@ async function loadProductsFromFirebase() {
   try {
     console.log("📦 Chargement des produits depuis Firebase...");
 
-    // ✅ CORRECT : Pas d'espaces dans le nom de collection
     const productsRef = collection(db, "produits");
     const productsQuery = query(productsRef, orderBy("dateAdded", "desc"));
     const querySnapshot = await getDocs(productsQuery);
@@ -91,10 +128,13 @@ async function loadProductsFromFirebase() {
           <p style="font-size:0.875rem; margin-top:8px;">Veuillez contacter l'administrateur ou ajouter des produits via le panel admin.</p>
         </div>`;
     } else {
-      // Shuffle products on load
       shuffleArray(products);
       allFilteredProducts = [...products];
       displayedCount = itemsPerPage;
+      
+      // ✅ تحديث عدادات الأقسام بعد تحميل المنتجات
+      updateCategoryCounts();
+      
       loadProducts();
     }
   } catch (error) {
@@ -107,6 +147,7 @@ async function loadProductsFromFirebase() {
       </div>`;
   }
 }
+
 // ========== AFFICHAGE DES PRODUITS ==========
 function loadProducts() {
   const grid = document.getElementById('productsGrid');
@@ -133,19 +174,16 @@ function loadProducts() {
   productsToDisplay.forEach(product => {
     const card = document.createElement('div');
     card.className = 'product-card';
-    // REMOVED: Inline styles that override CSS classes
 
     card.addEventListener('click', (e) => {
       if (e.target.classList.contains('add-to-cart-btn')) return;
       openProductDetail(product.id);
     });
 
-    // Image
     const img = document.createElement('img');
     img.src = (product.image && product.image.trim()) ? product.image : 'https://via.placeholder.com/300x200?text=Produit';
     img.alt = product.name;
     img.className = 'product-image';
-    // REMOVED: Inline height/background to allow CSS control
     img.onerror = function () {
       this.src = PLACEHOLDER_SVG;
       this.style.objectFit = 'contain';
@@ -155,10 +193,8 @@ function loadProducts() {
       openProductDetail(product.id);
     });
 
-    // Informations
     const info = document.createElement('div');
     info.className = 'product-info';
-    // REMOVED: Inline padding to allow CSS control
 
     const shortDesc = truncateDescription(product.description || '', 50);
     const quantity = product.quantity || 0;
@@ -180,8 +216,6 @@ function loadProducts() {
       </div>
     `;
 
-    // Button hover effects are handled by CSS
-
     card.appendChild(img);
     card.appendChild(info);
     grid.appendChild(card);
@@ -197,7 +231,6 @@ function loadProducts() {
 
   console.log(`✅ ${productsToDisplay.length} produits affichés`);
 
-  // Update "Show More" visibility
   if (paginationContainer) {
     if (displayedCount < allFilteredProducts.length) {
       paginationContainer.style.display = 'block';
@@ -207,7 +240,6 @@ function loadProducts() {
   }
 }
 
-// Function to show more products
 function handleShowMore() {
   displayedCount += itemsPerPage;
   loadProducts();
@@ -227,52 +259,6 @@ function openProductDetail(productId) {
   window.location.href = `produit.html?id=${productId}`;
 }
 
-// ========== ANCIEN MODAL DÉTAIL PRODUIT (DÉSACTIVÉ) ==========
-function oldOpenProductDetail(productId) {
-  const product = products.find(p => p.id === productId);
-  if (!product) {
-    console.error("❌ Produit non trouvé:", productId);
-    return;
-  }
-
-  currentProductId = productId;
-
-  const detailImage = document.getElementById('detailImage');
-  if (detailImage) {
-    detailImage.src = (product.image && product.image.trim()) ? product.image : PLACEHOLDER_SVG;
-    detailImage.style.cssText = 'width:100%; max-height:300px; object-fit:contain; margin-bottom:16px; border-radius:8px; background:#f3f4f6;';
-  }
-
-  const detailName = document.getElementById('detailName');
-  if (detailName) detailName.textContent = product.name;
-
-  const detailCategory = document.getElementById('detailCategory');
-  if (detailCategory) detailCategory.textContent = product.category;
-
-  const quantity = product.quantity || 0;
-  const quantityText = quantity > 0
-    ? `<span style="color:#10b981; font-weight:bold;">${quantity} en stock</span>`
-    : `<span style="color:#f59e0b; font-weight:bold;">Rupture de stock</span>`;
-
-  const detailDescription = document.getElementById('detailDescription');
-  if (detailDescription) {
-    const description = product.description || 'Pas de description disponible.';
-    detailDescription.innerHTML = `
-      <strong>Description:</strong><br>
-      <span style="font-size:16px; line-height:1.6; color:#34495e;">${description.replace(/\n/g, '<br>')}</span><br><br>
-      <strong>Quantité:</strong><br>${quantityText}
-    `;
-  }
-
-  const detailPrice = document.getElementById('detailPrice');
-  if (detailPrice) detailPrice.textContent = product.price.toFixed(2);
-
-  const modal = document.getElementById('productDetailModal');
-  if (modal) modal.classList.add('active');
-
-  console.log(`📦 Détails du produit "${product.name}" affichés`);
-}
-
 // ========== FONCTIONS DU PANIER ==========
 function addToCart(productId, flavorName = null) {
   const product = products.find(p => p.id === productId);
@@ -287,7 +273,6 @@ function addToCart(productId, flavorName = null) {
     return;
   }
 
-  // Generate a unique ID for the cart item combining productId and flavor
   const cartItemId = flavorName ? `${productId}_${flavorName}` : productId;
 
   const existingItem = cart.find(item => item.cartItemId === cartItemId);
@@ -351,7 +336,6 @@ function displayCart() {
     const itemTotal = item.price * item.quantity;
     total += itemTotal;
 
-    // Fallback if old cart items don't have cartItemId
     const currentCartItemId = item.cartItemId || item.id;
 
     const cartItem = document.createElement('div');
@@ -455,9 +439,7 @@ function setupEventListeners() {
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      // Retirer active de tous
       filterBtns.forEach(b => b.classList.remove('active'));
-      // Ajouter au cliqué
       e.target.classList.add('active');
       filterProducts();
     });
@@ -478,14 +460,16 @@ function filterProducts() {
     const matchesSearch = product.name?.toLowerCase().includes(searchTerm) ||
       (product.description && product.description.toLowerCase().includes(searchTerm));
 
-    // Le bouton 'all' montre tout
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
   });
 
-  displayedCount = itemsPerPage; // Reset pagination on filter
+  displayedCount = itemsPerPage;
   loadProducts();
+  
+  // ✅ تحديث العداد حسب نتائج البحث (اختياري)
+  // updateCategoryCounts(allFilteredProducts);
 }
 
 // ========== FONCTIONS COUVERTURE LIVRAISON ==========
@@ -495,7 +479,6 @@ function populateShippingTable() {
 
   tableBody.innerHTML = '';
 
-  // Sort wilayas by code
   const sortedWilayas = Object.keys(wilayasData).sort((a, b) => parseInt(a) - parseInt(b));
 
   sortedWilayas.forEach(wilaya => {
@@ -581,6 +564,7 @@ function updateShippingPrice() {
   const grandTotalEl = document.getElementById('grandTotal');
   if (grandTotalEl) grandTotalEl.textContent = (cartTotal + price).toFixed(2) + ' DA';
 }
+
 // ========== WILAYAS & COMMUNES ==========
 const wilayasData = {
   "01 - Adrar": ["Adrar", "Aoulef", "Charouine", "Reggane", "Tamentit", "Tsabit", "Zaouiet Kounta"],
@@ -680,38 +664,29 @@ const stopDeskPrices = {
   "55 - Touggourt": 600, "56 - Djanet": 3500, "57 - El M'Ghair": 1800, "58 - El Meniaa": 600
 };
 
-
-
-// Default pricing by wilaya code ranges (general proxy for distance)
 Object.keys(wilayasData).forEach(wilaya => {
   const code = parseInt(wilaya.substring(0, 2));
 
-  // Tier 1: Center & Hubs (Alger, Blida, Tipaza, Boumerdes, Oran, Constantine)
   if ([16, 9, 42, 35, 31, 25].includes(code)) {
     shippingPrices[wilaya] = 500;
     stopDeskPrices[wilaya] = 300;
   }
-  // Tier 2: Large North/Coast (Mosta, Chlef, Jijel, Skikda, Annaba, Bejaia, Tizi)
   else if ([2, 6, 15, 18, 21, 23, 27].includes(code)) {
     shippingPrices[wilaya] = 600;
     stopDeskPrices[wilaya] = 400;
   }
-  // Tier 3: High Plateaus / Proximity South (Setif, Batna, Tiaret, Djelfa, Msila, Biskra)
   else if ([5, 7, 14, 17, 19, 28, 34, 43].includes(code)) {
     shippingPrices[wilaya] = 700;
     stopDeskPrices[wilaya] = 450;
   }
-  // Tier 4: South (Ghardaia, Ouargla, El Oued, Bechar)
   else if ([8, 30, 39, 47, 49, 50, 51, 55].includes(code)) {
     shippingPrices[wilaya] = 900;
     stopDeskPrices[wilaya] = 600;
   }
-  // Tier 5: Far South / Sahara (Adrar, Tamanrasset, Illizi, Tindouf, etc.)
   else if ([1, 11, 33, 37, 52, 53, 54, 56, 57, 58].includes(code)) {
     shippingPrices[wilaya] = 1200;
     stopDeskPrices[wilaya] = 800;
   }
-  // Default fallback (Tier 2/3 Mix)
   else {
     shippingPrices[wilaya] = 750;
     stopDeskPrices[wilaya] = 500;
@@ -858,7 +833,6 @@ function showNotification(message, type = 'success') {
   }, 3000);
 }
 
-// Ajouter les animations CSS
 if (!document.getElementById('notification-styles')) {
   const style = document.createElement('style');
   style.id = 'notification-styles';
@@ -910,10 +884,7 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addToCart = addToCart;
 window.updateCartQuantity = updateCartQuantity;
 window.removeCartItem = removeCartItem;
-// Backward compatibility for old calls
 window.updateQuantity = updateCartQuantity;
 window.removeFromCart = removeCartItem;
-
 window.openProductDetail = openProductDetail;
 window.displayCart = displayCart;
-
