@@ -113,11 +113,31 @@
       border: 2px solid var(--gb-gold); border-radius: 30px; font-weight: 600;
       text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      position: relative;
     }
     .filter-btn:hover, .filter-btn.active {
       background: var(--gb-gold); border-color: var(--gb-gold-dark); color: var(--gb-white);
       box-shadow: 0 0 20px rgba(212,175,55,0.4); transform: translateY(-2px);
     }
+    /* ستايل العداد في الأزرار */
+    .filter-btn .category-count {
+      margin-left: 6px;
+      background: var(--gb-gold);
+      color: var(--gb-black);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      min-width: 20px;
+      text-align: center;
+      display: inline-block;
+      transition: var(--transition);
+    }
+    .filter-btn.active .category-count {
+      background: var(--gb-white);
+      color: var(--gb-gold);
+    }
+    
     .search-container { position: relative; max-width: 500px; margin: 0 auto; }
     .search-container i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--gb-light-grey); }
     #searchInput {
