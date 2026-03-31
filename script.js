@@ -25,6 +25,10 @@ const PLACEHOLDER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 // ========== INITIALISATION ==========
 document.addEventListener('DOMContentLoaded', function () {
   console.log("🚀 Application démarrée...");
+  
+  // حفظ الأسماء الأصلية للأزرار قبل أي تعديل
+  saveFilterButtonNames();
+  
   loadProductsFromFirebase();
   setupEventListeners();
   loadCartFromStorage();
@@ -41,6 +45,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+// ========== حفظ أسماء الأزرار الأصلية ==========
+function saveFilterButtonNames() {
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    const text = btn.textContent.trim();
+    btn.dataset.baseName = text;
+    console.log("💾 Bouton sauvegardé:", text);
+  });
+}
+
 // ========== عَد المنتجات حسب القسم ==========
 function countProductsByCategory(productList = products) {
   const counts = {
@@ -54,30 +68,37 @@ function countProductsByCategory(productList = products) {
   
   productList.forEach(product => {
     const cat = product.category;
+    console.log("📊 Catégorie produit:", cat);
+    
     if (counts[cat] !== undefined) {
       counts[cat]++;
     }
     counts['all']++;
   });
   
+  console.log("📈 Compte par catégorie:", counts);
   return counts;
 }
 
 function updateCategoryCounts(productList = products) {
+  console.log("🔄 Mise à jour des compteurs...");
+  
   const counts = countProductsByCategory(productList);
   const filterBtns = document.querySelectorAll('.filter-btn');
+  
+  console.log("🔘 Nombre de boutons:", filterBtns.length);
   
   filterBtns.forEach(btn => {
     const category = btn.getAttribute('data-category');
     const count = counts[category] ?? 0;
+    const baseName = btn.dataset.baseName || btn.textContent.trim();
     
-    if (!btn.dataset.baseName) {
-      btn.dataset.baseName = btn.textContent.trim();
-    }
-    const baseName = btn.dataset.baseName;
+    console.log(`📍 Bouton: ${category} → ${count} produits`);
     
-    btn.innerHTML = `${baseName} <span class="category-count" style="margin-left:6px; background:var(--gb-gold); color:var(--gb-black); padding:2px 8px; border-radius:10px; font-size:0.75rem; font-weight:700; min-width:20px; text-align:center; display:inline-block;">${count}</span>`;
+    btn.innerHTML = `${baseName} <span class="category-count">${count}</span>`;
   });
+  
+  console.log("✅ Compteurs mis à jour!");
 }
 
 // ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
@@ -467,9 +488,6 @@ function filterProducts() {
 
   displayedCount = itemsPerPage;
   loadProducts();
-  
-  // ✅ تحديث العداد حسب نتائج البحث (اختياري)
-  // updateCategoryCounts(allFilteredProducts);
 }
 
 // ========== FONCTIONS COUVERTURE LIVRAISON ==========
