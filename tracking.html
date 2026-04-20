@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Suivi Commande - Wahbi Zoghbi</title>
+  <title>Suivi de Commande - Wahbi Zoghbi</title>
   <link rel="icon" href="logo.jpeg" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -330,7 +330,7 @@
       text-decoration: underline;
     }
 
-    /* ========== DRIVER INFO SECTION (NEW) ========== */
+    /* ========== DRIVER INFO SECTION ========== */
     .driver-info {
       background: rgba(220, 20, 60, 0.08);
       border: 1px solid var(--primary);
@@ -572,7 +572,7 @@
       <!-- Title -->
       <div class="tracking-title">
         <h1>📦 Suivi de Commande</h1>
-        <p>Entrez votre numéro de commande pour voir son statut</p>
+        <p>Entrez votre numéro de commande pour consulter son statut</p>
       </div>
 
       <!-- Search Form -->
@@ -586,7 +586,7 @@
       <!-- Error Message -->
       <div class="error-message" id="errorMessage">
         <i class="fa-solid fa-circle-exclamation"></i>
-        <span>Commande non trouvée. Vérifiez le numéro et réessayez.</span>
+        <span>Commande introuvable. Veuillez vérifier le numéro et réessayer.</span>
       </div>
 
       <!-- Tracking Result (Hidden by default) -->
@@ -598,21 +598,21 @@
             <div class="status-dot"><i class="fa-solid fa-clock"></i></div>
             <div class="status-content">
               <h3>Commande Reçue</h3>
-              <p>Votre commande a été enregistrée</p>
+              <p>Votre commande a été enregistrée avec succès</p>
             </div>
           </div>
           <div class="status-item" id="status-accepted">
             <div class="status-dot"><i class="fa-solid fa-check"></i></div>
             <div class="status-content">
-              <h3>Commande Acceptée</h3>
-              <p>Votre commande est en préparation</p>
+              <h3>Commande Validée</h3>
+              <p>Votre commande est en cours de préparation</p>
             </div>
           </div>
           <div class="status-item" id="status-shipped">
             <div class="status-dot"><i class="fa-solid fa-truck"></i></div>
             <div class="status-content">
-              <h3>En Route</h3>
-              <p>Votre commande est en livraison</p>
+              <h3>En Livraison</h3>
+              <p>Votre commande est en route vers vous</p>
             </div>
           </div>
           <div class="status-item" id="status-arrived">
@@ -628,15 +628,15 @@
         <div class="order-info">
           <h3><i class="fa-solid fa-clipboard-list"></i> Détails de la Commande</h3>
           <div class="info-row">
-            <span class="info-label">Numéro</span>
+            <span class="info-label">Numéro de commande</span>
             <span class="info-value" id="info-orderNumber" style="color:var(--primary); font-weight:600;"></span>
           </div>
           <div class="info-row">
-            <span class="info-label">Date</span>
+            <span class="info-label">Date de commande</span>
             <span class="info-value" id="info-date"></span>
           </div>
           <div class="info-row">
-            <span class="info-label">Client</span>
+            <span class="info-label">Nom du client</span>
             <span class="info-value" id="info-client"></span>
           </div>
           <div class="info-row">
@@ -646,18 +646,18 @@
             </span>
           </div>
           <div class="info-row">
-            <span class="info-label">Type</span>
+            <span class="info-label">Type de livraison</span>
             <span class="info-value" id="info-type"></span>
           </div>
           <div class="info-row" style="border-top:2px solid var(--border); padding-top:12px; margin-top:8px;">
-            <span class="info-label" style="font-weight:600;">Total</span>
+            <span class="info-label" style="font-weight:600;">Total à payer</span>
             <span class="info-value" style="color:var(--primary); font-size:1.1rem; font-family:'Montserrat',sans-serif;" id="info-total"></span>
           </div>
         </div>
 
-        <!-- Driver Info Section (NEW - Hidden by default) -->
+        <!-- Driver Info Section (Visible for domicile orders in shipped/arrived status) -->
         <div id="driverInfo" class="driver-info">
-          <h3><i class="fa-solid fa-motorcycle"></i> معلومات السائق</h3>
+          <h3><i class="fa-solid fa-motorcycle"></i> Informations du Livreur</h3>
           <div class="driver-card">
             <div class="driver-avatar">
               <i class="fa-solid fa-person-running"></i>
@@ -667,14 +667,14 @@
               <div class="driver-phone-wrapper">
                 <a href="#" class="driver-phone" id="driver-phone" dir="ltr"></a>
                 <button class="copy-btn" id="copyPhoneBtn" onclick="copyDriverPhone(event)">
-                  <i class="fa-regular fa-copy"></i> نسخ
+                  <i class="fa-regular fa-copy"></i> Copier
                 </button>
               </div>
             </div>
           </div>
           <p class="driver-note">
             <i class="fa-solid fa-circle-info"></i>
-            اتصل بالسائق مباشرة للاستفسار عن موقع التوصيل
+            Contactez directement votre livreur pour suivre l'avancement de la livraison
           </p>
         </div>
 
@@ -717,7 +717,7 @@
         const snapshot = await getDocs(q);
         
         if (snapshot.empty) {
-          showError('Commande non trouvée');
+          showError('Aucune commande trouvée avec ce numéro');
           return;
         }
 
@@ -725,8 +725,8 @@
         displayTracking(order);
         
       } catch (error) {
-        console.error("Erreur suivi:", error);
-        showError('Erreur de connexion. Veuillez réessayer.');
+        console.error("Erreur de suivi:", error);
+        showError('Erreur de connexion. Veuillez réessayer ultérieurement.');
       } finally {
         // Reset button
         searchBtn.disabled = false;
@@ -757,8 +757,8 @@
       phoneLink.href = order.phone1 ? `tel:${order.phone1.replace(/\s/g, '')}` : '#';
       
       document.getElementById('info-type').innerHTML = order.orderType === 'domicile' 
-        ? '<span style="color:var(--primary)"><i class="fa-solid fa-truck"></i> Livraison</span>' 
-        : '<span><i class="fa-solid fa-store"></i> Stop Desk</span>';
+        ? '<span style="color:var(--primary)"><i class="fa-solid fa-truck"></i> Livraison à domicile</span>' 
+        : '<span><i class="fa-solid fa-store"></i> Retrait en boutique</span>';
       
       document.getElementById('info-total').textContent = (order.grandTotal || 0).toFixed(2) + ' DA';
 
@@ -821,7 +821,7 @@
         const btn = document.getElementById('copyPhoneBtn');
         const originalHTML = btn.innerHTML;
         
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copié!';
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copié !';
         btn.style.borderColor = 'var(--success)';
         btn.style.color = 'var(--success)';
         
@@ -831,7 +831,7 @@
           btn.style.color = '';
         }, 2000);
       }).catch(err => {
-        console.error('Failed to copy:', err);
+        console.error('Échec de la copie:', err);
       });
     };
 
