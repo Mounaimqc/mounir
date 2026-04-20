@@ -568,9 +568,9 @@
     </div>
     
     <ul class="nav-links">
-      <li class="nav-item"><a href="admin.html" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
+      <li class="nav-item"><a href="admin.html" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Tableau de bord</a></li>
       <li class="nav-item"><a href="gerer-produits.html" class="nav-link"><i class="fa-solid fa-boxes-stacked"></i> Produits</a></li>
-      <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fa-solid fa-store"></i> Voir Site</a></li>
+      <li class="nav-item"><a href="index.html" class="nav-link" target="_blank"><i class="fa-solid fa-store"></i> Voir le site</a></li>
       <li class="nav-item" style="margin-top: auto;"><a href="login.html" class="nav-link" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Déconnexion</a></li>
     </ul>
     
@@ -589,7 +589,7 @@
           <i class="fa-solid fa-bars"></i>
         </button>
         <div class="page-title">
-          <h1>📊 Dashboard Commandes</h1>
+          <h1>📊 Tableau de bord Commandes</h1>
           <p>Gérez vos commandes en temps réel</p>
         </div>
       </div>
@@ -621,14 +621,14 @@
       </div>
       <div class="stat-card">
         <div class="stat-info">
-          <h3>Domicile</h3>
+          <h3>Livraison</h3>
           <p id="totalDomicile">0</p>
         </div>
         <div class="stat-icon icon-orange"><i class="fa-solid fa-truck"></i></div>
       </div>
       <div class="stat-card">
         <div class="stat-info">
-          <h3>Stop Desk</h3>
+          <h3>Retrait</h3>
           <p id="totalStopdesk">0</p>
         </div>
         <div class="stat-icon icon-red"><i class="fa-solid fa-store"></i></div>
@@ -645,26 +645,26 @@
         <div class="input-group">
           <select id="filterType">
             <option value="">Tous les types</option>
-            <option value="domicile">🏠 Domicile</option>
-            <option value="stopdesk">📦 Stop Desk</option>
+            <option value="domicile">🏠 Livraison</option>
+            <option value="stopdesk">📦 Retrait boutique</option>
           </select>
         </div>
         <div class="input-group">
           <select id="filterWilaya">
-            <option value="">Toutes wilayas</option>
+            <option value="">Toutes les wilayas</option>
           </select>
         </div>
       </div>
       
       <div style="display:flex; gap:10px; flex-wrap:wrap;">
         <button class="btn btn-outline" onclick="clearFilters()">
-          <i class="fa-solid fa-rotate-right"></i> Reset
+          <i class="fa-solid fa-rotate-right"></i> Réinitialiser
         </button>
         <button class="btn btn-outline" onclick="exportCommandes()">
-          <i class="fa-solid fa-file-csv"></i> CSV
+          <i class="fa-solid fa-file-csv"></i> Export CSV
         </button>
         <button class="btn btn-primary" onclick="openAddProductModal()">
-          <i class="fa-solid fa-plus"></i> Produit
+          <i class="fa-solid fa-plus"></i> Nouveau produit
         </button>
       </div>
     </div>
@@ -703,7 +703,7 @@
   <div class="modal-overlay" id="detailModal">
     <div class="modal">
       <div class="modal-header">
-        <h3>📋 Détails Commande <span id="detailOrderNumber" style="color:var(--primary)"></span></h3>
+        <h3>📋 Détails de la commande <span id="detailOrderNumber" style="color:var(--primary)"></span></h3>
         <button class="close-modal" onclick="closeDetail()" aria-label="Fermer">&times;</button>
       </div>
       <div class="modal-body">
@@ -743,33 +743,33 @@
           </span>
         </div>
 
-        <!-- Driver Section (NEW) -->
+        <!-- Driver Section (NEW - French) -->
         <div id="driverSection" class="driver-section">
-          <h4><i class="fa-solid fa-motorcycle"></i> معلومات السائق</h4>
+          <h4><i class="fa-solid fa-motorcycle"></i> Informations du Livreur</h4>
           <div class="form-row">
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label">اسم السائق</label>
-              <input type="text" id="driverName" class="form-control" placeholder="أدخل اسم السائق">
+              <label class="form-label">Nom du livreur</label>
+              <input type="text" id="driverName" class="form-control" placeholder="Entrez le nom du livreur">
             </div>
             <div class="form-group" style="margin-bottom:0;">
-              <label class="form-label">رقم هاتف السائق</label>
+              <label class="form-label">Téléphone du livreur</label>
               <input type="tel" id="driverPhone" class="form-control" placeholder="05XX XX XX XX" dir="ltr" style="text-align:right;">
             </div>
           </div>
-          <p><i class="fa-solid fa-circle-info"></i> سيظهر هذا المعلومات للعميل فقط عندما تكون حالة الطلبية "في الطريق" أو "تم التوصيل".</p>
+          <p><i class="fa-solid fa-circle-info"></i> Ces informations seront visibles par le client uniquement lorsque la commande est "En livraison" ou "Livrée".</p>
         </div>
 
       </div>
       <div class="modal-footer">
         <select id="statusSelect" class="form-control" style="max-width:200px; padding:8px 12px;">
-          <option value="pending">⏳ En Attente</option>
-          <option value="accepted">✓ Acceptée</option>
-          <option value="shipped">🚚 En Route</option>
-          <option value="arrived">📦 Arrivée</option>
+          <option value="pending">⏳ En attente</option>
+          <option value="accepted">✓ Validée</option>
+          <option value="shipped">🚚 En livraison</option>
+          <option value="arrived">📦 Livrée</option>
           <option value="returned">↩️ Retournée</option>
         </select>
         <button class="btn btn-primary" onclick="confirmStatusUpdate()">
-          <i class="fa-solid fa-check"></i> Mettre à Jour
+          <i class="fa-solid fa-check"></i> Mettre à jour
         </button>
       </div>
     </div>
@@ -798,8 +798,8 @@
               <option value="">Sélectionner...</option>
               <option value="Protéines whey">Protéines whey</option>
               <option value="Masse / Gainer">Masse / Gainer</option>
-              <option value="Acide aminé">Acide aminé</option>
-              <option value="Force / Energie">Force / Energie</option>
+              <option value="Acide aminé">Acides aminés</option>
+              <option value="Force / Energie">Force / Énergie</option>
               <option value="Brûleur de graisse">Brûleur de graisse</option>
               <option value="Autre">Autre</option>
             </select>
@@ -829,7 +829,7 @@
             </label>
             <div id="flavorsList" style="display:flex; flex-direction:column; gap:10px;"></div>
             <p style="font-size:0.75rem; color:var(--text-light); margin-top:8px;">
-              Ajoutez des goûts (Chocolat, Vanille...) avec image. Le client pourra switcher l'image en cliquant.
+              Ajoutez des goûts (Chocolat, Vanille...) avec image. Le client pourra changer l'image en cliquant.
             </p>
           </div>
         </form>
