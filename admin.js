@@ -101,11 +101,30 @@ function showDetail(orderNumber) {
   document.getElementById('detailShipping').textContent = (cmd.shippingPrice || 0).toFixed(2);
   document.getElementById('detailTotal').textContent = (cmd.grandTotal || 0).toFixed(2);
 
+  // 👇 إظهار قسم السائق
+  toggleDriverSection(cmd);
+
   document.getElementById('detailModal').classList.add('active');
 }
 
 function closeDetail() {
   document.getElementById('detailModal').classList.remove('active');
+}
+
+// ========== DRIVER SECTION TOGGLE ==========
+function toggleDriverSection(order) {
+  const driverSection = document.getElementById('driverSection');
+  if (!driverSection) return;
+  
+  const isDomicile = order.orderType === 'domicile';
+  
+  if (isDomicile) {
+    driverSection.style.display = 'block';
+    document.getElementById('driverName').value = order.driverName || '';
+    document.getElementById('driverPhone').value = order.driverPhone || '';
+  } else {
+    driverSection.style.display = 'none';
+  }
 }
 
 // ========== HELPERS STATUT ==========
@@ -131,12 +150,28 @@ function updateOrderStatus(newStatus) {
     return;
   }
 
-  updateDoc(doc(db, "commandes", firebaseId), { status: newStatus })
+  // جمع بيانات السائق
+  const driverData = {};
+  const driverName = document.getElementById('driverName')?.value.trim();
+  const driverPhone = document.getElementById('driverPhone')?.value.trim();
+  
+  if (driverName) driverData.driverName = driverName;
+  if (driverPhone) driverData.driverPhone = driverPhone;
+
+  updateDoc(doc(db, "commandes", firebaseId), { 
+    status: newStatus,
+    ...driverData,
+    driverUpdatedAt: new Date().toISOString()
+  })
     .then(() => {
       const cmd = allCommandes.find(c => c.orderNumber === orderNumber);
-      if (cmd) cmd.status = newStatus;
+      if (cmd) {
+        cmd.status = newStatus;
+        if (driverData.driverName) cmd.driverName = driverData.driverName;
+        if (driverData.driverPhone) cmd.driverPhone = driverData.driverPhone;
+      }
       displayCommandes(allCommandes);
-      showNotification('✅ Statut mis à jour', 'success');
+      showNotification('✅ Statut et livreur mis à jour', 'success');
       closeDetail();
     })
     .catch((error) => {
@@ -218,9 +253,9 @@ function initializeWilayaFilter() {
 // ========== EXPORT CSV ==========
 function exportCommandes() {
   if (allCommandes.length === 0) { showNotification('Aucune commande à exporter', 'error'); return; }
-  let csv = 'N°;Client;Téléphone;Wilaya;Commune;Type;Total;Statut;Date\n';
+  let csv = 'N°;Client;Téléphone;Wilaya;Commune;Type;Total;Statut;Date;DriverName;DriverPhone\n';
   allCommandes.forEach(c => {
-    csv += `"${c.orderNumber}";"${c.firstName || ''} ${c.lastName || ''}";"${c.phone1 || ''}";"${c.wilaya || ''}";"${c.commune || ''}";"${c.orderType || ''}";"${(c.grandTotal || 0).toFixed(2)}";"${c.status || 'pending'}";"${c.date || ''}"\n`;
+    csv += `"${c.orderNumber}";"${c.firstName || ''} ${c.lastName || ''}";"${c.phone1 || ''}";"${c.wilaya || ''}";"${c.commune || ''}";"${c.orderType || ''}";"${(c.grandTotal || 0).toFixed(2)}";"${c.status || 'pending'}";"${c.date || ''}";"${c.driverName || ''}";"${c.driverPhone || ''}"\n`;
   });
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
@@ -257,7 +292,6 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     showNotification('Veuillez remplir tous les champs obligatoires', 'error'); return;
   }
 
-  // Gather flavors
   const flavors = [];
   document.querySelectorAll('.flavor-item').forEach(item => {
     const fName = item.querySelector('.flavor-name')?.value.trim();
@@ -274,7 +308,6 @@ document.getElementById('addProductForm')?.addEventListener('submit', async (e) 
     });
     showNotification('✅ Produit ajouté!', 'success');
     closeAddProductModal();
-    // clear form completely
     document.getElementById('addProductForm').reset();
     const flavorsList = document.getElementById('flavorsList');
     if (flavorsList) flavorsList.innerHTML = '';
@@ -302,6 +335,7 @@ window.clearFilters = clearFilters;
 window.exportCommandes = exportCommandes;
 window.openAddProductModal = openAddProductModal;
 window.closeAddProductModal = closeAddProductModal;
+window.toggleDriverSection = toggleDriverSection;
 
 function addFlavorField() {
   const list = document.getElementById('flavorsList');
