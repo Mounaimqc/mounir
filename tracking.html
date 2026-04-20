@@ -5,38 +5,58 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suivi Commande - Wahbi Zoghbi</title>
+  <link rel="icon" href="logo.jpeg" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --primary: #ff0000;
+      /* Colors - Matched with admin.html */
+      --primary: #DC143C;
       --primary-dark: #b30000;
+      --primary-light: #FF6B7A;
       --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
       --bg: #050505;
       --surface: #111111;
+      --surface-hover: #1a1a1a;
       --text: #fff;
       --text-light: #888;
       --border: #333;
       --radius: 12px;
-      --shadow: 0 8px 30px rgba(0, 0, 0, .5)
+      --radius-lg: 16px;
+      --shadow: 0 8px 30px rgba(0, 0, 0, .5);
+      --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif
+      font-family: 'Inter', sans-serif;
     }
 
     body {
       background: var(--bg);
-      color: var(--text)
+      color: var(--text);
+      min-height: 100vh;
     }
 
+    a { text-decoration: none; color: inherit; transition: var(--transition); }
+    button { font-family: inherit; cursor: pointer; border: none; outline: none; transition: var(--transition); }
+
+    /* ========== HEADER ========== */
     .header {
       background: var(--surface);
       box-shadow: var(--shadow);
-      padding: 20px 24px;
-      border-bottom: 1px solid rgba(212, 175, 55, 0.2)
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .header-container {
@@ -44,7 +64,7 @@
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
-      align-items: center
+      align-items: center;
     }
 
     .logo {
@@ -52,7 +72,6 @@
       align-items: center;
       gap: 12px;
       font-family: 'Montserrat', sans-serif;
-      text-decoration: none;
     }
 
     .logo img {
@@ -84,195 +103,453 @@
       letter-spacing: 3px;
     }
 
+    /* ========== CONTAINER ========== */
     .tracking-container {
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 24px
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
     .tracking-card {
       background: var(--surface);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
-      padding: 40px
+      padding: 32px;
+      border: 1px solid var(--border);
     }
 
     .tracking-title {
       text-align: center;
-      margin-bottom: 32px
+      margin-bottom: 32px;
     }
 
     .tracking-title h1 {
-      font-size: 1.75rem;
-      margin-bottom: 8px
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 8px;
     }
 
     .tracking-title p {
-      color: var(--text-light)
+      color: var(--text-light);
+      font-size: 0.9rem;
     }
 
+    /* ========== SEARCH FORM ========== */
     .search-form {
       display: flex;
       gap: 12px;
-      margin-bottom: 40px
+      margin-bottom: 32px;
     }
 
     .search-input {
       flex: 1;
-      padding: 14px 20px;
+      padding: 12px 16px;
       border: 1px solid var(--border);
       border-radius: var(--radius);
       font-size: 1rem;
       background: var(--bg);
-      color: var(--text)
+      color: var(--text);
+      transition: var(--transition);
     }
 
     .search-input:focus {
       outline: none;
-      border-color: var(--primary)
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.2);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-light);
     }
 
     .search-btn {
-      padding: 14px 28px;
+      padding: 12px 24px;
       background: var(--primary);
-      color: #000;
+      color: #fff;
       border: none;
       border-radius: var(--radius);
-      font-weight: 700;
-      cursor: pointer
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: var(--transition);
     }
 
     .search-btn:hover {
-      background: var(--primary-dark)
+      background: var(--primary-dark);
+      transform: translateY(-1px);
     }
 
+    .search-btn:active {
+      transform: translateY(0);
+    }
+
+    /* ========== ERROR MESSAGE ========== */
+    .error-message {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      display: none;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      font-size: 0.9rem;
+    }
+
+    .error-message.show {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease;
+    }
+
+    /* ========== TIMELINE ========== */
     .status-timeline {
       position: relative;
-      padding-left: 40px
+      padding-left: 36px;
+      margin-bottom: 32px;
     }
 
     .status-timeline::before {
       content: '';
       position: absolute;
-      left: 15px;
-      top: 0;
-      bottom: 0;
+      left: 13px;
+      top: 8px;
+      bottom: 8px;
       width: 2px;
-      background: var(--border)
+      background: var(--border);
     }
 
     .status-item {
       position: relative;
-      margin-bottom: 32px
+      margin-bottom: 24px;
+      opacity: 0.5;
+      transition: var(--transition);
     }
 
     .status-item:last-child {
-      margin-bottom: 0
+      margin-bottom: 0;
+    }
+
+    .status-item.active,
+    .status-item.completed {
+      opacity: 1;
     }
 
     .status-dot {
       position: absolute;
-      left: -32px;
-      width: 32px;
-      height: 32px;
+      left: -28px;
+      top: 0;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
       background: var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff
+      color: var(--text);
+      font-size: 0.7rem;
+      transition: var(--transition);
+      border: 2px solid var(--surface);
     }
 
     .status-item.active .status-dot {
-      background: var(--primary)
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.2);
+      animation: pulse 2s infinite;
     }
 
     .status-item.completed .status-dot {
-      background: var(--success)
+      background: var(--success);
+      color: #fff;
     }
 
     .status-content h3 {
-      font-size: 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
       margin-bottom: 4px;
-      color: var(--text)
+      color: var(--text);
     }
 
     .status-content p {
       color: var(--text-light);
-      font-size: .875rem
+      font-size: 0.85rem;
     }
 
+    /* ========== ORDER INFO ========== */
     .order-info {
-      background: rgba(212, 175, 55, 0.05);
+      background: var(--bg);
       border: 1px solid var(--border);
-      padding: 24px;
+      padding: 20px;
       border-radius: var(--radius);
-      margin-top: 40px
+      margin-bottom: 20px;
     }
 
     .order-info h3 {
-      margin-bottom: 16px
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .info-row {
       display: flex;
       justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border)
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 0.9rem;
     }
 
     .info-row:last-child {
-      border-bottom: none
+      border-bottom: none;
     }
 
     .info-label {
-      color: var(--text-light)
+      color: var(--text-light);
+      font-size: 0.85rem;
     }
 
     .info-value {
-      font-weight: 500
+      font-weight: 500;
+      text-align: right;
     }
 
+    .info-value a {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .info-value a:hover {
+      text-decoration: underline;
+    }
+
+    /* ========== DRIVER INFO SECTION (NEW) ========== */
+    .driver-info {
+      background: rgba(220, 20, 60, 0.08);
+      border: 1px solid var(--primary);
+      padding: 20px;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      display: none;
+      animation: slideUp 0.3s ease;
+    }
+
+    .driver-info.show {
+      display: block;
+    }
+
+    .driver-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .driver-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    .driver-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .driver-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .driver-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+
+    .driver-phone-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .driver-phone {
+      color: var(--primary);
+      font-weight: 500;
+      font-size: 0.9rem;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .driver-phone:hover {
+      text-decoration: underline;
+    }
+
+    .copy-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text-light);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition);
+    }
+
+    .copy-btn:hover {
+      background: var(--surface-hover);
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .driver-note {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ========== BACK LINK ========== */
     .back-link {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       color: var(--primary);
-      text-decoration: none;
-      margin-top: 24px;
-      font-weight: 500
+      font-weight: 500;
+      font-size: 0.9rem;
+      padding: 8px 0;
     }
 
     .back-link:hover {
-      text-decoration: underline
+      color: var(--primary-light);
     }
 
-    .error-message {
-      background: #fef2f2;
-      color: #dc2626;
-      padding: 16px;
-      border-radius: var(--radius);
-      margin-top: 24px;
-      display: none
+    /* ========== ANIMATIONS ========== */
+    @keyframes slideIn {
+      from { transform: translateX(20px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
     }
 
-    .error-message.show {
-      display: block
+    @keyframes slideUp {
+      from { transform: translateY(10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
 
-    @media(max-width:768px) {
-      .search-form {
-        flex-direction: column
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.2); }
+      50% { box-shadow: 0 0 0 8px rgba(220, 20, 60, 0); }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .tracking-container {
+        margin: 20px auto;
+        padding: 16px;
       }
 
       .tracking-card {
-        padding: 24px
+        padding: 24px;
+      }
+
+      .search-form {
+        flex-direction: column;
+      }
+
+      .search-btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .status-timeline {
+        padding-left: 32px;
+      }
+
+      .status-dot {
+        left: -26px;
+        width: 24px;
+        height: 24px;
+        font-size: 0.65rem;
+      }
+
+      .driver-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+      }
+
+      .driver-phone-wrapper {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+
+      .info-value {
+        text-align: left;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .tracking-title h1 {
+        font-size: 1.3rem;
+      }
+
+      .brand-name {
+        font-size: 1rem;
+      }
+
+      .brand-tagline {
+        font-size: 0.7rem;
+      }
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
       }
     }
   </style>
 </head>
 
 <body>
+  
+  <!-- Header -->
   <header class="header">
     <div class="header-container">
       <a href="index.html" class="logo">
@@ -282,23 +559,40 @@
           <div class="brand-tagline">Nutrition</div>
         </div>
       </a>
-      <a href="index.html" class="back-link" style="margin:0"><i class="fa-solid fa-arrow-left"></i> Retour</a>
+      <a href="index.html" class="back-link" style="margin:0">
+        <i class="fa-solid fa-arrow-left"></i> Retour
+      </a>
     </div>
   </header>
 
+  <!-- Main Content -->
   <div class="tracking-container">
     <div class="tracking-card">
+      
+      <!-- Title -->
       <div class="tracking-title">
         <h1>📦 Suivi de Commande</h1>
         <p>Entrez votre numéro de commande pour voir son statut</p>
       </div>
+
+      <!-- Search Form -->
       <form class="search-form" id="trackingForm">
-        <input type="text" class="search-input" id="orderNumber" placeholder="Ex: AM260303001" required>
-        <button type="submit" class="search-btn"><i class="fa-solid fa-search"></i> Rechercher</button>
+        <input type="text" class="search-input" id="orderNumber" placeholder="Ex: AM260303001" required maxlength="20">
+        <button type="submit" class="search-btn">
+          <i class="fa-solid fa-search"></i> Rechercher
+        </button>
       </form>
-      <div class="error-message" id="errorMessage"><i class="fa-solid fa-circle-exclamation"></i> Commande non trouvée
+
+      <!-- Error Message -->
+      <div class="error-message" id="errorMessage">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Commande non trouvée. Vérifiez le numéro et réessayez.</span>
       </div>
+
+      <!-- Tracking Result (Hidden by default) -->
       <div id="trackingResult" style="display:none">
+        
+        <!-- Status Timeline -->
         <div class="status-timeline">
           <div class="status-item" id="status-pending">
             <div class="status-dot"><i class="fa-solid fa-clock"></i></div>
@@ -329,71 +623,222 @@
             </div>
           </div>
         </div>
+
+        <!-- Order Details -->
         <div class="order-info">
-          <h3>📋 Détails de la Commande</h3>
-          <div class="info-row"><span class="info-label">Numéro</span><span class="info-value"
-              id="info-orderNumber"></span></div>
-          <div class="info-row"><span class="info-label">Date</span><span class="info-value" id="info-date"></span>
+          <h3><i class="fa-solid fa-clipboard-list"></i> Détails de la Commande</h3>
+          <div class="info-row">
+            <span class="info-label">Numéro</span>
+            <span class="info-value" id="info-orderNumber" style="color:var(--primary); font-weight:600;"></span>
           </div>
-          <div class="info-row"><span class="info-label">Client</span><span class="info-value" id="info-client"></span>
+          <div class="info-row">
+            <span class="info-label">Date</span>
+            <span class="info-value" id="info-date"></span>
           </div>
-          <div class="info-row"><span class="info-label">Téléphone</span><span class="info-value"
-              id="info-phone"></span></div>
-          <div class="info-row"><span class="info-label">Type</span><span class="info-value" id="info-type"></span>
+          <div class="info-row">
+            <span class="info-label">Client</span>
+            <span class="info-value" id="info-client"></span>
           </div>
-          <div class="info-row"><span class="info-label">Total</span><span class="info-value" id="info-total"></span>
+          <div class="info-row">
+            <span class="info-label">Téléphone</span>
+            <span class="info-value">
+              <a href="#" id="info-phone" onclick="return false;"></a>
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Type</span>
+            <span class="info-value" id="info-type"></span>
+          </div>
+          <div class="info-row" style="border-top:2px solid var(--border); padding-top:12px; margin-top:8px;">
+            <span class="info-label" style="font-weight:600;">Total</span>
+            <span class="info-value" style="color:var(--primary); font-size:1.1rem; font-family:'Montserrat',sans-serif;" id="info-total"></span>
           </div>
         </div>
+
+        <!-- Driver Info Section (NEW - Hidden by default) -->
+        <div id="driverInfo" class="driver-info">
+          <h3><i class="fa-solid fa-motorcycle"></i> معلومات السائق</h3>
+          <div class="driver-card">
+            <div class="driver-avatar">
+              <i class="fa-solid fa-person-running"></i>
+            </div>
+            <div class="driver-details">
+              <div class="driver-name" id="driver-name"></div>
+              <div class="driver-phone-wrapper">
+                <a href="#" class="driver-phone" id="driver-phone" dir="ltr"></a>
+                <button class="copy-btn" id="copyPhoneBtn" onclick="copyDriverPhone(event)">
+                  <i class="fa-regular fa-copy"></i> نسخ
+                </button>
+              </div>
+            </div>
+          </div>
+          <p class="driver-note">
+            <i class="fa-solid fa-circle-info"></i>
+            اتصل بالسائق مباشرة للاستفسار عن موقع التوصيل
+          </p>
+        </div>
+
+        <!-- Back Link -->
+        <a href="index.html" class="back-link">
+          <i class="fa-solid fa-arrow-left"></i> Retour à l'accueil
+        </a>
+
       </div>
-      <a href="index.html" class="back-link"><i class="fa-solid fa-arrow-left"></i> Retour à l'accueil</a>
     </div>
   </div>
 
+  <!-- Scripts -->
   <script type="module">
     import { db } from './firebase-config.js';
     import { collection, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+    // Handle form submission
     document.getElementById('trackingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
-      const orderNumber = document.getElementById('orderNumber').value.trim();
+      
+      const orderNumber = document.getElementById('orderNumber').value.trim().toUpperCase();
       const errorMsg = document.getElementById('errorMessage');
       const result = document.getElementById('trackingResult');
+      const searchBtn = document.querySelector('.search-btn');
+
+      if (!orderNumber) {
+        showError('Veuillez entrer un numéro de commande');
+        return;
+      }
+
+      // Show loading state
+      searchBtn.disabled = true;
+      searchBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Recherche...';
+      errorMsg.classList.remove('show');
+      result.style.display = 'none';
 
       try {
         const q = query(collection(db, "commandes"), where("orderNumber", "==", orderNumber));
         const snapshot = await getDocs(q);
-        if (snapshot.empty) { errorMsg.classList.add('show'); result.style.display = 'none'; return; }
+        
+        if (snapshot.empty) {
+          showError('Commande non trouvée');
+          return;
+        }
 
-        errorMsg.classList.remove('show');
         const order = snapshot.docs[0].data();
         displayTracking(order);
+        
       } catch (error) {
         console.error("Erreur suivi:", error);
-        errorMsg.textContent = "Erreur de connexion";
-        errorMsg.classList.add('show');
+        showError('Erreur de connexion. Veuillez réessayer.');
+      } finally {
+        // Reset button
+        searchBtn.disabled = false;
+        searchBtn.innerHTML = '<i class="fa-solid fa-search"></i> Rechercher';
       }
     });
 
+    function showError(message) {
+      const errorMsg = document.getElementById('errorMessage');
+      errorMsg.querySelector('span').textContent = message;
+      errorMsg.classList.add('show');
+      document.getElementById('trackingResult').style.display = 'none';
+    }
+
     function displayTracking(order) {
-      document.getElementById('trackingResult').style.display = 'block';
-      document.getElementById('info-orderNumber').textContent = order.orderNumber;
-      document.getElementById('info-date').textContent = new Date(order.date).toLocaleDateString('fr-FR');
-      document.getElementById('info-client').textContent = `${order.firstName} ${order.lastName}`;
-      document.getElementById('info-phone').textContent = order.phone1;
-      document.getElementById('info-type').textContent = order.orderType === 'domicile' ? '🏠 Livraison' : '🏪 Stop Desk';
+      const result = document.getElementById('trackingResult');
+      result.style.display = 'block';
+
+      // Fill order info
+      document.getElementById('info-orderNumber').textContent = '#' + order.orderNumber;
+      document.getElementById('info-date').textContent = new Date(order.date).toLocaleDateString('fr-FR', {
+        day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+      });
+      document.getElementById('info-client').textContent = `${order.firstName || ''} ${order.lastName || ''}`.trim();
+      
+      const phoneLink = document.getElementById('info-phone');
+      phoneLink.textContent = order.phone1 || '—';
+      phoneLink.href = order.phone1 ? `tel:${order.phone1.replace(/\s/g, '')}` : '#';
+      
+      document.getElementById('info-type').innerHTML = order.orderType === 'domicile' 
+        ? '<span style="color:var(--primary)"><i class="fa-solid fa-truck"></i> Livraison</span>' 
+        : '<span><i class="fa-solid fa-store"></i> Stop Desk</span>';
+      
       document.getElementById('info-total').textContent = (order.grandTotal || 0).toFixed(2) + ' DA';
 
-      ['pending', 'accepted', 'shipped', 'arrived'].forEach(s => document.getElementById(`status-${s}`).classList.remove('active', 'completed'));
+      // Update timeline
+      updateTimeline(order.status || 'pending');
+
+      // Show driver info if applicable
+      showDriverInfo(order);
+    }
+
+    function updateTimeline(currentStatus) {
+      // Reset all statuses
+      ['pending', 'accepted', 'shipped', 'arrived'].forEach(s => {
+        document.getElementById(`status-${s}`).classList.remove('active', 'completed');
+      });
+
       const statusOrder = ['pending', 'accepted', 'shipped', 'arrived'];
-      const current = order.status || 'pending';
-      const idx = statusOrder.indexOf(current);
-      statusOrder.forEach((s, i) => {
-        const el = document.getElementById(`status-${s}`);
-        if (i < idx) el.classList.add('completed');
-        else if (i === idx) el.classList.add('active');
+      const currentIndex = statusOrder.indexOf(currentStatus);
+
+      statusOrder.forEach((status, index) => {
+        const el = document.getElementById(`status-${status}`);
+        if (index < currentIndex) {
+          el.classList.add('completed');
+        } else if (index === currentIndex) {
+          el.classList.add('active');
+        }
       });
     }
+
+    function showDriverInfo(order) {
+      const driverSection = document.getElementById('driverInfo');
+      const isDomicile = order.orderType === 'domicile';
+      const isDelivering = ['shipped', 'arrived'].includes(order.status);
+      const hasDriver = order.driverName && order.driverPhone;
+
+      if (isDomicile && isDelivering && hasDriver) {
+        driverSection.classList.add('show');
+        document.getElementById('driver-name').textContent = order.driverName;
+        
+        const phone = order.driverPhone.replace(/\s/g, '');
+        const driverPhoneLink = document.getElementById('driver-phone');
+        driverPhoneLink.textContent = order.driverPhone;
+        driverPhoneLink.href = `tel:${phone}`;
+        
+        // Store phone for copy function
+        driverPhoneLink.dataset.phone = order.driverPhone;
+      } else {
+        driverSection.classList.remove('show');
+      }
+    }
+
+    // Copy phone number to clipboard
+    window.copyDriverPhone = function(e) {
+      e.preventDefault();
+      const phone = document.getElementById('driver-phone').dataset.phone;
+      
+      if (!phone) return;
+      
+      navigator.clipboard.writeText(phone).then(() => {
+        const btn = document.getElementById('copyPhoneBtn');
+        const originalHTML = btn.innerHTML;
+        
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Copié!';
+        btn.style.borderColor = 'var(--success)';
+        btn.style.color = 'var(--success)';
+        
+        setTimeout(() => {
+          btn.innerHTML = originalHTML;
+          btn.style.borderColor = '';
+          btn.style.color = '';
+        }, 2000);
+      }).catch(err => {
+        console.error('Failed to copy:', err);
+      });
+    };
+
+    // Auto-focus search input on load
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('orderNumber')?.focus();
+    });
   </script>
 </body>
-
 </html>
