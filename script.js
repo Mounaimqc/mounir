@@ -666,8 +666,8 @@ const shippingPrices = {
 
 const stopDeskPrices = {
   "01 - Adrar": 1000, "02 - Chlef": 450, "03 - Laghouat": 600, "04 - Oum El Bouaghi": 500,
-  "05 - Batna": 450, "06 - Béjaïa": 450, "07 - Biskra": 500, "08 - Béchar": 800,
-  "09 - Blida": 450, "10 - Bouira": 450, "11 - Tamanrasset": 1500, "12 - Tébessa": 500,
+  "05 - Batna": 450, "06 - Béjaïa": 450, "07 - Biskra": 600, "08 - Béchar": 800,
+  "09 - Blida": 450, "10 - Bouira": 450, "11 - Tamanrasset": 1200, "12 - Tébessa": 500,
   "13 - Tlemcen": 500, "14 - Tiaret": 500, "15 - Tizi Ouzou": 450, "16 - Alger": 400,
   "17 - Djelfa": 600, "18 - Jijel": 450, "19 - Sétif": 300, "20 - Saïda": 500,
   "21 - Skikda": 500, "22 - Sidi Bel Abbès": 500, "23 - Annaba": 450, "24 - Guelma": 500,
