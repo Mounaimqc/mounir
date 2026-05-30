@@ -647,39 +647,38 @@ const wilayasData = {
 
 // ========== PRIX DE LIVRAISON ==========
 const shippingPrices = {
-  "01 - Adrar": 1500, "02 - Chlef": 700, "03 - Laghouat": 900, "04 - Oum El Bouaghi": 800,
-  "05 - Batna": 700, "06 - Béjaïa": 700, "07 - Biskra": 900, "08 - Béchar": 1200,
-  "09 - Blida": 700, "10 - Bouira": 700, "11 - Tamanrasset": 2000, "12 - Tébessa": 850,
-  "13 - Tlemcen": 800, "14 - Tiaret": 800, "15 - Tizi Ouzou": 700, "16 - Alger": 600,
-  "17 - Djelfa": 900, "18 - Jijel": 700, "19 - Sétif": 550, "20 - Saïda": 900,
-  "21 - Skikda": 800, "22 - Sidi Bel Abbès": 800, "23 - Annaba": 700, "24 - Guelma": 850,
-  "25 - Constantine": 650, "26 - Médéa": 800, "27 - Mostaganem": 800, "28 - M'Sila": 700,
-  "29 - Mascara": 800, "30 - Ouargla": 1000, "31 - Oran": 700, "32 - El Bayadh": 1200,
-  "33 - Illizi": 1900, "34 - Bordj Bou Arréridj": 600, "35 - Boumerdès": 700, "36 - El Tarf": 850,
-  "37 - Tindouf": 1700, "38 - Tissemsilt": 850, "39 - El Oued": 1000, "40 - Khenchela": 600,
-  "41 - Souk Ahras": 850, "42 - Tipaza": 600, "43 - Mila": 600, "44 - Aïn Defla": 800,
-  "45 - Naâma": 1200, "46 - Aïn Témouchent": 800, "47 - Ghardaïa": 1000, "48 - Relizane": 800,
-  "49 - Timimoun": 1500, "50 - Bordj Badji Mokhtar": 600, "51 - Ouled Djellal": 900,
+  "01 - Adrar": 1500, "02 - Chlef": 800, "03 - Laghouat": 1000, "04 - Oum El Bouaghi": 800,
+  "05 - Batna": 800, "06 - Béjaïa": 800, "07 - Biskra": 1000, "08 - Béchar": 1200,
+  "09 - Blida": 600, "10 - Bouira": 700, "11 - Tamanrasset": 2000, "12 - Tébessa": 900,
+  "13 - Tlemcen": 800, "14 - Tiaret": 900, "15 - Tizi Ouzou": 700, "16 - Alger": 500,
+  "17 - Djelfa": 1000, "18 - Jijel": 800, "19 - Sétif": 800, "20 - Saïda": 900,
+  "21 - Skikda": 800, "22 - Sidi Bel Abbès": 800, "23 - Annaba": 800, "24 - Guelma": 900,
+  "25 - Constantine": 800, "26 - Médéa": 700, "27 - Mostaganem": 800, "28 - M'Sila": 800,
+  "29 - Mascara": 800, "30 - Ouargla": 1100, "31 - Oran": 800, "32 - El Bayadh": 1200,
+  "33 - Illizi": 1900, "34 - Bordj Bou Arréridj": 800, "35 - Boumerdès": 600, "36 - El Tarf": 900,
+  "37 - Tindouf": 1700, "38 - Tissemsilt": 800, "39 - El Oued": 1100, "40 - Khenchela": 900,
+  "41 - Souk Ahras": 900, "42 - Tipaza": 600, "43 - Mila": 800, "44 - Aïn Defla": 800,
+  "45 - Naâma": 1200, "46 - Aïn Témouchent": 800, "47 - Ghardaïa": 1100, "48 - Relizane": 800,
+  "49 - Timimoun": 1500, "50 - Bordj Badji Mokhtar": 1500, "51 - Ouled Djellal": 1000,
   "52 - Béni Abbès": 1200, "53 - In Salah": 1800, "54 - In Guezzam": 3500,
-  "55 - Touggourt": 1000, "56 - Djanet": 3500, "57 - El M'Ghair": 1800, "58 - El Meniaa": 1000
-};
+  "55 - Touggourt": 1000, "56 - Djanet": 2200, "57 - El M'Ghair": 1800, "58 - El Meniaa": 1100};
 
 const stopDeskPrices = {
-  "01 - Adrar": 1000, "02 - Chlef": 450, "03 - Laghouat": 600, "04 - Oum El Bouaghi": 500,
-  "05 - Batna": 450, "06 - Béjaïa": 450, "07 - Biskra": 600, "08 - Béchar": 800,
-  "09 - Blida": 450, "10 - Bouira": 450, "11 - Tamanrasset": 1200, "12 - Tébessa": 500,
-  "13 - Tlemcen": 500, "14 - Tiaret": 500, "15 - Tizi Ouzou": 450, "16 - Alger": 400,
-  "17 - Djelfa": 600, "18 - Jijel": 450, "19 - Sétif": 300, "20 - Saïda": 500,
-  "21 - Skikda": 500, "22 - Sidi Bel Abbès": 500, "23 - Annaba": 450, "24 - Guelma": 500,
-  "25 - Constantine": 400, "26 - Médéa": 500, "27 - Mostaganem": 500, "28 - M'Sila": 450,
-  "29 - Mascara": 500, "30 - Ouargla": 600, "31 - Oran": 450, "32 - El Bayadh": 800,
-  "33 - Illizi": 1500, "34 - Bordj Bou Arréridj": 400, "35 - Boumerdès": 450, "36 - El Tarf": 500,
-  "37 - Tindouf": 1000, "38 - Tissemsilt": 500, "39 - El Oued": 600, "40 - Khenchela": 500,
-  "41 - Souk Ahras": 500, "42 - Tipaza": 450, "43 - Mila": 500, "44 - Aïn Defla": 500,
-  "45 - Naâma": 800, "46 - Aïn Témouchent": 500, "47 - Ghardaïa": 600, "48 - Relizane": 500,
-  "49 - Timimoun": 1000, "50 - Bordj Badji Mokhtar": 1500, "51 - Ouled Djellal": 500,
+  "01 - Adrar": 1000, "02 - Chlef": 500, "03 - Laghouat": 600, "04 - Oum El Bouaghi": 500,
+  "05 - Batna": 500, "06 - Béjaïa": 500, "07 - Biskra": 600, "08 - Béchar": 800,
+  "09 - Blida": 400, "10 - Bouira": 450, "11 - Tamanrasset": 1500, "12 - Tébessa": 600,
+  "13 - Tlemcen": 500, "14 - Tiaret": 600, "15 - Tizi Ouzou": 450, "16 - Alger": 300,
+  "17 - Djelfa": 600, "18 - Jijel": 500, "19 - Sétif": 550, "20 - Saïda": 600,
+  "21 - Skikda": 500, "22 - Sidi Bel Abbès": 500, "23 - Annaba": 500, "24 - Guelma": 600,
+  "25 - Constantine": 500, "26 - Médéa": 450, "27 - Mostaganem": 500, "28 - M'Sila": 500,
+  "29 - Mascara": 500, "30 - Ouargla": 700, "31 - Oran": 500, "32 - El Bayadh": 800,
+  "33 - Illizi": 1500, "34 - Bordj Bou Arréridj": 500, "35 - Boumerdès": 400, "36 - El Tarf": 600,
+  "37 - Tindouf": 1000, "38 - Tissemsilt": 500, "39 - El Oued": 700, "40 - Khenchela": 600,
+  "41 - Souk Ahras": 600, "42 - Tipaza": 400, "43 - Mila": 500, "44 - Aïn Defla": 500,
+  "45 - Naâma": 800, "46 - Aïn Témouchent": 500, "47 - Ghardaïa": 700, "48 - Relizane": 500,
+  "49 - Timimoun": 1000, "50 - Bordj Badji Mokhtar": 1000, "51 - Ouled Djellal": 600,
   "52 - Béni Abbès": 800, "53 - In Salah": 1200, "54 - In Guezzam": 3500,
-  "55 - Touggourt": 600, "56 - Djanet": 3500, "57 - El M'Ghair": 1800, "58 - El Meniaa": 600
+  "55 - Touggourt": 600, "56 - Djanet": 1600, "57 - El M'Ghair": 1800, "58 - El Meniaa": 800
 };
 
 
