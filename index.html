@@ -105,159 +105,6 @@
     .hero h1 span { color: var(--gb-gold); }
     .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.95); max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
 
-    /* ========== CATEGORIES CAROUSEL ========== */
-    .categories-section {
-      max-width: 1400px;
-      margin: 0 auto 60px;
-      padding: 0 24px;
-    }
-
-    .section-title {
-      font-size: 2.5rem;
-      text-align: center;
-      margin-bottom: 40px;
-      color: var(--gb-text-dark);
-      font-family: 'Montserrat', sans-serif;
-      position: relative;
-      padding-bottom: 15px;
-    }
-
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: var(--gb-gold);
-      border-radius: 2px;
-    }
-
-    .categories-carousel {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-    }
-
-    .carousel-arrow {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: var(--gb-white);
-      border: 2px solid var(--gb-gold);
-      color: var(--gb-gold);
-      font-size: 1.2rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      flex-shrink: 0;
-      z-index: 10;
-    }
-
-    .carousel-arrow:hover {
-      background: var(--gb-gold);
-      color: var(--gb-white);
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(212,175,55,0.4);
-    }
-
-    .carousel-arrow:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .categories-wrapper {
-      display: flex;
-      gap: 24px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      padding: 20px 10px;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      flex: 1;
-    }
-
-    .categories-wrapper::-webkit-scrollbar {
-      display: none;
-    }
-
-    .category-card {
-      min-width: 320px;
-      height: 450px;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      position: relative;
-      cursor: pointer;
-      transition: var(--transition);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      flex-shrink: 0;
-    }
-
-    .category-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: 0 15px 50px rgba(0,0,0,0.25);
-    }
-
-    .category-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-    }
-
-    .category-content {
-      position: relative;
-      z-index: 2;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 30px;
-      color: var(--gb-white);
-    }
-
-    .category-title {
-      font-size: 1.8rem;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      text-align: center;
-      text-shadow: 2px 2px 8px rgba(0,0,0,0.4);
-      letter-spacing: 2px;
-      font-family: 'Montserrat', sans-serif;
-      line-height: 1.2;
-    }
-
-    .category-image {
-      width: 100%;
-      max-height: 200px;
-      object-fit: contain;
-      margin: auto 0;
-      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-      transition: var(--transition);
-    }
-
-    .category-card:hover .category-image {
-      transform: scale(1.1) rotate(5deg);
-    }
-
-    .category-desc {
-      font-size: 0.95rem;
-      text-align: center;
-      line-height: 1.5;
-      margin-top: 20px;
-      opacity: 0.95;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-      font-weight: 500;
-    }
-
     /* ========== SHOP CONTROLS ========== */
     .shop-controls { max-width: 1400px; margin: 0 auto 40px; padding: 0 24px; }
     .filters { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-bottom: 24px; }
@@ -272,6 +119,7 @@
       background: var(--gb-gold); border-color: var(--gb-gold-dark); color: var(--gb-white);
       box-shadow: 0 0 20px rgba(212,175,55,0.4); transform: translateY(-2px);
     }
+    /* ستايل العداد في الأزرار */
     .filter-btn .category-count {
       margin-left: 6px;
       background: var(--gb-gold);
@@ -392,7 +240,7 @@
     .btn-outline { background: transparent; border: 1px solid var(--gb-danger); color: var(--gb-danger); }
     .btn-outline:hover { border-color: var(--gb-danger); color: var(--gb-white); background: var(--gb-danger); }
 
-    /* ========== FOOTER ========== */
+    /* ========== FOOTER (Optimisé & Responsive) ========== */
     .footer {
       background: var(--gb-black); border-top: 3px solid var(--gb-gold);
       padding: 60px 24px 20px; margin-top: 60px; color: var(--gb-light-grey);
@@ -447,6 +295,52 @@
       color: var(--gb-light-grey); font-size: 0.9rem;
     }
 
+    /* Footer Responsive */
+    @media (max-width: 1024px) {
+      .footer { padding: 50px 20px 20px; }
+      .social-link { width: 42px; height: 42px; font-size: 1.1rem; }
+    }
+    @media (max-width: 768px) {
+      .footer { padding: 40px 16px 16px; margin-top: 40px; }
+      .footer-container { grid-template-columns: repeat(2, 1fr); gap: 30px 20px; }
+      .footer-section h3 { font-size: 1.1rem; margin-bottom: 16px; }
+      .footer-section h3::after { width: 35px; }
+      .contact-link, .logistics-list li { font-size: 0.9rem; }
+      .social-links { gap: 12px; }
+      .social-link { width: 40px; height: 40px; font-size: 1rem; }
+    }
+    @media (max-width: 576px) {
+      .footer-container { grid-template-columns: 1fr; text-align: center; gap: 35px; }
+      .footer-section h3::after { left: 50%; transform: translateX(-50%); }
+      .contact-links { align-items: center; }
+      .contact-link { justify-content: center; }
+      .social-links { justify-content: center; }
+      .logistics-list li { justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .footer { padding: 30px 12px 12px; }
+      .footer-section h3 { font-size: 1rem; margin-bottom: 14px; }
+      .footer-section h3::after { width: 30px; }
+      .footer-desc, .contact-link, .logistics-list li { font-size: 0.85rem; }
+      .contact-link i { width: 18px; font-size: 0.9rem; }
+      .social-links { gap: 10px; }
+      .social-link { width: 38px; height: 38px; font-size: 0.95rem; }
+      .logistics-list li { flex-direction: column; align-items: center; gap: 4px; }
+      .logistics-list i { margin-top: 0; }
+      .footer-bottom { margin-top: 40px; padding-top: 16px; font-size: 0.8rem; }
+    }
+    @media (max-width: 360px) {
+      .social-link { width: 36px; height: 36px; font-size: 0.9rem; }
+      .footer-section h3 { font-size: 0.95rem; }
+    }
+    @media (hover: none) and (pointer: coarse) {
+      .contact-link:active, .social-link:active { transform: scale(0.95); transition: transform 0.1s ease; }
+      .social-link:hover { transform: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .contact-link, .social-link, .footer-section h3::after { transition: none !important; }
+    }
+
     /* ========== SHIPPING COVERAGE ========== */
     .shipping-coverage { background: var(--gb-white); padding: 80px 24px; margin-top: 40px; border-top: 1px solid #e8e8e8; }
     .coverage-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
@@ -471,19 +365,14 @@
     }
     .map-overlay-card h4 { font-size: 0.9rem; margin-bottom: 5px; }
     .map-overlay-card p { font-size: 0.8rem; color: var(--gb-text-muted); margin: 0; }
-
-    /* ========== GLOBAL RESPONSIVE ========== */
-    @media (max-width: 1024px) { 
-      .products-grid { grid-template-columns: repeat(3, 1fr); gap: 25px; }
-      .category-card { min-width: 280px; height: 400px; }
-      .category-title { font-size: 1.5rem; }
-    }
-    @media (max-width: 992px) { 
-      .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } 
-      .hero h1 { font-size: 3rem; }
+    @media (max-width: 992px) {
       .coverage-container { grid-template-columns: 1fr; gap: 40px; }
       .coverage-info h2 { font-size: 2rem; }
     }
+
+    /* ========== GLOBAL RESPONSIVE ========== */
+    @media (max-width: 1200px) { .products-grid { grid-template-columns: repeat(3, 1fr); gap: 25px; } }
+    @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } .hero h1 { font-size: 3rem; } }
     @media (max-width: 768px) {
       .header-container { flex-direction: column; gap: 20px; padding: 15px; }
       .logo img { height: 45px; }
@@ -492,10 +381,6 @@
       .filters { gap: 8px; }
       .filter-btn { padding: 8px 16px; font-size: 0.8rem; }
       .modal { width: 95%; margin: 10px; }
-      .categories-section { padding: 0 16px; margin-bottom: 40px; }
-      .section-title { font-size: 2rem; margin-bottom: 30px; }
-      .category-card { min-width: 260px; height: 380px; }
-      .carousel-arrow { width: 40px; height: 40px; font-size: 1rem; }
     }
     @media (max-width: 480px) {
       .products-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 0 10px; }
@@ -508,11 +393,6 @@
       .product-image { height: 180px; }
       .brand-name { font-size: 1.2rem; }
       .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
-      .category-card { min-width: 240px; height: 350px; padding: 20px; }
-      .category-title { font-size: 1.3rem; margin-bottom: 15px; }
-      .category-image { max-height: 150px; }
-      .category-desc { font-size: 0.85rem; margin-top: 15px; }
-      .categories-wrapper { gap: 16px; }
     }
     @media (max-width: 360px) {
       .products-grid { grid-template-columns: 1fr; }
@@ -551,72 +431,6 @@
   <section class="hero">
     <h1>REVEILLEZ LA <span class="gold-text">BÊTE</span> EN VOUS.</h1>
     <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
-  </section>
-
-  <!-- Categories Carousel -->
-  <section class="categories-section">
-    <h2 class="section-title">Catégories</h2>
-    <div class="categories-carousel">
-      <button class="carousel-arrow prev-arrow" id="prevArrow">
-        <i class="fa-solid fa-chevron-left"></i>
-      </button>
-      
-      <div class="categories-wrapper" id="categoriesWrapper">
-        <!-- Category Card 1: Protéines -->
-        <div class="category-card" data-category="Protéines whey">
-          <div class="category-bg" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);"></div>
-          <div class="category-content">
-            <h3 class="category-title">WHEY PROTEIN</h3>
-            <img src="https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=400&h=400&fit=crop" alt="Whey Protein" class="category-image">
-            <p class="category-desc">Pour un apport protéique boosté et une force musculaire améliorée</p>
-          </div>
-        </div>
-
-        <!-- Category Card 2: Masse -->
-        <div class="category-card" data-category="Masse / Gainer">
-          <div class="category-bg" style="background: linear-gradient(135deg, #c94b4b 0%, #4b134f 100%);"></div>
-          <div class="category-content">
-            <h3 class="category-title">MASS GAINER</h3>
-            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=400&fit=crop" alt="Mass Gainer" class="category-image">
-            <p class="category-desc">Pour une prise de masse musculaire optimale et rapide</p>
-          </div>
-        </div>
-
-        <!-- Category Card 3: Acides Aminés -->
-        <div class="category-card" data-category="Acide aminé">
-          <div class="category-bg" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"></div>
-          <div class="category-content">
-            <h3 class="category-title">ACIDES AMINÉS</h3>
-            <img src="https://images.unsplash.com/photo-1550572017-edd951aa8f72?w=400&h=400&fit=crop" alt="Acides Aminés" class="category-image">
-            <p class="category-desc">Pour une récupération rapide et une performance maximale</p>
-          </div>
-        </div>
-
-        <!-- Category Card 4: Force/Energie -->
-        <div class="category-card" data-category="Force / Energie">
-          <div class="category-bg" style="background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);"></div>
-          <div class="category-content">
-            <h3 class="category-title">FORCE & ÉNERGIE</h3>
-            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400&h=400&fit=crop" alt="Force Energie" class="category-image">
-            <p class="category-desc">Pour des séances d'entraînement intenses et explosives</p>
-          </div>
-        </div>
-
-        <!-- Category Card 5: Brûleur -->
-        <div class="category-card" data-category="Brûleur de graisse">
-          <div class="category-bg" style="background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);"></div>
-          <div class="category-content">
-            <h3 class="category-title">BRÛLEUR DE GRAISSE</h3>
-            <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop" alt="Brûleur" class="category-image">
-            <p class="category-desc">Pour une définition musculaire et une perte de gras efficace</p>
-          </div>
-        </div>
-      </div>
-
-      <button class="carousel-arrow next-arrow" id="nextArrow">
-        <i class="fa-solid fa-chevron-right"></i>
-      </button>
-    </div>
   </section>
 
   <!-- Shop Controls -->
@@ -804,7 +618,7 @@
     </div>
   </section>
 
-  <!-- Footer -->
+  <!-- Footer (Optimisé & Responsive) -->
   <footer class="footer">
     <div class="footer-container">
       <div class="footer-section brand-section">
@@ -844,100 +658,9 @@
   <script>
     // Dynamic year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    // Categories Carousel Functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const wrapper = document.getElementById('categoriesWrapper');
-      const prevArrow = document.getElementById('prevArrow');
-      const nextArrow = document.getElementById('nextArrow');
-      const cards = document.querySelectorAll('.category-card');
-      
-      if (!wrapper || !prevArrow || !nextArrow) return;
-      
-      const scrollAmount = 344; // card width + gap
-      
-      // Update arrows state
-      function updateArrows() {
-        const scrollLeft = wrapper.scrollLeft;
-        const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
-        
-        prevArrow.disabled = scrollLeft <= 0;
-        nextArrow.disabled = scrollLeft >= maxScroll - 10;
-      }
-      
-      // Scroll functions
-      prevArrow.addEventListener('click', () => {
-        wrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      });
-      
-      nextArrow.addEventListener('click', () => {
-        wrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      });
-      
-      // Update arrows on scroll
-      wrapper.addEventListener('scroll', updateArrows);
-      
-      // Initial state
-      updateArrows();
-      
-      // Category card click - filter products
-      cards.forEach(card => {
-        card.addEventListener('click', function() {
-          const category = this.getAttribute('data-category');
-          
-          // Update active filter button
-          document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.getAttribute('data-category') === category) {
-              btn.classList.add('active');
-            }
-          });
-          
-          // Scroll to products
-          document.getElementById('productsGrid').scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'start' 
-          });
-          
-          // Trigger filter (if you have the filter function)
-          if (typeof filterProducts === 'function') {
-            filterProducts(category);
-          }
-        });
-      });
-      
-      // Touch support for mobile
-      let isDown = false;
-      let startX;
-      let scrollLeft;
-      
-      wrapper.addEventListener('mousedown', (e) => {
-        isDown = true;
-        wrapper.classList.add('active');
-        startX = e.pageX - wrapper.offsetLeft;
-        scrollLeft = wrapper.scrollLeft;
-      });
-      
-      wrapper.addEventListener('mouseleave', () => {
-        isDown = false;
-        wrapper.classList.remove('active');
-      });
-      
-      wrapper.addEventListener('mouseup', () => {
-        isDown = false;
-        wrapper.classList.remove('active');
-      });
-      
-      wrapper.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - wrapper.offsetLeft;
-        const walk = (x - startX) * 2;
-        wrapper.scrollLeft = scrollLeft - walk;
-      });
-    });
   </script>
   <script type="module" src="firebase-config.js"></script>
   <script type="module" src="script.js"></script>
 </body>
 </html>
+
