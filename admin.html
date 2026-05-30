@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -10,8 +11,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <!-- مكتبة ضغط الصور -->
-  <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
   
   <style>
     :root {
@@ -262,7 +261,6 @@
     .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
     .btn-outline { background: var(--bg); border: 1px solid var(--border); color: var(--text); }
     .btn-outline:hover { background: var(--surface-hover); border-color: var(--primary); }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
 
     /* ========== TABLE ========== */
     .table-container {
@@ -449,27 +447,6 @@
     .flavor-field input { flex: 1; min-width: 120px; }
     .flavor-field .btn { padding: 8px 12px; font-size: 0.8rem; }
 
-    /* Image Preview */
-    .image-preview {
-      width: 100px; height: 100px;
-      border-radius: var(--radius);
-      background: var(--surface-hover);
-      background-size: cover;
-      background-position: center;
-      border: 2px solid var(--border);
-      margin-top: 10px;
-      display: none;
-    }
-    .flavor-preview {
-      width: 40px; height: 40px;
-      border-radius: 6px;
-      background: var(--surface-hover);
-      background-size: cover;
-      background-position: center;
-      border: 1px solid var(--border);
-      display: none;
-    }
-
     /* ========== TOAST ========== */
     .toast {
       position: fixed; top: 20px; right: 20px;
@@ -489,7 +466,8 @@
     @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
     @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-    /* ========== RESPONSIVE ========== */
+    /* ========== RESPONSIVE MEDIA QUERIES ========== */
+    
     @media (max-width: 1024px) {
       :root { --sidebar-width: 220px; }
       .main-content { padding: 20px; }
@@ -518,19 +496,6 @@
       .detail-row { flex-direction: column; align-items: flex-start; gap: 4px; }
       .detail-value { text-align: left; width: 100%; }
       .driver-section .form-row { grid-template-columns: 1fr; }
-      
-      input[type="file"] {
-        padding: 12px;
-        font-size: 0.9rem;
-      }
-      .flavor-item {
-        flex-direction: column !important;
-        align-items: stretch !important;
-      }
-      .flavor-item .btn {
-        width: 100%;
-        justify-content: center;
-      }
     }
     
     @media (max-width: 576px) {
@@ -611,7 +576,7 @@
     </ul>
     
     <div class="sidebar-footer">
-      <p>v2.0 • © <span id="currentYear"></span></p>
+      <p>v2.0 • © 2026</p>
     </div>
   </aside>
 
@@ -779,7 +744,7 @@
           </span>
         </div>
 
-        <!-- Driver Section -->
+        <!-- Driver Section (NEW - French) -->
         <div id="driverSection" class="driver-section">
           <h4><i class="fa-solid fa-motorcycle"></i> Informations du Livreur</h4>
           <div class="form-row">
@@ -824,17 +789,10 @@
             <label class="form-label">Nom du produit *</label>
             <input type="text" id="productName" class="form-control" required placeholder="Ex: Whey Protein Gold">
           </div>
-          
-          <!-- صورة المنتج الرئيسية -->
           <div class="form-group">
-            <label class="form-label">صورة المنتج *</label>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-              <input type="file" id="productImageFile" class="form-control" accept="image/*" style="flex:1; min-width:200px;">
-              <span id="productImagePreview" style="font-size:0.8rem; color:var(--text-light);">لم يتم اختيار صورة</span>
-            </div>
-            <div id="productImagePreviewBig" class="image-preview"></div>
+            <label class="form-label">URL de l'image *</label>
+            <input type="url" id="productImage" class="form-control" required placeholder="https://...">
           </div>
-          
           <div class="form-group">
             <label class="form-label">Catégorie *</label>
             <select id="productCategory" class="form-control" required>
@@ -872,14 +830,14 @@
             </label>
             <div id="flavorsList" style="display:flex; flex-direction:column; gap:10px;"></div>
             <p style="font-size:0.75rem; color:var(--text-light); margin-top:8px;">
-              Ajoutez des goûts avec image. Vous pouvez uploader depuis votre appareil.
+              Ajoutez des goûts (Chocolat, Vanille...) avec image. Le client pourra changer l'image en cliquant.
             </p>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeAddProductModal()">Annuler</button>
-        <button class="btn btn-primary" type="submit" form="addProductForm" id="addProductBtn">
+        <button class="btn btn-primary" type="submit" form="addProductForm">
           <i class="fa-solid fa-check"></i> Enregistrer
         </button>
       </div>
@@ -960,6 +918,20 @@
       }
     });
     
+    // ===== Flavor Fields =====
+    function addFlavorField() {
+      const container = document.getElementById('flavorsList');
+      const index = container.children.length;
+      const field = document.createElement('div');
+      field.className = 'flavor-field';
+      field.innerHTML = `
+        <input type="text" class="form-control" name="flavorName_${index}" placeholder="Nom du goût" style="flex:1; min-width:100px;">
+        <input type="url" class="form-control" name="flavorImage_${index}" placeholder="URL image" style="flex:1; min-width:100px;">
+        <button type="button" class="btn btn-outline" onclick="this.parentElement.remove()" style="padding:8px;">✕</button>
+      `;
+      container.appendChild(field);
+    }
+    
     // ===== Utility Functions =====
     function clearFilters() {
       document.getElementById('searchInput').value = '';
@@ -973,7 +945,10 @@
     }
     
     // ===== Dynamic Year =====
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    if(document.querySelector('.sidebar-footer p')) {
+      document.querySelector('.sidebar-footer p').textContent = 
+        `v2.0 • © ${new Date().getFullYear()}`;
+    }
     
     // ===== Responsive Table Scroll Indicator =====
     function initTableScroll() {
@@ -992,3 +967,4 @@
   
 </body>
 </html>
+
