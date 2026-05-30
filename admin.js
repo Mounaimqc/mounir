@@ -1,11 +1,96 @@
 // admin.js - Firebase v10+ Compatible
 import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { db } from './firebase-config.js';
+import { ref, uploadBytes, getDownloadURL } 
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { db, storage } from './firebase-config.js';
 
 let allCommandes = [];
 
-// ========== CHARGEMENT DES COMMANDES ==========
+// ========== تحميل الصور ==========
+async function uploadImageToStorage(file, path) {
+  if (!file) return null;
+  
+  try {
+    // ضغط الصورة إذا كانت كبيرة
+    if (file.size > 500000) {
+      file = await imageCompression(file, {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true
+      });
+    }
+    
+    const storageRef = ref(storage, `products/${path}/${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef, file);
+    return await getDownloadURL(storageRef);
+  } catch (error) {
+    console.error("❌ خطأ في رفع الصورة:", error);
+    showToast('❌ فشل رفع الصورة', 'error');
+    return null;
+  }
+}
+
+// ========== معاينة الصورة الرئيسية ==========
+document.getElementById('productImageFile')?.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  const preview = document.getElementById('productImagePreview');
+  const previewBig = document.getElementById('productImagePreviewBig');
+  
+  if (file) {
+    preview.textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      previewBig.style.backgroundImage = `url(${event.target.result})`;
+      previewBig.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  } else {
+    preview.textContent = 'لم يتم اختيار صورة';
+    previewBig.style.display = 'none';
+  }
+});
+
+// ========== دالة إضافة حقل نكهة ==========
+function addFlavorField() {
+  const list = document.getElementById('flavorsList');
+  if (!list) return;
+
+  const div = document.createElement('div');
+  div.className = 'flavor-item';
+  div.style.cssText = 'display:flex; gap:8px; align-items:center; flex-wrap:wrap; padding:10px; background:var(--bg); border-radius:8px;';
+
+  div.innerHTML = `
+    <input type="text" class="form-control flavor-name" placeholder="Nom du goût" style="flex:1; min-width:120px;" required>
+    <input type="file" class="form-control flavor-image-file" accept="image/*" style="flex:1; min-width:150px; padding:6px;">
+    <input type="hidden" class="flavor-image-url">
+    <button type="button" class="btn btn-outline" onclick="this.parentElement.remove()" style="padding:8px 12px;">✕</button>
+    <div class="flavor-preview"></div>
+  `;
+  
+  // معاينة صورة النكهة
+  const fileInput = div.querySelector('.flavor-image-file');
+  const preview = div.querySelector('.flavor-preview');
+  
+  fileInput.addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        preview.style.backgroundImage = `url(${event.target.result})`;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    } else {
+      preview.style.display = 'none';
+    }
+  });
+  
+  list.appendChild(div);
+}
+window.addFlavorField = addFlavorField;
+
+// ========== تحميل الطلبات ==========
 function loadCommandes() {
   const tbody = document.getElementById('ordersTableBody');
   if (!tbody) return;
@@ -33,7 +118,7 @@ function loadCommandes() {
   });
 }
 
-// ========== AFFICHAGE TABLEAU ==========
+// ========== عرض الطلبات في الجدول ==========
 function displayCommandes(commandes) {
   const tbody = document.getElementById('ordersTableBody');
   if (!tbody) return;
@@ -64,7 +149,7 @@ function displayCommandes(commandes) {
   }).join('');
 }
 
-// ========== MODAL DÉTAILS ==========
+// ========== عرض تفاصيل الطلب ==========
 function showDetail(orderNumber) {
   const cmd = allCommandes.find(c => c.orderNumber === orderNumber);
   if (!cmd) return;
@@ -101,9 +186,7 @@ function showDetail(orderNumber) {
   document.getElementById('detailShipping').textContent = (cmd.shippingPrice || 0).toFixed(2);
   document.getElementById('detailTotal').textContent = (cmd.grandTotal || 0).toFixed(2);
 
-  // 👇 إظهار قسم السائق
   toggleDriverSection(cmd);
-
   document.getElementById('detailModal').classList.add('active');
 }
 
@@ -111,7 +194,7 @@ function closeDetail() {
   document.getElementById('detailModal').classList.remove('active');
 }
 
-// ========== DRIVER SECTION TOGGLE ==========
+// ========== إظهار/إخفاء قسم السائق ==========
 function toggleDriverSection(order) {
   const driverSection = document.getElementById('driverSection');
   if (!driverSection) return;
@@ -127,7 +210,7 @@ function toggleDriverSection(order) {
   }
 }
 
-// ========== HELPERS STATUT ==========
+// ========== دوال الحالة ==========
 function getStatusClass(s) {
   return { pending: 'status-pending', accepted: 'status-accepted', shipped: 'status-shipped', arrived: 'status-arrived', returned: 'status-returned' }[s] || 'status-pending';
 }
@@ -135,7 +218,7 @@ function getStatusLabel(s) {
   return { pending: '⏳ En attente', accepted: '✓ Acceptée', shipped: '🚚 En route', arrived: '📦 Arrivée', returned: '↩️ Retournée' }[s] || '⏳ En attente';
 }
 
-// ========== MISE À JOUR STATUT ==========
+// ========== تحديث الحالة ==========
 function confirmStatusUpdate() {
   const newStatus = document.getElementById('statusSelect').value;
   updateOrderStatus(newStatus);
@@ -146,11 +229,10 @@ function updateOrderStatus(newStatus) {
   const orderNumber = document.getElementById('detailModal')?.dataset.currentOrderNumber;
 
   if (!firebaseId) {
-    showNotification('Erreur: ID Firebase manquant', 'error');
+    showToast('Erreur: ID Firebase manquant', 'error');
     return;
   }
 
-  // جمع بيانات السائق
   const driverData = {};
   const driverName = document.getElementById('driverName')?.value.trim();
   const driverPhone = document.getElementById('driverPhone')?.value.trim();
@@ -171,22 +253,22 @@ function updateOrderStatus(newStatus) {
         if (driverData.driverPhone) cmd.driverPhone = driverData.driverPhone;
       }
       displayCommandes(allCommandes);
-      showNotification('✅ Statut et livreur mis à jour', 'success');
+      showToast('✅ Statut et livreur mis à jour', 'success');
       closeDetail();
     })
     .catch((error) => {
       console.error("Erreur:", error);
-      showNotification('❌ Erreur mise à jour', 'error');
+      showToast('❌ Erreur mise à jour', 'error');
     });
 }
 
-// ========== SUPPRESSION ==========
+// ========== حذف طلب ==========
 function deleteCommande(orderNumber) {
   if (!confirm(`Supprimer la commande ${orderNumber} ?`)) return;
 
   const cmd = allCommandes.find(c => c.orderNumber === orderNumber);
   if (!cmd?.id) {
-    showNotification('Commande introuvable', 'error');
+    showToast('Commande introuvable', 'error');
     return;
   }
 
@@ -195,15 +277,15 @@ function deleteCommande(orderNumber) {
       allCommandes = allCommandes.filter(c => c.orderNumber !== orderNumber);
       displayCommandes(allCommandes);
       updateStats();
-      showNotification('✅ Commande supprimée', 'success');
+      showToast('✅ Commande supprimée', 'success');
     })
     .catch((error) => {
       console.error("Erreur:", error);
-      showNotification('❌ Erreur suppression', 'error');
+      showToast('❌ Erreur suppression', 'error');
     });
 }
 
-// ========== FILTRES ==========
+// ========== فلترة الطلبات ==========
 function filterCommandes() {
   const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
   const type = document.getElementById('filterType')?.value || '';
@@ -226,7 +308,7 @@ function clearFilters() {
   filterCommandes();
 }
 
-// ========== STATISTIQUES ==========
+// ========== الإحصائيات ==========
 function updateStats() {
   const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
   el('totalCommandes', allCommandes.length);
@@ -236,7 +318,7 @@ function updateStats() {
   el('totalStopdesk', allCommandes.filter(c => c.orderType === 'stopdesk').length);
 }
 
-// ========== FILTRE WILAYA ==========
+// ========== فلتر الولاية ==========
 function initializeWilayaFilter() {
   const select = document.getElementById('filterWilaya');
   if (!select) return;
@@ -250,9 +332,9 @@ function initializeWilayaFilter() {
   select.value = current;
 }
 
-// ========== EXPORT CSV ==========
+// ========== تصدير CSV ==========
 function exportCommandes() {
-  if (allCommandes.length === 0) { showNotification('Aucune commande à exporter', 'error'); return; }
+  if (allCommandes.length === 0) { showToast('Aucune commande à exporter', 'error'); return; }
   let csv = 'N°;Client;Téléphone;Wilaya;Commune;Type;Total;Statut;Date;DriverName;DriverPhone\n';
   allCommandes.forEach(c => {
     csv += `"${c.orderNumber}";"${c.firstName || ''} ${c.lastName || ''}";"${c.phone1 || ''}";"${c.wilaya || ''}";"${c.commune || ''}";"${c.orderType || ''}";"${(c.grandTotal || 0).toFixed(2)}";"${c.status || 'pending'}";"${c.date || ''}";"${c.driverName || ''}";"${c.driverPhone || ''}"\n`;
@@ -262,62 +344,125 @@ function exportCommandes() {
   const a = document.createElement('a');
   a.href = url; a.download = `commandes_${new Date().toISOString().slice(0, 10)}.csv`;
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
-  showNotification('✅ Export CSV téléchargé', 'success');
+  showToast('✅ Export CSV téléchargé', 'success');
 }
 
-// ========== UTILITAIRES ==========
-function showNotification(msg, type = 'success') {
+// ========== إشعارات ==========
+function showToast(msg, type = 'success') {
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
   toast.textContent = msg;
   document.body.appendChild(toast);
   setTimeout(() => { toast.style.opacity = '0'; setTimeout(() => toast.remove(), 300); }, 3000);
 }
+
 function formatDateTime(d) { if (!d) return '—'; return new Date(d).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
 
-// ========== AJOUT PRODUIT ==========
+// ========== فتح/إغلاق مودال المنتج ==========
 function openAddProductModal() { document.getElementById('addProductModal')?.classList.add('active'); }
-function closeAddProductModal() { document.getElementById('addProductModal')?.classList.remove('active'); }
+function closeAddProductModal() { 
+  document.getElementById('addProductModal')?.classList.remove('active');
+  document.getElementById('addProductForm')?.reset();
+  document.getElementById('productImagePreviewBig').style.display = 'none';
+  document.getElementById('productImagePreview').textContent = 'لم يتم اختيار صورة';
+  document.getElementById('flavorsList').innerHTML = '';
+}
 
+// ========== إضافة منتج جديد ==========
 document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const name = document.getElementById('productName')?.value.trim();
-  const image = document.getElementById('productImage')?.value.trim();
-  const category = document.getElementById('productCategory')?.value;
-  const description = document.getElementById('productDescription')?.value.trim();
-  const quantity = parseInt(document.getElementById('productQuantity')?.value) || 0;
-  const price = parseFloat(document.getElementById('productPrice')?.value);
-
-  if (!name || !image || !category || isNaN(price) || price <= 0) {
-    showNotification('Veuillez remplir tous les champs obligatoires', 'error'); return;
-  }
-
-  const flavors = [];
-  document.querySelectorAll('.flavor-item').forEach(item => {
-    const fName = item.querySelector('.flavor-name')?.value.trim();
-    const fImage = item.querySelector('.flavor-image')?.value.trim();
-    if (fName) {
-      flavors.push({ name: fName, image: fImage || image });
-    }
-  });
+  
+  const submitBtn = document.getElementById('addProductBtn');
+  const originalBtnText = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الرفع...';
 
   try {
+    const name = document.getElementById('productName')?.value.trim();
+    const category = document.getElementById('productCategory')?.value;
+    const description = document.getElementById('productDescription')?.value.trim() || '';
+    const quantity = parseInt(document.getElementById('productQuantity')?.value) || 0;
+    const price = parseFloat(document.getElementById('productPrice')?.value);
+
+    if (!name || !category || isNaN(price) || price <= 0) {
+      showToast('Veuillez remplir tous les champs obligatoires', 'error');
+      resetBtn();
+      return;
+    }
+
+    // رفع الصورة الرئيسية
+    const imageFile = document.getElementById('productImageFile')?.files[0];
+    let mainImageUrl = '';
+    
+    if (imageFile) {
+      showToast('📤 جاري رفع الصورة الرئيسية...', 'success');
+      mainImageUrl = await uploadImageToStorage(imageFile, 'main');
+      if (!mainImageUrl) { resetBtn(); return; }
+    } else {
+      showToast('اختر صورة للمنتج', 'error');
+      resetBtn();
+      return;
+    }
+
+    // رفع صور النكهات
+    const flavors = [];
+    const flavorItems = document.querySelectorAll('.flavor-item');
+    
+    for (let i = 0; i < flavorItems.length; i++) {
+      const item = flavorItems[i];
+      const fName = item.querySelector('.flavor-name')?.value.trim();
+      const fFile = item.querySelector('.flavor-image-file')?.files[0];
+      
+      if (fName) {
+        let fImageUrl = mainImageUrl;
+        
+        if (fFile) {
+          showToast(`📤 جاري رفع صورة ${fName}...`, 'success');
+          const uploadedUrl = await uploadImageToStorage(fFile, 'flavors');
+          if (uploadedUrl) fImageUrl = uploadedUrl;
+        }
+        
+        flavors.push({ 
+          name: fName, 
+          image: fImageUrl,
+          id: `flavor_${Date.now()}_${i}`
+        });
+      }
+    }
+
+    // حفظ المنتج في Firestore
     await addDoc(collection(db, "produits"), {
-      name, image, category, description: description || '', price, quantity, flavors,
-      dateAdded: new Date().toISOString()
+      name, 
+      image: mainImageUrl, 
+      category, 
+      description, 
+      price, 
+      quantity, 
+      flavors,
+      dateAdded: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     });
-    showNotification('✅ Produit ajouté!', 'success');
+    
+    showToast('✅ Produit ajouté avec succès!', 'success');
     closeAddProductModal();
-    document.getElementById('addProductForm').reset();
-    const flavorsList = document.getElementById('flavorsList');
-    if (flavorsList) flavorsList.innerHTML = '';
+    
   } catch (error) {
-    console.error("Erreur:", error);
-    showNotification('❌ Erreur ajout produit', 'error');
+    console.error("❌ Erreur:", error);
+    showToast('❌ Erreur lors de l\'ajout du produit', 'error');
+  } finally {
+    resetBtn();
+  }
+  
+  function resetBtn() {
+    const btn = document.getElementById('addProductBtn');
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalBtnText;
+    }
   }
 });
 
-// ========== INITIALISATION ==========
+// ========== التهيئة ==========
 document.addEventListener('DOMContentLoaded', () => {
   loadCommandes();
   document.getElementById('searchInput')?.addEventListener('input', filterCommandes);
@@ -336,23 +481,4 @@ window.exportCommandes = exportCommandes;
 window.openAddProductModal = openAddProductModal;
 window.closeAddProductModal = closeAddProductModal;
 window.toggleDriverSection = toggleDriverSection;
-
-function addFlavorField() {
-  const list = document.getElementById('flavorsList');
-  if (!list) return;
-
-  const div = document.createElement('div');
-  div.className = 'flavor-item form-row';
-  div.style.marginBottom = '0';
-  div.style.alignItems = 'center';
-
-  div.innerHTML = `
-    <input type="text" class="form-control flavor-name" placeholder="Nom (ex: Chocolat)" required>
-    <input type="url" class="form-control flavor-image" placeholder="Image URL (Optionnelle)">
-    <button type="button" class="btn btn-outline" style="color:var(--danger); border-color:var(--danger); padding:10px; margin-top:5px; width:100%;" onclick="this.parentElement.remove()">
-      <i class="fa-solid fa-trash"></i> Supprimer
-    </button>
-  `;
-  list.appendChild(div);
-}
 window.addFlavorField = addFlavorField;
