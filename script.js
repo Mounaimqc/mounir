@@ -682,34 +682,6 @@ const stopDeskPrices = {
   "55 - Touggourt": 600, "56 - Djanet": 3500, "57 - El M'Ghair": 1800, "58 - El Meniaa": 600
 };
 
-Object.keys(wilayasData).forEach(wilaya => {
-  const code = parseInt(wilaya.substring(0, 2));
-
-  if ([16, 9, 42, 35, 31, 25].includes(code)) {
-    shippingPrices[wilaya] = 500;
-    stopDeskPrices[wilaya] = 300;
-  }
-  else if ([2, 6, 15, 18, 21, 23, 27].includes(code)) {
-    shippingPrices[wilaya] = 600;
-    stopDeskPrices[wilaya] = 400;
-  }
-  else if ([5, 7, 14, 17, 19, 28, 34, 43].includes(code)) {
-    shippingPrices[wilaya] = 700;
-    stopDeskPrices[wilaya] = 450;
-  }
-  else if ([8, 30, 39, 47, 49, 50, 51, 55].includes(code)) {
-    shippingPrices[wilaya] = 900;
-    stopDeskPrices[wilaya] = 600;
-  }
-  else if ([1, 11, 33, 37, 52, 53, 54, 56, 57, 58].includes(code)) {
-    shippingPrices[wilaya] = 1200;
-    stopDeskPrices[wilaya] = 800;
-  }
-  else {
-    shippingPrices[wilaya] = 750;
-    stopDeskPrices[wilaya] = 500;
-  }
-});
 
 // ========== SOUMISSION COMMANDE ==========
 async function submitOrderForm() {
