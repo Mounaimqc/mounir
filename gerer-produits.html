@@ -25,637 +25,181 @@
             --radius: 8px
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', sans-serif
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            display: flex;
-            min-height: 100vh
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif }
+        body { background: var(--bg); color: var(--text); display: flex; min-height: 100vh }
 
         .sidebar {
-            width: 250px;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            position: fixed;
-            height: 100%;
-            z-index: 100;
+            width: 250px; background: var(--surface); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; position: fixed; height: 100%; z-index: 100;
             transition: transform 0.3s ease;
         }
-
-        .sidebar-header {
-            padding: 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 12px
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: 'Montserrat', sans-serif;
-            text-decoration: none;
-        }
-
-        .logo img {
-            height: 40px;
-            width: auto;
-            border-radius: var(--radius);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
-
-        .brand-name {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .brand-tagline {
-            font-size: 0.75rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .nav-links {
-            list-style: none;
-            padding: 24px 16px;
-            flex: 1
-        }
-
-        .nav-item {
-            margin-bottom: 8px
-        }
-
+        .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px }
+        .logo { display: flex; align-items: center; gap: 12px; font-family: 'Montserrat', sans-serif; text-decoration: none; }
+        .logo img { height: 40px; width: auto; border-radius: var(--radius); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.1; }
+        .brand-name { font-size: 1.1rem; font-weight: 800; color: var(--text); text-transform: uppercase; letter-spacing: 1px; }
+        .brand-tagline { font-size: 0.75rem; font-weight: 900; color: var(--primary); text-transform: uppercase; letter-spacing: 3px; }
+        .nav-links { list-style: none; padding: 24px 16px; flex: 1 }
+        .nav-item { margin-bottom: 8px }
         .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            border-radius: var(--radius);
-            color: var(--text-light);
-            text-decoration: none;
-            transition: .2s
+            display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--radius);
+            color: var(--text-light); text-decoration: none; transition: .2s
         }
-
-        .nav-link:hover,
-        .nav-link.active {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--primary);
-            font-weight: 500
-        }
-
-        .main-content {
-            flex: 1;
-            margin-left: 250px;
-            padding: 32px;
-            overflow-y: auto
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px
-        }
-
-        .page-title h1 {
-            font-size: 1.5rem;
-            font-weight: 700
-        }
-
-        .page-title p {
-            color: var(--text-light);
-            font-size: .875rem;
-            margin-top: 4px
-        }
+        .nav-link:hover, .nav-link.active { background: rgba(212, 175, 55, 0.1); color: var(--primary); font-weight: 500 }
+        .main-content { flex: 1; margin-left: 250px; padding: 32px; overflow-y: auto }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px }
+        .page-title h1 { font-size: 1.5rem; font-weight: 700 }
+        .page-title p { color: var(--text-light); font-size: .875rem; margin-top: 4px }
 
         .actions-bar {
-            background: var(--surface);
-            padding: 16px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            align-items: center;
-            justify-content: space-between;
+            background: var(--surface); padding: 16px; border-radius: var(--radius);
+            box-shadow: var(--shadow); margin-bottom: 24px; display: flex; flex-wrap: wrap;
+            gap: 16px; align-items: center; justify-content: space-between;
         }
-
-        .filters {
-            display: flex;
-            gap: 12px;
-            flex: 1;
-            max-width: 500px;
+        .filters { display: flex; gap: 12px; flex: 1; max-width: 500px; }
+        .input-group { position: relative; flex: 1; }
+        .input-group i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-light) }
+        .input-group input, .input-group select {
+            width: 100%; padding: 10px 10px 10px 36px; border: 1px solid var(--border);
+            border-radius: var(--radius); outline: none; background: var(--bg); color: var(--text); font-size: 1rem;
         }
-
-        .input-group {
-            position: relative;
-            flex: 1;
-        }
-
-        .input-group i {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light)
-        }
-
-        .input-group input,
-        .input-group select {
-            width: 100%;
-            padding: 10px 10px 10px 36px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            outline: none;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 1rem;
-        }
-
         .btn {
-            padding: 10px 20px;
-            border-radius: var(--radius);
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: .2s
+            padding: 10px 20px; border-radius: var(--radius); border: none; cursor: pointer;
+            font-weight: 700; display: inline-flex; align-items: center; gap: 8px; transition: .2s
         }
+        .btn-primary { background: var(--primary); color: #000 }
+        .btn-primary:hover { background: var(--primary-dark) }
+        .btn-outline { background: var(--bg); border: 1px solid var(--border); color: var(--text) }
+        .btn-outline:hover { background: var(--border) }
 
-        .btn-primary {
-            background: var(--primary);
-            color: #000
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark)
-        }
-
-        .btn-outline {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            color: var(--text)
-        }
-
-        .btn-outline:hover {
-            background: var(--border)
-        }
-
-        .table-container {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse
-        }
-
+        .table-container { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden }
+        table { width: 100%; border-collapse: collapse }
         th {
-            background: var(--bg);
-            padding: 16px;
-            text-align: left;
-            font-size: .75rem;
-            text-transform: uppercase;
-            letter-spacing: .05em;
-            color: var(--text-light);
-            font-weight: 600
+            background: var(--bg); padding: 16px; text-align: left; font-size: .75rem;
+            text-transform: uppercase; letter-spacing: .05em; color: var(--text-light); font-weight: 600
         }
-
-        td {
-            padding: 16px;
-            border-top: 1px solid var(--border);
-            font-size: .875rem;
-            vertical-align: middle
-        }
-
-        tr:hover {
-            background: rgba(212, 175, 55, 0.05)
-        }
-
-        .product-img-td {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 4px;
-            background: #fff;
-            display: block;
-        }
-
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: .75rem;
-            font-weight: 700;
-            display: inline-block
-        }
-
-        .status-in-stock {
-            background: rgba(28, 208, 114, 0.1);
-            color: var(--success);
-            border: 1px solid var(--success);
-        }
-
-        .status-out-of-stock {
-            background: rgba(255, 204, 0, 0.1);
-            color: var(--danger);
-            border: 1px solid var(--danger);
-        }
-
-        .action-btns {
-            display: flex;
-            gap: 8px
-        }
-
-        .icon-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--text-light);
-            padding: 8px;
-            border-radius: 4px
-        }
-
-        .icon-btn:hover {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--primary)
-        }
-
-        .icon-btn.delete:hover {
-            color: var(--danger);
-            background: rgba(239, 68, 68, 0.1)
-        }
+        td { padding: 16px; border-top: 1px solid var(--border); font-size: .875rem; vertical-align: middle }
+        tr:hover { background: rgba(212, 175, 55, 0.05) }
+        .product-img-td { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; background: #fff; display: block; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: .75rem; font-weight: 700; display: inline-block }
+        .status-in-stock { background: rgba(28, 208, 114, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .status-out-of-stock { background: rgba(255, 204, 0, 0.1); color: var(--danger); border: 1px solid var(--danger); }
+        .action-btns { display: flex; gap: 8px }
+        .icon-btn { background: none; border: none; cursor: pointer; color: var(--text-light); padding: 8px; border-radius: 4px }
+        .icon-btn:hover { background: rgba(212, 175, 55, 0.1); color: var(--primary) }
+        .icon-btn.delete:hover { color: var(--danger); background: rgba(239, 68, 68, 0.1) }
 
         .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, .5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, .5); display: none; align-items: center;
+            justify-content: center; z-index: 1000
         }
-
-        .modal-overlay.active {
-            display: flex
-        }
-
+        .modal-overlay.active { display: flex }
         .modal {
-            background: var(--surface);
-            width: 100%;
-            max-width: 600px;
-            border-radius: var(--radius);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1);
-            max-height: 90vh;
-            overflow-y: auto
+            background: var(--surface); width: 100%; max-width: 600px; border-radius: var(--radius);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, .1); max-height: 90vh; overflow-y: auto
         }
-
-        .modal-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center
-        }
-
-        .modal-body {
-            padding: 24px
-        }
-
-        .modal-footer {
-            padding: 20px 24px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px
-        }
-
-        .close-modal {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--text-light)
-        }
-
-        .form-group {
-            margin-bottom: 16px
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: .875rem;
-            font-weight: 500
-        }
-
+        .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center }
+        .modal-body { padding: 24px }
+        .modal-footer { padding: 20px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 12px }
+        .close-modal { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-light) }
+        .form-group { margin-bottom: 16px }
+        .form-label { display: block; margin-bottom: 8px; font-size: .875rem; font-weight: 500 }
         .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 1rem;
+            width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius);
+            background: var(--bg); color: var(--text); font-size: 1rem;
         }
+        .form-row { display: flex; gap: 15px; }
+        .form-row>* { flex: 1; }
 
-        .form-row {
-            display: flex;
-            gap: 15px;
+        /* ========== Image Upload Styles ========== */
+        .image-mode-toggle { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .image-mode-toggle .btn { padding: 6px 12px; font-size: 0.8rem; }
+        .image-preview-container { margin-top: 12px; display: none; }
+        .image-preview-container img {
+            max-width: 100%; max-height: 150px; border-radius: var(--radius);
+            border: 1px solid var(--border); object-fit: contain; background: var(--bg);
         }
+        .image-preview-container p { font-size: 0.75rem; color: var(--text-light); margin-bottom: 6px; }
+        .upload-hint { font-size: 0.7rem; color: var(--text-light); margin-top: 6px; }
 
-        .form-row>* {
-            flex: 1;
+        /* ========== Flavor Upload Styles ========== */
+        .flavor-item {
+            border: 1px solid var(--border); padding: 12px; border-radius: var(--radius);
+            margin-bottom: 10px; background: var(--bg); transition: var(--transition);
         }
+        .flavor-item:hover { border-color: var(--primary); }
+        .flavor-mode-toggle .btn { padding: 4px 10px; font-size: 0.75rem; }
+        .flavor-preview { margin-top: 8px; }
+        .flavor-preview img {
+            max-width: 100%; max-height: 100px; border-radius: 4px;
+            border: 1px solid var(--border); object-fit: contain; background: var(--surface);
+        }
+        .flavor-preview p { font-size: 0.7rem; color: var(--text-light); margin-bottom: 4px; }
+        .flavor-upload-hint { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; }
 
         .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--text);
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: var(--radius);
-            margin-bottom: 10px;
-            box-shadow: var(--shadow);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            animation: slideIn .3s ease;
-            z-index: 9999
+            position: fixed; top: 20px; right: 20px; background: var(--text); color: #fff;
+            padding: 12px 24px; border-radius: var(--radius); margin-bottom: 10px;
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
+            animation: slideIn .3s ease; z-index: 9999
         }
+        .toast.success { background: var(--success) }
+        .toast.error { background: var(--danger) }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0 } to { transform: translateX(0); opacity: 1 } }
 
-        .toast.success {
-            background: var(--success)
-        }
-
-        .toast.error {
-            background: var(--danger)
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1
-            }
-        }
-
-        /* ========== Responsive Enhancements ========== */
-
-        .menu-toggle {
-            display: none !important;
-        }
-
+        /* ========== Responsive ========== */
+        .menu-toggle { display: none !important; }
         @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-                box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-                padding: 20px;
-            }
-            
-            .menu-toggle {
-                display: block !important;
-            }
+            .sidebar { transform: translateX(-100%); box-shadow: 2px 0 15px rgba(0, 0, 0, 0.3); }
+            .sidebar.active { transform: translateX(0); }
+            .main-content { margin-left: 0; padding: 20px; }
+            .menu-toggle { display: block !important; }
         }
-
         @media (max-width: 768px) {
-            .top-bar {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-            
-            .page-title h1 {
-                font-size: 1.25rem;
-            }
-            
-            .actions-bar {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            
-            .filters {
-                flex-direction: column;
-                width: 100%;
-                max-width: 100%;
-            }
-            
-            .input-group input,
-            .input-group select {
-                padding: 12px 12px 12px 36px;
-                font-size: 1rem;
-            }
-            
-            .actions-bar div[style*="gap:10px"] {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .table-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            table {
-                min-width: 600px;
-            }
-            
-            th, td {
-                padding: 12px 8px;
-                font-size: 0.8rem;
-            }
-            
-            .product-img-td {
-                width: 50px;
-                height: 50px;
-            }
-            
-            .action-btns {
-                flex-direction: column;
-                gap: 4px;
-            }
-            
-            .icon-btn {
-                padding: 6px;
-            }
-            
-            .modal {
-                width: 95%;
-                max-width: 100%;
-                max-height: 95vh;
-                margin: 10px;
-            }
-            
-            .modal-body {
-                padding: 16px;
-            }
-            
-            .form-row {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .toast {
-                left: 10px;
-                right: 10px;
-                width: auto;
-                max-width: 90%;
-            }
+            .top-bar { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .page-title h1 { font-size: 1.25rem; }
+            .actions-bar { flex-direction: column; align-items: stretch; }
+            .filters { flex-direction: column; width: 100%; max-width: 100%; }
+            .input-group input, .input-group select { padding: 12px 12px 12px 36px; font-size: 1rem; }
+            .actions-bar div[style*="gap:10px"] { width: 100%; justify-content: center; }
+            .table-container { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            table { min-width: 600px; }
+            th, td { padding: 12px 8px; font-size: 0.8rem; }
+            .product-img-td { width: 50px; height: 50px; }
+            .action-btns { flex-direction: column; gap: 4px; }
+            .icon-btn { padding: 6px; }
+            .modal { width: 95%; max-width: 100%; max-height: 95vh; margin: 10px; }
+            .modal-body { padding: 16px; }
+            .form-row { flex-direction: column; gap: 10px; }
+            .toast { left: 10px; right: 10px; width: auto; max-width: 90%; }
         }
-
         @media (max-width: 480px) {
-            .sidebar-header {
-                padding: 16px;
-            }
-            
-            .brand-name {
-                font-size: 1rem;
-            }
-            
-            .brand-tagline {
-                font-size: 0.65rem;
-                letter-spacing: 2px;
-            }
-            
-            .nav-link {
-                padding: 10px;
-                font-size: 0.9rem;
-            }
-            
-            .nav-link i {
-                font-size: 1rem;
-            }
-            
-            .page-title h1 {
-                font-size: 1.1rem;
-            }
-            
-            .page-title p {
-                font-size: 0.8rem;
-            }
-            
-            .btn {
-                padding: 8px 16px;
-                font-size: 0.85rem;
-            }
-            
-            .btn i {
-                font-size: 0.9rem;
-            }
-            
-            td:nth-child(2) {
-                max-width: 120px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            
-            .status-badge {
-                padding: 3px 8px;
-                font-size: 0.7rem;
-            }
-            
-            .modal-header h3 {
-                font-size: 1.1rem;
-            }
-            
-            .close-modal {
-                font-size: 1.3rem;
-                padding: 4px 8px;
-            }
-            
-            .form-label {
-                font-size: 0.8rem;
-            }
-            
-            .form-control {
-                padding: 8px;
-                font-size: 0.9rem;
-            }
+            .sidebar-header { padding: 16px; }
+            .brand-name { font-size: 1rem; }
+            .brand-tagline { font-size: 0.65rem; letter-spacing: 2px; }
+            .nav-link { padding: 10px; font-size: 0.9rem; }
+            .nav-link i { font-size: 1rem; }
+            .page-title h1 { font-size: 1.1rem; }
+            .page-title p { font-size: 0.8rem; }
+            .btn { padding: 8px 16px; font-size: 0.85rem; }
+            .btn i { font-size: 0.9rem; }
+            td:nth-child(2) { max-width: 120px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .status-badge { padding: 3px 8px; font-size: 0.7rem; }
+            .modal-header h3 { font-size: 1.1rem; }
+            .close-modal { font-size: 1.3rem; padding: 4px 8px; }
+            .form-label { font-size: 0.8rem; }
+            .form-control { padding: 8px; font-size: 0.9rem; }
         }
-
         @media (max-height: 500px) and (orientation: landscape) {
-            .modal {
-                max-height: 100vh;
-                border-radius: 0;
-            }
-            
-            .modal-body {
-                max-height: 60vh;
-                overflow-y: auto;
-            }
+            .modal { max-height: 100vh; border-radius: 0; }
+            .modal-body { max-height: 60vh; overflow-y: auto; }
         }
-
         @media print {
-            .sidebar, .actions-bar, .action-btns {
-                display: none !important;
-            }
-            
-            .main-content {
-                margin: 0;
-                padding: 0;
-            }
-            
-            .table-container {
-                box-shadow: none;
-            }
+            .sidebar, .actions-bar, .action-btns { display: none !important; }
+            .main-content { margin: 0; padding: 0; }
+            .table-container { box-shadow: none; }
         }
-
-        /* Card view for mobile (Optional - uncomment to use) */
-        /*
-        @media (max-width: 600px) {
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { margin-bottom: 16px; background: var(--bg); border-radius: var(--radius); padding: 12px; border: 1px solid var(--border); }
-            td { border: none; padding: 8px 0; display: flex; justify-content: space-between; align-items: center; text-align: right; border-bottom: 1px dashed var(--border); }
-            td:last-child { border-bottom: none; }
-            td::before { content: attr(data-label); font-weight: 600; color: var(--text-light); font-size: 0.75rem; text-transform: uppercase; margin-right: 10px; }
-            .product-img-td { margin: 0 auto 10px; display: block; }
-            .action-btns { justify-content: center; flex-direction: row; }
-        }
-        */
     </style>
 </head>
 
@@ -681,9 +225,7 @@
     <main class="main-content">
         <div class="top-bar">
             <div style="display:flex; align-items:center; gap: 15px;">
-                <button class="menu-toggle" 
-                        onclick="toggleSidebar()" 
-                        aria-label="Toggle menu"
+                <button class="menu-toggle" onclick="toggleSidebar()" aria-label="Toggle menu"
                         style="display:none; background:none; border:none; color:var(--text); font-size:1.5rem; cursor:pointer; padding: 8px;">
                     <i class="fa-solid fa-bars"></i>
                 </button>
@@ -734,39 +276,92 @@
                     </tr>
                 </thead>
                 <tbody id="productsTableBody">
-                    <tr>
-                        <td colspan="6" style="text-align:center;padding:40px;color:var(--text-light)"><i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</td>
-                    </tr>
+                    <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-light)"><i class="fa-solid fa-circle-notch fa-spin"></i> Chargement...</td></tr>
                 </tbody>
             </table>
         </div>
     </main>
 
-    <!-- Edit Product Modal -->
+    <!-- Edit Product Modal - MODIFIED FOR CLOUDINARY UPLOAD -->
     <div class="modal-overlay" id="editProductModal">
         <div class="modal">
             <div class="modal-header">
-                <h3>✏️ Modifier Produit</h3><button class="close-modal" onclick="closeEditProductModal()">&times;</button>
+                <h3>✏️ Modifier Produit</h3>
+                <button class="close-modal" onclick="closeEditProductModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <form id="editProductForm">
                     <input type="hidden" id="editProductId">
-                    <div class="form-group"><label class="form-label">Nom du produit *</label><input type="text" id="editProductName" class="form-control" required></div>
-                    <div class="form-group"><label class="form-label">URL de l'image *</label><input type="url" id="editProductImage" class="form-control" required></div>
-                    <div class="form-group"><label class="form-label">Catégorie *</label><select id="editProductCategory" class="form-control" required>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Nom du produit *</label>
+                        <input type="text" id="editProductName" class="form-control" required>
+                    </div>
+                    
+                    <!-- 🔁 Image Upload Section - Modified for Cloudinary -->
+                    <div class="form-group">
+                        <label class="form-label">Image du produit *</label>
+                        
+                        <!-- Mode Toggle Buttons -->
+                        <div class="image-mode-toggle">
+                            <button type="button" id="editImageModeUrl" class="btn btn-primary">
+                                <i class="fa-solid fa-link"></i> URL
+                            </button>
+                            <button type="button" id="editImageModeUpload" class="btn btn-outline">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+                            </button>
+                        </div>
+                        
+                        <!-- URL Mode (Default - Visible) -->
+                        <div id="editImageModeUrlContainer">
+                            <input type="url" id="editProductImage" class="form-control" placeholder="https://example.com/image.jpg">
+                        </div>
+                        
+                        <!-- Upload Mode (Hidden by Default) -->
+                        <div id="editImageModeUploadContainer" style="display:none;">
+                            <input type="file" id="editProductImageFile" class="form-control" accept="image/*" style="padding:8px; cursor:pointer;">
+                            
+                            <!-- Preview Container -->
+                            <div id="editImagePreview" class="image-preview-container">
+                                <p>Aperçu:</p>
+                                <img id="editPreviewImg" src="" alt="Preview">
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden field to store final image URL -->
+                        <input type="hidden" id="editProductImageFinal">
+                        
+                        <p class="upload-hint">
+                            <i class="fa-solid fa-circle-info"></i> Formats: JPG, PNG, WebP • Max: 5Mo
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Catégorie *</label>
+                        <select id="editProductCategory" class="form-control" required>
                             <option value="">Sélectionner...</option>
-                              <option value="Protéines whey">Protéines whey</option>
-                        <option value="Masse / Gainer">Masse / Gainer</option>
-                        <option value="Acide aminé">Acide aminé</option>
-                        <option value="Force / Energie">Force / Energie</option>
-                        <option value="Brûleur de graisse">Brûleur de graisse</option>
-                        <option value="Autre">Autre</option
-                        </select></div>
-                    <div class="form-group"><label class="form-label">Description</label><textarea id="editProductDescription" class="form-control" rows="3"></textarea></div>
-                    <div class="form-group"><label class="form-label">Inventaire (Stock) *</label><input type="number" id="editProductQuantity" class="form-control" required min="0"></div>
-                    <div class="form-group"><label class="form-label">Prix (DA) *</label><input type="number" id="editProductPrice" class="form-control" required min="0"></div>
+                            <option value="Protéines whey">Protéines whey</option>
+                            <option value="Masse / Gainer">Masse / Gainer</option>
+                            <option value="Acide aminé">Acide aminé</option>
+                            <option value="Force / Energie">Force / Energie</option>
+                            <option value="Brûleur de graisse">Brûleur de graisse</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <textarea id="editProductDescription" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Inventaire (Stock) *</label>
+                        <input type="number" id="editProductQuantity" class="form-control" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Prix (DA) *</label>
+                        <input type="number" id="editProductPrice" class="form-control" required min="0">
+                    </div>
 
-                    <!-- Section Goûts -->
+                    <!-- Section Goûts avec Upload d'images -->
                     <div class="form-group" style="border: 1px solid var(--border); padding: 15px; border-radius: var(--radius); margin-top: 15px;">
                         <label class="form-label" style="display: flex; justify-content: space-between; align-items: center;">
                             Goûts / Variantes (Optionnel)
@@ -778,62 +373,39 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-outline" onclick="closeEditProductModal()">Annuler</button>
-                <button class="btn btn-primary" type="submit" form="editProductForm">✅ Enregistrer les modifs</button>
+                <button class="btn btn-primary" type="submit" form="editProductForm" id="editProductSubmitBtn">✅ Enregistrer les modifs</button>
             </div>
         </div>
     </div>
 
     <script type="module" src="firebase-config.js"></script>
+    <script type="module" src="db-service.js"></script>
     <script type="module" src="gerer-produits.js"></script>
     
     <!-- Scripts Responsive -->
     <script>
-        // Toggle sidebar on mobile
-        function toggleSidebar() {
-            document.querySelector('.sidebar').classList.toggle('active');
-        }
-
-        // Close sidebar when clicking outside on mobile
+        function toggleSidebar() { document.querySelector('.sidebar').classList.toggle('active'); }
         document.addEventListener('click', (e) => {
             const sidebar = document.querySelector('.sidebar');
             const toggle = document.querySelector('.menu-toggle');
-            
-            if (window.innerWidth <= 1024 && 
-                sidebar.classList.contains('active') && 
-                !sidebar.contains(e.target) && 
-                toggle && !toggle.contains(e.target)) {
+            if (window.innerWidth <= 1024 && sidebar.classList.contains('active') && !sidebar.contains(e.target) && toggle && !toggle.contains(e.target)) {
                 sidebar.classList.remove('active');
             }
         });
-
-        // Close modal when clicking outside
         document.getElementById('editProductModal').addEventListener('click', (e) => {
-            if (e.target.id === 'editProductModal') {
-                closeEditProductModal();
-            }
+            if (e.target.id === 'editProductModal') closeEditProductModal();
         });
-
-        // Close modal with Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 closeEditProductModal();
-                if (window.innerWidth <= 1024) {
-                    document.querySelector('.sidebar').classList.remove('active');
-                }
+                if (window.innerWidth <= 1024) document.querySelector('.sidebar').classList.remove('active');
             }
         });
-
-        // Handle window resize
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                if (window.innerWidth > 1024) {
-                    document.querySelector('.sidebar').classList.remove('active');
-                }
-            }, 250);
+            resizeTimer = setTimeout(() => { if (window.innerWidth > 1024) document.querySelector('.sidebar').classList.remove('active'); }, 250);
         });
     </script>
 </body>
 </html>
-
