@@ -26,9 +26,6 @@ const PLACEHOLDER_SVG = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000
 document.addEventListener('DOMContentLoaded', function () {
   console.log("🚀 Application démarrée...");
   
-  // حفظ الأسماء الأصلية للأزرار قبل أي تعديل
-  saveFilterButtonNames();
-  
   loadProductsFromFirebase();
   setupEventListeners();
   loadCartFromStorage();
@@ -44,62 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
-
-// ========== حفظ أسماء الأزرار الأصلية ==========
-function saveFilterButtonNames() {
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  filterBtns.forEach(btn => {
-    const text = btn.textContent.trim();
-    btn.dataset.baseName = text;
-    console.log("💾 Bouton sauvegardé:", text);
-  });
-}
-
-// ========== عَد المنتجات حسب القسم ==========
-function countProductsByCategory(productList = products) {
-  const counts = {
-    'all': 0,
-    'Protéines whey': 0,
-    'Masse / Gainer': 0,
-    'Acide aminé': 0,
-    'Force / Energie': 0,
-    'Brûleur de graisse': 0
-  };
-  
-  productList.forEach(product => {
-    const cat = product.category;
-    console.log("📊 Catégorie produit:", cat);
-    
-    if (counts[cat] !== undefined) {
-      counts[cat]++;
-    }
-    counts['all']++;
-  });
-  
-  console.log("📈 Compte par catégorie:", counts);
-  return counts;
-}
-
-function updateCategoryCounts(productList = products) {
-  console.log("🔄 Mise à jour des compteurs...");
-  
-  const counts = countProductsByCategory(productList);
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  
-  console.log("🔘 Nombre de boutons:", filterBtns.length);
-  
-  filterBtns.forEach(btn => {
-    const category = btn.getAttribute('data-category');
-    const count = counts[category] ?? 0;
-    const baseName = btn.dataset.baseName || btn.textContent.trim();
-    
-    console.log(`📍 Bouton: ${category} → ${count} produits`);
-    
-    btn.innerHTML = `${baseName} <span class="category-count">${count}</span>`;
-  });
-  
-  console.log("✅ Compteurs mis à jour!");
-}
 
 // ========== CHARGER LES PRODUITS DEPUIS FIREBASE ==========
 async function loadProductsFromFirebase() {
@@ -153,8 +94,11 @@ async function loadProductsFromFirebase() {
       allFilteredProducts = [...products];
       displayedCount = itemsPerPage;
       
-      // ✅ تحديث عدادات الأقسام بعد تحميل المنتجات
+      // ✅ Mettre à jour les compteurs de catégories
       updateCategoryCounts();
+      
+      // ✅ Initialiser le slider des catégories
+      initCategoriesSlider();
       
       loadProducts();
     }
@@ -167,6 +111,90 @@ async function loadProductsFromFirebase() {
         <p style="font-size:0.875rem; margin-top:8px;">${error.message}</p>
       </div>`;
   }
+}
+
+// ========== CATEGORIES SLIDER FUNCTIONALITY ==========
+function initCategoriesSlider() {
+  const slider = document.getElementById('categoriesSlider');
+  const prevBtn = document.getElementById('categoryPrev');
+  const nextBtn = document.getElementById('categoryNext');
+  const cards = document.querySelectorAll('.category-card');
+  
+  if (!slider || !prevBtn || !nextBtn) return;
+  
+  // Scroll buttons
+  prevBtn.addEventListener('click', () => {
+    slider.scrollBy({ left: -300, behavior: 'smooth' });
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    slider.scrollBy({ left: 300, behavior: 'smooth' });
+  });
+  
+  // Category selection
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      // Remove active from all
+      cards.forEach(c => c.classList.remove('active'));
+      // Add active to clicked
+      card.classList.add('active');
+      
+      // Filter products
+      const category = card.getAttribute('data-category');
+      filterProductsByCategory(category);
+    });
+  });
+  
+  // Update buttons state based on scroll
+  slider.addEventListener('scroll', () => {
+    prevBtn.disabled = slider.scrollLeft <= 0;
+    nextBtn.disabled = slider.scrollLeft >= (slider.scrollWidth - slider.clientWidth - 10);
+  });
+  
+  // Initial state
+  prevBtn.disabled = true;
+}
+
+// Filter products by category (called from slider)
+function filterProductsByCategory(category) {
+  allFilteredProducts = products.filter(product => {
+    const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    const matchesSearch = product.name?.toLowerCase().includes(searchTerm) ||
+      (product.description && product.description.toLowerCase().includes(searchTerm));
+    
+    const matchesCategory = category === 'all' || product.category === category;
+    
+    return matchesSearch && matchesCategory;
+  });
+  
+  displayedCount = itemsPerPage;
+  loadProducts();
+}
+
+// Update category counts
+function updateCategoryCounts(productList = products) {
+  const counts = {
+    'all': productList.length,
+    'Protéines whey': 0,
+    'Masse / Gainer': 0,
+    'Acide aminé': 0,
+    'Force / Energie': 0,
+    'Brûleur de graisse': 0
+  };
+  
+  productList.forEach(product => {
+    if (counts[product.category] !== undefined) {
+      counts[product.category]++;
+    }
+  });
+  
+  // Update counters in slider
+  document.getElementById('count-all').textContent = counts['all'];
+  document.getElementById('count-whey').textContent = counts['Protéines whey'];
+  document.getElementById('count-mass').textContent = counts['Masse / Gainer'];
+  document.getElementById('count-amino').textContent = counts['Acide aminé'];
+  document.getElementById('count-energy').textContent = counts['Force / Energie'];
+  document.getElementById('count-burner').textContent = counts['Brûleur de graisse'];
 }
 
 // ========== AFFICHAGE DES PRODUITS ==========
@@ -416,7 +444,6 @@ function setupEventListeners() {
   const closeButtons = document.querySelectorAll('.close-modal');
   const checkoutBtn = document.getElementById('checkoutBtn');
   const searchInput = document.getElementById('searchInput');
-  const filterBtns = document.querySelectorAll('.filter-btn');
 
   if (cartBtn && cartModal) {
     cartBtn.addEventListener('click', () => {
@@ -458,14 +485,6 @@ function setupEventListeners() {
   const wilayaSearch = document.getElementById('wilayaSearch');
   if (wilayaSearch) wilayaSearch.addEventListener('input', filterShippingTable);
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      filterProducts();
-    });
-  });
-
   const showMoreBtn = document.getElementById('showMoreBtn');
   if (showMoreBtn) {
     showMoreBtn.addEventListener('click', handleShowMore);
@@ -474,8 +493,8 @@ function setupEventListeners() {
 
 function filterProducts() {
   const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-  const activeBtn = document.querySelector('.filter-btn.active');
-  const selectedCategory = activeBtn ? activeBtn.getAttribute('data-category') : 'all';
+  const activeCard = document.querySelector('.category-card.active');
+  const selectedCategory = activeCard ? activeCard.getAttribute('data-category') : 'all';
 
   allFilteredProducts = products.filter(product => {
     const matchesSearch = product.name?.toLowerCase().includes(searchTerm) ||
