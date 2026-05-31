@@ -1,5 +1,4 @@
-
-// admin.js - Firebase v10+ Compatible
+// admin.js - Firebase v10+ Compatible + Cloudinary Integration
 import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { db } from './firebase-config.js';
@@ -276,46 +275,188 @@ function showNotification(msg, type = 'success') {
 }
 function formatDateTime(d) { if (!d) return '—'; return new Date(d).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
 
-// ========== AJOUT PRODUIT ==========
-function openAddProductModal() { document.getElementById('addProductModal')?.classList.add('active'); }
+// ========== AJOUT PRODUIT MODALS ==========
+function openAddProductModal() { 
+  resetProductForm();
+  document.getElementById('addProductModal')?.classList.add('active'); 
+}
 function closeAddProductModal() { document.getElementById('addProductModal')?.classList.remove('active'); }
 
-document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('productName')?.value.trim();
-  const image = document.getElementById('productImage')?.value.trim();
-  const category = document.getElementById('productCategory')?.value;
-  const description = document.getElementById('productDescription')?.value.trim();
-  const quantity = parseInt(document.getElementById('productQuantity')?.value) || 0;
-  const price = parseFloat(document.getElementById('productPrice')?.value);
+// ============================================
+// 🖼️ IMAGE UPLOAD HANDLING (Cloudinary)
+// ============================================
 
-  if (!name || !image || !category || isNaN(price) || price <= 0) {
-    showNotification('Veuillez remplir tous les champs obligatoires', 'error'); return;
-  }
+let imageMode = 'url'; // 'url' or 'upload'
 
-  const flavors = [];
-  document.querySelectorAll('.flavor-item').forEach(item => {
-    const fName = item.querySelector('.flavor-name')?.value.trim();
-    const fImage = item.querySelector('.flavor-image')?.value.trim();
-    if (fName) {
-      flavors.push({ name: fName, image: fImage || image });
+// DOM Elements for Image Upload
+const modeUrlBtn = document.getElementById('imageModeUrl');
+const modeUploadBtn = document.getElementById('imageModeUpload');
+const urlContainer = document.getElementById('imageModeUrlContainer');
+const uploadContainer = document.getElementById('imageModeUploadContainer');
+const urlInput = document.getElementById('productImage');
+const fileInput = document.getElementById('productImageFile');
+const previewContainer = document.getElementById('imagePreview');
+const previewImg = document.getElementById('previewImg');
+const finalImageInput = document.getElementById('productImageFinal');
+
+// Mode: URL (Default)
+modeUrlBtn?.addEventListener('click', () => {
+    imageMode = 'url';
+    modeUrlBtn.className = 'btn btn-primary';
+    modeUploadBtn.className = 'btn btn-outline';
+    urlContainer.style.display = 'block';
+    uploadContainer.style.display = 'none';
+    if (urlInput && finalImageInput) {
+        finalImageInput.value = urlInput.value;
     }
-  });
+});
 
-  try {
-    await addDoc(collection(db, "produits"), {
-      name, image, category, description: description || '', price, quantity, flavors,
-      dateAdded: new Date().toISOString()
-    });
-    showNotification('✅ Produit ajouté!', 'success');
-    closeAddProductModal();
-    document.getElementById('addProductForm').reset();
+// Mode: Upload
+modeUploadBtn?.addEventListener('click', () => {
+    imageMode = 'upload';
+    modeUploadBtn.className = 'btn btn-primary';
+    modeUrlBtn.className = 'btn btn-outline';
+    urlContainer.style.display = 'none';
+    uploadContainer.style.display = 'block';
+});
+
+// Preview uploaded image
+fileInput?.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && previewImg && previewContainer) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            previewImg.src = event.target.result;
+            previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    } else if (previewContainer) {
+        previewContainer.style.display = 'none';
+    }
+});
+
+// Sync URL input to final field
+urlInput?.addEventListener('input', () => {
+    if (imageMode === 'url' && finalImageInput) {
+        finalImageInput.value = urlInput.value;
+    }
+});
+
+// Reset form function
+function resetProductForm() {
+    const form = document.getElementById('addProductForm');
+    if (form) form.reset();
+    
+    // Reset flavors list
     const flavorsList = document.getElementById('flavorsList');
     if (flavorsList) flavorsList.innerHTML = '';
-  } catch (error) {
-    console.error("Erreur:", error);
-    showNotification('❌ Erreur ajout produit', 'error');
-  }
+    
+    // Reset image preview
+    if (previewContainer) previewContainer.style.display = 'none';
+    if (previewImg) previewImg.src = '';
+    if (fileInput) fileInput.value = '';
+    
+    // Reset to URL mode
+    if (urlContainer) urlContainer.style.display = 'block';
+    if (uploadContainer) uploadContainer.style.display = 'none';
+    if (modeUrlBtn) modeUrlBtn.className = 'btn btn-primary';
+    if (modeUploadBtn) modeUploadBtn.className = 'btn btn-outline';
+    
+    // Clear hidden final image field
+    if (finalImageInput) finalImageInput.value = '';
+    
+    // Reset mode variable
+    imageMode = 'url';
+}
+
+// ============================================
+// 🔄 MODIFIED: Add Product Form Submit
+// ============================================
+
+document.getElementById('addProductForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const submitBtn = document.getElementById('addProductSubmitBtn');
+    const originalBtnText = submitBtn.innerHTML;
+    
+    // Disable button during processing
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Traitement...';
+    
+    try {
+        // Get form values
+        const name = document.getElementById('productName')?.value.trim();
+        const category = document.getElementById('productCategory')?.value;
+        const description = document.getElementById('productDescription')?.value.trim();
+        const quantity = parseInt(document.getElementById('productQuantity')?.value) || 0;
+        const price = parseFloat(document.getElementById('productPrice')?.value);
+        
+        // 🔄 Handle image based on mode
+        let imageUrl = '';
+        
+        if (imageMode === 'upload') {
+            const file = fileInput?.files[0];
+            if (file) {
+                // Import and call uploadImage from db-service.js
+                const { uploadImage } = await import('./db-service.js');
+                showToast('📤 Upload en cours...', 'info');
+                imageUrl = await uploadImage(file);
+                showToast('✅ Image uploadée!', 'success');
+            }
+        } else {
+            imageUrl = urlInput?.value.trim();
+        }
+        
+        // Validation
+        if (!name || !imageUrl || !category || isNaN(price) || price <= 0) {
+            throw new Error('Veuillez remplir tous les champs obligatoires');
+        }
+        
+        // Collect flavors
+        const flavors = [];
+        document.querySelectorAll('.flavor-item, .flavor-field').forEach(item => {
+            const fName = item.querySelector('.flavor-name, [name*="flavorName"]')?.value.trim();
+            const fImage = item.querySelector('.flavor-image, [name*="flavorImage"]')?.value.trim();
+            if (fName) {
+                flavors.push({ name: fName, image: fImage || imageUrl });
+            }
+        });
+        
+        // Import and call addProduct
+        const { addProduct } = await import('./db-service.js');
+        
+        await addProduct({
+            name, 
+            image: imageUrl, 
+            category, 
+            description: description || '', 
+            price, 
+            quantity, 
+            flavors,
+            dateAdded: new Date().toISOString()
+        });
+        
+        // Success
+        showToast('✅ Produit ajouté avec succès!', 'success');
+        closeAddProductModal();
+        e.target.reset();
+        
+        // Reset flavors and preview
+        const flavorsList = document.getElementById('flavorsList');
+        if (flavorsList) flavorsList.innerHTML = '';
+        if (previewContainer) previewContainer.style.display = 'none';
+        
+        // Reset to URL mode
+        resetProductForm();
+        
+    } catch (error) {
+        console.error("❌ Erreur ajout produit:", error);
+        showToast('❌ ' + (error.message || 'Erreur lors de l\'ajout'), 'error');
+    } finally {
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnText;
+    }
 });
 
 // ========== INITIALISATION ==========
@@ -337,23 +478,5 @@ window.exportCommandes = exportCommandes;
 window.openAddProductModal = openAddProductModal;
 window.closeAddProductModal = closeAddProductModal;
 window.toggleDriverSection = toggleDriverSection;
-
-function addFlavorField() {
-  const list = document.getElementById('flavorsList');
-  if (!list) return;
-
-  const div = document.createElement('div');
-  div.className = 'flavor-item form-row';
-  div.style.marginBottom = '0';
-  div.style.alignItems = 'center';
-
-  div.innerHTML = `
-    <input type="text" class="form-control flavor-name" placeholder="Nom (ex: Chocolat)" required>
-    <input type="url" class="form-control flavor-image" placeholder="Image URL (Optionnelle)">
-    <button type="button" class="btn btn-outline" style="color:var(--danger); border-color:var(--danger); padding:10px; margin-top:5px; width:100%;" onclick="this.parentElement.remove()">
-      <i class="fa-solid fa-trash"></i> Supprimer
-    </button>
-  `;
-  list.appendChild(div);
-}
 window.addFlavorField = addFlavorField;
+window.resetProductForm = resetProductForm;
