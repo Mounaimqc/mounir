@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -447,6 +446,40 @@
     .flavor-field input { flex: 1; min-width: 120px; }
     .flavor-field .btn { padding: 8px 12px; font-size: 0.8rem; }
 
+    /* Image Upload Toggle Styles */
+    .image-mode-toggle {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .image-mode-toggle .btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+    .image-preview-container {
+      margin-top: 12px;
+      display: none;
+    }
+    .image-preview-container img {
+      max-width: 100%;
+      max-height: 150px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      object-fit: contain;
+      background: var(--bg);
+    }
+    .image-preview-container p {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+    .upload-hint {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      margin-top: 6px;
+    }
+
     /* ========== TOAST ========== */
     .toast {
       position: fixed; top: 20px; right: 20px;
@@ -744,7 +777,7 @@
           </span>
         </div>
 
-        <!-- Driver Section (NEW - French) -->
+        <!-- Driver Section -->
         <div id="driverSection" class="driver-section">
           <h4><i class="fa-solid fa-motorcycle"></i> Informations du Livreur</h4>
           <div class="form-row">
@@ -776,7 +809,7 @@
     </div>
   </div>
 
-  <!-- Add Product Modal -->
+  <!-- Add Product Modal - MODIFIED FOR CLOUDINARY -->
   <div class="modal-overlay" id="addProductModal">
     <div class="modal">
       <div class="modal-header">
@@ -789,10 +822,45 @@
             <label class="form-label">Nom du produit *</label>
             <input type="text" id="productName" class="form-control" required placeholder="Ex: Whey Protein Gold">
           </div>
+          
+          <!-- 🔁 Image Upload Section - Modified for Cloudinary -->
           <div class="form-group">
-            <label class="form-label">URL de l'image *</label>
-            <input type="url" id="productImage" class="form-control" required placeholder="https://...">
+            <label class="form-label">Image du produit *</label>
+            
+            <!-- Mode Toggle Buttons -->
+            <div class="image-mode-toggle">
+              <button type="button" id="imageModeUrl" class="btn btn-primary">
+                <i class="fa-solid fa-link"></i> URL
+              </button>
+              <button type="button" id="imageModeUpload" class="btn btn-outline">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload
+              </button>
+            </div>
+            
+            <!-- URL Mode (Default - Visible) -->
+            <div id="imageModeUrlContainer">
+              <input type="url" id="productImage" class="form-control" placeholder="https://example.com/image.jpg">
+            </div>
+            
+            <!-- Upload Mode (Hidden by Default) -->
+            <div id="imageModeUploadContainer" style="display:none;">
+              <input type="file" id="productImageFile" class="form-control" accept="image/*" style="padding:8px; cursor:pointer;">
+              
+              <!-- Preview Container -->
+              <div id="imagePreview" class="image-preview-container">
+                <p>Aperçu:</p>
+                <img id="previewImg" src="" alt="Preview">
+              </div>
+            </div>
+            
+            <!-- Hidden field to store final image URL -->
+            <input type="hidden" id="productImageFinal">
+            
+            <p class="upload-hint">
+              <i class="fa-solid fa-circle-info"></i> Formats: JPG, PNG, WebP • Max: 5Mo
+            </p>
           </div>
+          
           <div class="form-group">
             <label class="form-label">Catégorie *</label>
             <select id="productCategory" class="form-control" required>
@@ -837,7 +905,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-outline" onclick="closeAddProductModal()">Annuler</button>
-        <button class="btn btn-primary" type="submit" form="addProductForm">
+        <button class="btn btn-primary" type="submit" form="addProductForm" id="addProductSubmitBtn">
           <i class="fa-solid fa-check"></i> Enregistrer
         </button>
       </div>
@@ -898,7 +966,11 @@
     
     function closeDetail() { closeModal('detailModal'); }
     function closeAddProductModal() { closeModal('addProductModal'); }
-    function openAddProductModal() { openModal('addProductModal'); }
+    function openAddProductModal() { 
+      // Reset form when opening
+      resetProductForm();
+      openModal('addProductModal'); 
+    }
     
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
@@ -960,11 +1032,45 @@
     
     window.addEventListener('resize', initTableScroll);
     document.addEventListener('DOMContentLoaded', initTableScroll);
+    
+    // ===== Reset Product Form =====
+    function resetProductForm() {
+      const form = document.getElementById('addProductForm');
+      if (form) form.reset();
+      
+      // Reset flavors list
+      const flavorsList = document.getElementById('flavorsList');
+      if (flavorsList) flavorsList.innerHTML = '';
+      
+      // Reset image preview
+      const previewContainer = document.getElementById('imagePreview');
+      if (previewContainer) previewContainer.style.display = 'none';
+      const previewImg = document.getElementById('previewImg');
+      if (previewImg) previewImg.src = '';
+      const fileInput = document.getElementById('productImageFile');
+      if (fileInput) fileInput.value = '';
+      
+      // Reset to URL mode
+      const urlContainer = document.getElementById('imageModeUrlContainer');
+      const uploadContainer = document.getElementById('imageModeUploadContainer');
+      const modeUrlBtn = document.getElementById('imageModeUrl');
+      const modeUploadBtn = document.getElementById('imageModeUpload');
+      
+      if (urlContainer) urlContainer.style.display = 'block';
+      if (uploadContainer) uploadContainer.style.display = 'none';
+      if (modeUrlBtn) modeUrlBtn.className = 'btn btn-primary';
+      if (modeUploadBtn) modeUploadBtn.className = 'btn btn-outline';
+      
+      // Clear hidden final image field
+      const finalImageInput = document.getElementById('productImageFinal');
+      if (finalImageInput) finalImageInput.value = '';
+    }
   </script>
   
+  <!-- ✅ Order matters: config first, then services, then main logic -->
   <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="db-service.js"></script>
   <script type="module" src="admin.js"></script>
   
 </body>
 </html>
-
