@@ -105,9 +105,9 @@
     .hero h1 span { color: var(--gb-gold); }
     .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.95); max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
 
-    /* ========== CATEGORIES SLIDER ========== */
+    /* ========== CATEGORIES SLIDER - MESSENGER CIRCLES ========== */
     .categories-section {
-      padding: 60px 0 40px;
+      padding: 40px 0 30px;
       background: var(--gb-off-white);
       border-bottom: 1px solid #e8e8e8;
     }
@@ -122,7 +122,7 @@
       font-size: 2.5rem;
       font-family: 'Montserrat', sans-serif;
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 25px;
       color: var(--gb-text-dark);
       text-transform: uppercase;
       letter-spacing: 2px;
@@ -132,18 +132,18 @@
       position: relative;
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 10px;
     }
 
     .slider-nav {
       flex-shrink: 0;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       background: var(--gb-white);
       border: 2px solid var(--gb-gold);
       color: var(--gb-gold);
-      font-size: 1.2rem;
+      font-size: 1rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -153,7 +153,7 @@
       z-index: 10;
     }
 
-    .slider-nav:hover {
+    .slider-nav:hover:not(:disabled) {
       background: var(--gb-gold);
       color: var(--gb-white);
       transform: scale(1.1);
@@ -168,113 +168,100 @@
 
     .categories-slider {
       display: flex;
-      gap: 24px;
+      gap: 18px;
       overflow-x: auto;
       scroll-behavior: smooth;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      padding: 10px 5px;
+      padding: 15px 5px;
       flex: 1;
+      scroll-padding: 0 10px;
     }
 
-    .categories-slider::-webkit-scrollbar {
-      display: none;
-    }
+    .categories-slider::-webkit-scrollbar { display: none; }
 
+    /* 🎯 Circular Card Structure */
     .category-card {
-      flex: 0 0 280px;
+      flex: 0 0 auto;
       cursor: pointer;
       transition: var(--transition);
-      opacity: 0.6;
-      transform: scale(0.95);
-    }
-
-    .category-card.active {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .category-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      opacity: 1;
-    }
-
-    .category-card-inner {
-      background: var(--gb-white);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-      border: 2px solid transparent;
-      transition: var(--transition);
-      height: 100%;
       display: flex;
       flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 95px;
+      opacity: 0.65;
     }
 
-    .category-card.active .category-card-inner {
-      border-color: var(--gb-gold);
-      box-shadow: 0 12px 40px rgba(212,175,55,0.3);
+    .category-card:hover,
+    .category-card.active {
+      opacity: 1;
+      transform: translateY(-5px);
     }
 
-    .category-image {
-      height: 160px;
+    .bubble-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #e8e8e8;
+      background-size: cover !important;
+      background-position: center !important;
+      background-repeat: no-repeat !important;
+      transition: var(--transition);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
-      background-size: cover !important;
-      background-position: center !important;
-      background-repeat: no-repeat !important;
     }
 
-    .category-image i {
-      font-size: 4rem;
-      color: rgba(255,255,255,0.9);
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    /* Overlay for better icon/text contrast */
+    .bubble-circle::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.15);
+      transition: var(--transition);
+      border-radius: 50%;
+    }
+
+    .category-card:hover .bubble-circle::before { background: rgba(0,0,0,0.05); }
+    .category-card.active .bubble-circle::before { background: rgba(0,0,0,0); }
+
+    .category-card.active .bubble-circle {
+      border-color: var(--gb-gold);
+      box-shadow: 0 0 0 4px rgba(220, 20, 60, 0.2), 0 8px 25px rgba(220, 20, 60, 0.3);
+      transform: scale(1.08);
+    }
+
+    .bubble-circle i {
+      font-size: 2.2rem;
+      color: white;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+      z-index: 2;
       transition: var(--transition);
     }
 
-    .category-card:hover .category-image i {
-      transform: scale(1.1) rotate(-5deg);
-    }
+    .category-card:hover .bubble-circle i { transform: scale(1.15); }
 
-    .category-content {
-      padding: 20px;
+    .bubble-label {
       text-align: center;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .category-content h3 {
-      font-size: 1.2rem;
-      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
       color: var(--gb-text-dark);
-      margin: 0;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+      max-width: 85px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'Inter', sans-serif;
     }
 
-    .category-content p {
-      font-size: 0.85rem;
-      color: var(--gb-text-muted);
-      margin: 0;
-      line-height: 1.4;
-    }
-
-    .category-count {
-      display: inline-block;
-      background: var(--gb-gold);
-      color: var(--gb-white);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      margin-top: 8px;
-      align-self: center;
-    }
+    .category-card.active .bubble-label { color: var(--gb-gold-dark); font-weight: 700; }
+    .category-count { display: none; }
 
     /* ========== SHOP CONTROLS ========== */
     .shop-controls { max-width: 1400px; margin: 0 auto 40px; padding: 0 24px; }
@@ -464,7 +451,6 @@
     @media (max-width: 992px) {
       .coverage-container { grid-template-columns: 1fr; gap: 40px; }
       .coverage-info h2 { font-size: 2rem; }
-      .category-card { flex: 0 0 250px; }
     }
     
     @media (max-width: 768px) {
@@ -473,14 +459,12 @@
       .hero { padding: 80px 20px 60px; }
       .hero h1 { font-size: 2.2rem; }
       .modal { width: 95%; margin: 10px; }
-      .categories-section { padding: 40px 0 30px; }
-      .section-title { font-size: 1.8rem; margin-bottom: 30px; }
-      .category-card { flex: 0 0 220px; }
-      .category-image { height: 140px; }
-      .category-image i { font-size: 3rem; }
-      .category-content h3 { font-size: 1rem; }
-      .category-content p { font-size: 0.8rem; }
-      .slider-nav { width: 40px; height: 40px; font-size: 1rem; }
+      .categories-section { padding: 30px 0 20px; }
+      .section-title { font-size: 1.8rem; margin-bottom: 20px; }
+      .bubble-circle { width: 70px; height: 70px; }
+      .bubble-circle i { font-size: 1.8rem; }
+      .bubble-label { font-size: 0.7rem; }
+      .slider-nav { width: 36px; height: 36px; font-size: 0.9rem; }
     }
     
     @media (max-width: 480px) {
@@ -494,13 +478,11 @@
       .product-image { height: 180px; }
       .brand-name { font-size: 1.2rem; }
       .brand-tagline { font-size: 0.7rem; letter-spacing: 2px; }
-      .category-card { flex: 0 0 180px; }
-      .category-image { height: 120px; }
-      .category-image i { font-size: 2.5rem; }
-      .category-content { padding: 15px; }
-      .category-content h3 { font-size: 0.9rem; }
-      .category-content p { display: none; }
+      .bubble-circle { width: 60px; height: 60px; }
+      .bubble-circle i { font-size: 1.5rem; }
+      .bubble-label { font-size: 0.65rem; max-width: 70px; }
       .section-title { font-size: 1.5rem; }
+      .categories-slider { gap: 15px; }
     }
     
     @media (max-width: 360px) {
@@ -542,7 +524,7 @@
     <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
   </section>
 
-  <!-- Categories Slider -->
+  <!-- Categories Slider - Messenger Style Circles -->
   <section class="categories-section">
     <div class="container">
       <h2 class="section-title">Catégories</h2>
@@ -555,81 +537,56 @@
         <div class="categories-slider" id="categoriesSlider">
           <!-- All Products -->
           <div class="category-card active" data-category="all">
-            <div class="category-card-inner">
-              <div class="category-image" style="background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);">
-                <i class="fa-solid fa-dumbbell"></i>
-              </div>
-              <div class="category-content">
-                <h3>Tous les produits</h3>
-                <p>Découvrez toute notre gamme</p>
-                <span class="category-count" id="count-all">0</span>
-              </div>
+            <div class="bubble-circle" style="background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);">
+              <i class="fa-solid fa-dumbbell"></i>
             </div>
+            <span class="bubble-label">Tout</span>
+            <span class="category-count" id="count-all">0</span>
           </div>
           
           <!-- Whey Protein -->
           <div class="category-card" data-category="Protéines whey">
-            <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-              </div>
-              <div class="category-content">
-                <h3>Whey Protein</h3>
-                <p>Protéines de qualité supérieure</p>
-                <span class="category-count" id="count-whey">0</span>
-              </div>
+            <div class="bubble-circle" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920');">
+              <i class="fa-solid fa-bottle-water"></i>
             </div>
+            <span class="bubble-label">Whey</span>
+            <span class="category-count" id="count-whey">0</span>
           </div>
           
           <!-- Mass Gainer -->
           <div class="category-card" data-category="Masse / Gainer">
-            <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/42/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-              </div>
-              <div class="category-content">
-                <h3>Mass Gainer</h3>
-                <p>Prenez du muscle rapidement</p>
-                <span class="category-count" id="count-mass">0</span>
-              </div>
+            <div class="bubble-circle" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/42/image_1920');">
+              <i class="fa-solid fa-weight-scale"></i>
             </div>
+            <span class="bubble-label">Mass</span>
+            <span class="category-count" id="count-mass">0</span>
           </div>
           
           <!-- Acides Aminés -->
           <div class="category-card" data-category="Acide aminé">
-            <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/38/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-              </div>
-              <div class="category-content">
-                <h3>Acides Aminés</h3>
-                <p>Récupération optimale</p>
-                <span class="category-count" id="count-amino">0</span>
-              </div>
+            <div class="bubble-circle" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/38/image_1920');">
+              <i class="fa-solid fa-flask"></i>
             </div>
+            <span class="bubble-label">Amino</span>
+            <span class="category-count" id="count-amino">0</span>
           </div>
           
           <!-- Force / Energie -->
           <div class="category-card" data-category="Force / Energie">
-            <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-              </div>
-              <div class="category-content">
-                <h3>Force & Energie</h3>
-                <p>Boostez vos performances</p>
-                <span class="category-count" id="count-energy">0</span>
-              </div>
+            <div class="bubble-circle" style="background-image: url('https://goldenbody.dz/web/image/product.public.category/54/image_1920');">
+              <i class="fa-solid fa-bolt"></i>
             </div>
+            <span class="bubble-label">Énergie</span>
+            <span class="category-count" id="count-energy">0</span>
           </div>
           
           <!-- Brûleur de graisse -->
           <div class="category-card" data-category="Brûleur de graisse">
-            <div class="category-card-inner">
-              <div class="category-image" style="background-image: url('https://www.nutrition87.com/images/pages/bruleur-2.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-              </div>
-              <div class="category-content">
-                <h3>Brûleur de graisse</h3>
-                <p>Atteignez vos objectifs</p>
-                <span class="category-count" id="count-burner">0</span>
-              </div>
+            <div class="bubble-circle" style="background-image: url('https://www.nutrition87.com/images/pages/bruleur-2.jpg');">
+              <i class="fa-solid fa-fire"></i>
             </div>
+            <span class="bubble-label">Brûleur</span>
+            <span class="category-count" id="count-burner">0</span>
           </div>
         </div>
         
@@ -855,27 +812,18 @@
 
   <!-- Scripts -->
   <script>
-    // Dynamic year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     
-    // Category slider navigation
     document.addEventListener('DOMContentLoaded', function() {
       const slider = document.getElementById('categoriesSlider');
       const prevBtn = document.getElementById('categoryPrev');
       const nextBtn = document.getElementById('categoryNext');
       const cards = document.querySelectorAll('.category-card');
       
-      // Scroll buttons
       if(prevBtn && nextBtn && slider) {
-        prevBtn.addEventListener('click', () => {
-          slider.scrollBy({ left: -304, behavior: 'smooth' });
-        });
+        prevBtn.addEventListener('click', () => slider.scrollBy({ left: -250, behavior: 'smooth' }));
+        nextBtn.addEventListener('click', () => slider.scrollBy({ left: 250, behavior: 'smooth' }));
         
-        nextBtn.addEventListener('click', () => {
-          slider.scrollBy({ left: 304, behavior: 'smooth' });
-        });
-        
-        // Update button states
         slider.addEventListener('scroll', () => {
           prevBtn.disabled = slider.scrollLeft === 0;
           nextBtn.disabled = slider.scrollLeft + slider.clientWidth >= slider.scrollWidth - 10;
@@ -883,12 +831,10 @@
         slider.dispatchEvent(new Event('scroll'));
       }
       
-      // Category selection
       cards.forEach(card => {
         card.addEventListener('click', function() {
           cards.forEach(c => c.classList.remove('active'));
           this.classList.add('active');
-          
           const category = this.dataset.category;
           console.log('Category selected:', category);
           // filterProductsByCategory(category);
