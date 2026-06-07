@@ -95,15 +95,67 @@
       font-size: 0.75rem; font-weight: 700; border: 2px solid var(--gb-dark-grey);
     }
 
-    /* ========== HERO ========== */
+    /* ========== HERO WITH VIDEO ========== */
     .hero {
-      background: linear-gradient(180deg, rgba(17,17,17,0.85), rgba(17,17,17,0.7)),
-        url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
-      padding: 120px 24px 80px; text-align: center; border-bottom: 3px solid var(--gb-gold); margin-bottom: 40px;
+      position: relative;
+      padding: 0;
+      overflow: hidden;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 3px solid var(--gb-gold);
+      margin-bottom: 40px;
     }
-    .hero h1 { font-size: 3.5rem; margin-bottom: 12px; text-shadow: 2px 2px 10px rgba(0,0,0,0.6); letter-spacing: 1px; color: var(--gb-white); }
-    .hero h1 span { color: var(--gb-gold); }
-    .hero p { font-size: 1.1rem; color: rgba(255,255,255,0.95); max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(17,17,17,0.85), rgba(17,17,17,0.7));
+      z-index: -1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 120px 24px 80px;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 12px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+      letter-spacing: 1px;
+      color: var(--gb-white);
+    }
+
+    .hero h1 span {
+      color: var(--gb-gold);
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.95);
+      max-width: 600px;
+      margin: 0 auto;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    }
 
     /* ========== CATEGORIES SLIDER ========== */
     .categories-section {
@@ -470,7 +522,8 @@
     @media (max-width: 768px) {
       .header-container { flex-direction: column; gap: 20px; padding: 15px; }
       .logo img { height: 45px; }
-      .hero { padding: 80px 20px 60px; }
+      .hero { min-height: 500px; }
+      .hero-content { padding: 80px 20px 60px; }
       .hero h1 { font-size: 2.2rem; }
       .modal { width: 95%; margin: 10px; }
       .categories-section { padding: 40px 0 30px; }
@@ -501,6 +554,9 @@
       .category-content h3 { font-size: 0.9rem; }
       .category-content p { display: none; }
       .section-title { font-size: 1.5rem; }
+      .hero { min-height: 450px; }
+      .hero h1 { font-size: 1.8rem; }
+      .hero p { font-size: 0.95rem; }
     }
     
     @media (max-width: 360px) {
@@ -536,28 +592,18 @@
     </div>
   </header>
 
-  <!-- Hero -->
-<!-- Hero -->
-<section class="hero" style="position: relative; padding: 0; overflow: hidden; min-height: 600px;">
-  <!-- Video Background -->
-  <video autoplay muted loop playsinline style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -1;">
-    <source src="hero-video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
-  
-  <!-- Overlay -->
-  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(17,17,17,0.7); z-index: 0;"></div>
-  
-  <!-- Content -->
-  <div style="position: relative; z-index: 1; padding: 120px 24px 80px; text-align: center;">
-    <h1 style="font-size: 3.5rem; margin-bottom: 12px; text-shadow: 2px 2px 10px rgba(0,0,0,0.6); letter-spacing: 1px; color: var(--gb-white);">
-      REVEILLEZ LA <span class="gold-text" style="color: var(--gb-gold);">BÊTE</span> EN VOUS.
-    </h1>
-    <p style="font-size: 1.1rem; color: rgba(255,255,255,0.95); max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 4px rgba(0,0,0,0.5);">
-      Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.
-    </p>
-  </div>
-</section>
+  <!-- Hero with Video Background -->
+  <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="hero-video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>REVEILLEZ LA <span class="gold-text">BÊTE</span> EN VOUS.</h1>
+      <p>Nutrition sportive haut de gamme. Dépassez vos limites avec les suppléments les plus puissants du marché Algérien.</p>
+    </div>
+  </section>
 
   <!-- Categories Slider -->
   <section class="categories-section">
