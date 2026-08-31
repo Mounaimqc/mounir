@@ -613,15 +613,36 @@ async function registerFCMToken(userTriggered = false) {
       return;
     }
 
+    // 1. Enregistrer le Service Worker
     const swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
     console.log("✅ Service Worker enregistré:", swRegistration);
 
+    // 2. Attendre que le Service Worker devienne pleinement 'active'
+    if (!swRegistration.active) {
+      await new Promise((resolve) => {
+        const worker = swRegistration.installing || swRegistration.waiting;
+        if (worker) {
+          worker.addEventListener('statechange', function onStateChange(e) {
+            if (e.target.state === 'activated') {
+              worker.removeEventListener('statechange', onStateChange);
+              resolve();
+            }
+          });
+        } else {
+          resolve();
+        }
+      });
+    }
+    await navigator.serviceWorker.ready;
+
+    // 3. Récupérer l'instance Messaging
     const messaging = await getMessagingInstance();
     if (!messaging) {
       if (userTriggered) showNotification('Messaging non supporté par ce navigateur', 'error');
       return;
     }
 
+    // 4. Obtenir le FCM token avec le Service Worker actif
     const tokenOptions = { serviceWorkerRegistration: swRegistration };
     if (VAPID_KEY && !VAPID_KEY.includes("YOUR_VAPID_KEY")) {
       tokenOptions.vapidKey = VAPID_KEY;
@@ -631,6 +652,7 @@ async function registerFCMToken(userTriggered = false) {
     if (token) {
       console.log("✅ FCM Token obtenu:", token);
 
+      // 5. Sauvegarder dans Firestore collection 'fcm_tokens'
       const tokenRef = doc(db, "fcm_tokens", token);
       await setDoc(tokenRef, {
         token: token,
@@ -651,7 +673,7 @@ async function registerFCMToken(userTriggered = false) {
       }
     } else {
       console.warn("⚠️ Aucun FCM token retourné.");
-      if (userTriggered) showNotification('Veuillez configurer votre clé VAPID dans admin.js', 'error');
+      if (userTriggered) showNotification('Veuillez vérifier votre clé VAPID dans admin.js', 'error');
     }
   } catch (error) {
     console.error("❌ Erreur enregistrement FCM Token:", error);
