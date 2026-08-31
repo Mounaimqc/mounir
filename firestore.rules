@@ -4,22 +4,20 @@ service cloud.firestore {
     
     // 📦 Collection 'commandes'
     match /commandes/{docId} {
-      allow create: if request.resource.data.orderNumber is string;
-      allow read, update, delete: if true;
+      allow read, write: if true;
     }
     
     // 🏷️ Collection 'produits'
     match /produits/{docId} {
-      allow read: if true;
-      allow write: if true;
+      allow read, write: if true;
     }
 
     // 📱 Collection 'fcm_tokens'
     match /fcm_tokens/{tokenId} {
-      // Permettre l'enregistrement du token FCM par le frontend
-      allow create, update: if request.resource.data.token is string;
-      // Empêcher la lecture ou suppression par les clients web (Seule la Cloud Function lit les tokens)
-      allow read, delete: if false;
+      // Autoriser l'écriture (création/mise à jour) des tokens FCM
+      allow write: if true;
+      // Interdire la lecture des tokens depuis le navigateur web pour protéger la confidentialité
+      allow read: if false;
     }
   }
 }
