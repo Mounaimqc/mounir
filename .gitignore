@@ -1,0 +1,19 @@
+# Node modules & dependencies
+node_modules/
+functions/node_modules/
+
+# Firebase debug logs
+firebase-debug.log
+firebase-debug.*.log
+.firebase/
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Key files / service account credentials
+*.pem
+*-key.json
+service-account*.json

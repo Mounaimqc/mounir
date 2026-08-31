@@ -1,9 +1,12 @@
 // admin.js - Firebase v10+ Compatible + Cloudinary Integration
-import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot }
+import { collection, getDocs, orderBy, query, doc, updateDoc, deleteDoc, addDoc, onSnapshot, setDoc, serverTimestamp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { db } from './firebase-config.js';
+import { getToken, onMessage }
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+import { db, getMessagingInstance } from './firebase-config.js';
 
 let allCommandes = [];
+let initialUrlCheckDone = false;
 
 // ==========================================
 // 📦 ORDERS MANAGEMENT
@@ -26,6 +29,7 @@ function loadCommandes() {
     displayCommandes(allCommandes);
     updateStats();
     initializeWilayaFilter();
+    checkUrlOrderParam();
 
     if (allCommandes.length === 0) {
       tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-light)">Aucune commande pour le moment</td></tr>`;
@@ -525,12 +529,143 @@ function formatDateTime(d) { if (!d) return '—'; return new Date(d).toLocaleSt
 function openAddProductModal() { resetProductForm(); document.getElementById('addProductModal')?.classList.add('active'); }
 function closeAddProductModal() { document.getElementById('addProductModal')?.classList.remove('active'); }
 
+// ==========================================
+// 🔔 PUSH NOTIFICATIONS MANAGEMENT (FCM)
+// ==========================================
+
+const VAPID_KEY = "BHY4cyM295W1HmS7zz-444AxPeso6oUBqgsptEotlCbduEt5hc9i9Zk9HUSPTXMjO9GtftV6cKy4HSt7Fp1gXuI";
+
+
+function checkUrlOrderParam() {
+  if (initialUrlCheckDone) return;
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetOrderNumber = urlParams.get('orderNumber');
+  if (targetOrderNumber && allCommandes.length > 0) {
+    const cmd = allCommandes.find(c => c.orderNumber === targetOrderNumber || c.id === targetOrderNumber);
+    if (cmd) {
+      initialUrlCheckDone = true;
+      showDetail(cmd.orderNumber);
+    }
+  }
+}
+
+async function initPushNotifications() {
+  const notifBtn = document.getElementById('enableNotifBtn');
+  const notifBtnText = document.getElementById('notifBtnText');
+
+  if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+    if (notifBtnText) notifBtnText.textContent = "Push non supporté";
+    if (notifBtn) notifBtn.disabled = true;
+    return;
+  }
+
+  if (Notification.permission === 'granted') {
+    if (notifBtnText) notifBtnText.textContent = "🔔 Push Activé";
+    if (notifBtn) {
+      notifBtn.style.borderColor = "#27ae60";
+      notifBtn.style.color = "#27ae60";
+    }
+    registerFCMToken(false);
+  } else if (Notification.permission === 'denied') {
+    if (notifBtnText) notifBtnText.textContent = "🔕 Push Bloqué";
+    if (notifBtn) {
+      notifBtn.style.borderColor = "#e74c3c";
+      notifBtn.style.color = "#e74c3c";
+    }
+  }
+
+  if (notifBtn) {
+    notifBtn.addEventListener('click', () => {
+      registerFCMToken(true);
+    });
+  }
+
+  const messaging = await getMessagingInstance();
+  if (messaging) {
+    onMessage(messaging, (payload) => {
+      console.log('🔔 [Foreground] Push reçu:', payload);
+      const title = payload.notification?.title || payload.data?.title || '🔔 Nouvelle commande!';
+      const body = payload.notification?.body || payload.data?.body || '';
+
+      showNotification(`${title}\n${body}`, 'success');
+
+      try {
+        const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+        audio.play().catch(() => {});
+      } catch (e) {}
+    });
+  }
+}
+
+async function registerFCMToken(userTriggered = false) {
+  try {
+    const permission = await Notification.requestPermission();
+    const notifBtnText = document.getElementById('notifBtnText');
+    const notifBtn = document.getElementById('enableNotifBtn');
+
+    if (permission !== 'granted') {
+      if (userTriggered) showNotification('Permission de notification refusée.', 'error');
+      if (notifBtnText) notifBtnText.textContent = "🔕 Push Bloqué";
+      if (notifBtn) {
+        notifBtn.style.borderColor = "#e74c3c";
+        notifBtn.style.color = "#e74c3c";
+      }
+      return;
+    }
+
+    const swRegistration = await navigator.serviceWorker.register('./firebase-messaging-sw.js');
+    console.log("✅ Service Worker enregistré:", swRegistration);
+
+    const messaging = await getMessagingInstance();
+    if (!messaging) {
+      if (userTriggered) showNotification('Messaging non supporté par ce navigateur', 'error');
+      return;
+    }
+
+    const tokenOptions = { serviceWorkerRegistration: swRegistration };
+    if (VAPID_KEY && !VAPID_KEY.includes("YOUR_VAPID_KEY")) {
+      tokenOptions.vapidKey = VAPID_KEY;
+    }
+
+    const token = await getToken(messaging, tokenOptions);
+    if (token) {
+      console.log("✅ FCM Token obtenu:", token);
+
+      const tokenRef = doc(db, "fcm_tokens", token);
+      await setDoc(tokenRef, {
+        token: token,
+        updatedAt: serverTimestamp(),
+        userAgent: navigator.userAgent,
+        platform: navigator.platform || 'web',
+        role: 'admin'
+      }, { merge: true });
+
+      if (notifBtnText) notifBtnText.textContent = "🔔 Push Activé";
+      if (notifBtn) {
+        notifBtn.style.borderColor = "#27ae60";
+        notifBtn.style.color = "#27ae60";
+      }
+
+      if (userTriggered) {
+        showNotification('✅ Smartphone enregistré pour les notifications Push!', 'success');
+      }
+    } else {
+      console.warn("⚠️ Aucun FCM token retourné.");
+      if (userTriggered) showNotification('Veuillez configurer votre clé VAPID dans admin.js', 'error');
+    }
+  } catch (error) {
+    console.error("❌ Erreur enregistrement FCM Token:", error);
+    if (userTriggered) showNotification(`Erreur Push: ${error.message}`, 'error');
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   loadCommandes();
   document.getElementById('searchInput')?.addEventListener('input', filterCommandes);
   document.getElementById('filterType')?.addEventListener('change', filterCommandes);
   document.getElementById('filterWilaya')?.addEventListener('change', filterCommandes);
   setupImageUploadUI();
+  initPushNotifications();
 });
 
 // Global Exports for HTML onclick
@@ -546,3 +681,5 @@ window.closeAddProductModal = closeAddProductModal;
 window.toggleDriverSection = toggleDriverSection;
 window.addFlavorField = addFlavorField;
 window.resetProductForm = resetProductForm;
+window.registerFCMToken = registerFCMToken;
+
