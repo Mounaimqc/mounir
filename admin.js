@@ -653,7 +653,8 @@ async function registerFCMToken(userTriggered = false) {
       console.log("✅ FCM Token obtenu:", token);
 
       // 5. Sauvegarder dans Firestore collection 'fcm_tokens'
-      const tokenRef = doc(db, "fcm_tokens", token);
+      const docId = token.replace(/\//g, '_');
+      const tokenRef = doc(db, "fcm_tokens", docId);
       await setDoc(tokenRef, {
         token: token,
         updatedAt: serverTimestamp(),

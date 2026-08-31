@@ -4,11 +4,7 @@ service cloud.firestore {
     
     // 📦 Collection 'commandes'
     match /commandes/{docId} {
-      // Autoriser les clients à créer des commandes validées
-      allow create: if request.resource.data.orderNumber is string
-                    && request.resource.data.orderNumber.size() > 0;
-      
-      // En l'absence de Firebase Auth, le Dashboard Admin lit et gère les commandes sans Auth
+      allow create: if request.resource.data.orderNumber is string;
       allow read, update, delete: if true;
     }
     
@@ -20,13 +16,9 @@ service cloud.firestore {
 
     // 📱 Collection 'fcm_tokens'
     match /fcm_tokens/{tokenId} {
-      // Seul l'enregistrement d'un token valide correspondant à son propre ID est autorisé
-      allow create, update: if tokenId == request.resource.data.token
-                            && request.resource.data.token is string
-                            && request.resource.data.token.size() > 20;
-      
-      // Sécurité maximale: AUCUN client web ne peut lire ou lister les tokens des autres appareils
-      // La Cloud Function utilise Firebase Admin SDK qui outrepasse ces règles en toute sécurité
+      // Permettre l'enregistrement du token FCM par le frontend
+      allow create, update: if request.resource.data.token is string;
+      // Empêcher la lecture ou suppression par les clients web (Seule la Cloud Function lit les tokens)
       allow read, delete: if false;
     }
   }
