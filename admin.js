@@ -534,7 +534,7 @@ function closeAddProductModal() { document.getElementById('addProductModal')?.cl
 // ==========================================
 
 const VAPID_KEY = "BHY4cyM295W1HmS7zz-444AxPeso6oUBqgsptEotlCbduEt5hc9i9Zk9HUSPTXMjO9GtftV6cKy4HSt7Fp1gXuI";
-
+let isRegisteringFCM = false;
 
 function checkUrlOrderParam() {
   if (initialUrlCheckDone) return;
@@ -574,7 +574,8 @@ async function initPushNotifications() {
     }
   }
 
-  if (notifBtn) {
+  if (notifBtn && !notifBtn.dataset.listenerAttached) {
+    notifBtn.dataset.listenerAttached = "true";
     notifBtn.addEventListener('click', () => {
       registerFCMToken(true);
     });
@@ -598,6 +599,12 @@ async function initPushNotifications() {
 }
 
 async function registerFCMToken(userTriggered = false) {
+  if (isRegisteringFCM) {
+    console.log("⏳ Enregistrement FCM déjà en cours...");
+    return;
+  }
+  isRegisteringFCM = true;
+
   try {
     const permission = await Notification.requestPermission();
     const notifBtnText = document.getElementById('notifBtnText');
@@ -657,11 +664,14 @@ async function registerFCMToken(userTriggered = false) {
       const tokenRef = doc(db, "fcm_tokens", docId);
       await setDoc(tokenRef, {
         token: token,
+        createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
-        userAgent: navigator.userAgent,
+        userAgent: navigator.userAgent || '',
         platform: navigator.platform || 'web',
         role: 'admin'
       }, { merge: true });
+
+      console.log("✅ FCM Token sauvegardé dans Firestore");
 
       if (notifBtnText) notifBtnText.textContent = "🔔 Push Activé";
       if (notifBtn) {
@@ -679,6 +689,8 @@ async function registerFCMToken(userTriggered = false) {
   } catch (error) {
     console.error("❌ Erreur enregistrement FCM Token:", error);
     if (userTriggered) showNotification(`Erreur Push: ${error.message}`, 'error');
+  } finally {
+    isRegisteringFCM = false;
   }
 }
 
