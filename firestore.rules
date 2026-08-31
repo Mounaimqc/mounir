@@ -14,10 +14,12 @@ service cloud.firestore {
 
     // 📱 Collection 'fcm_tokens'
     match /fcm_tokens/{tokenId} {
-      // Autoriser l'écriture (création/mise à jour) des tokens FCM
-      allow write: if true;
-      // Interdire la lecture des tokens depuis le navigateur web pour protéger la confidentialité
-      allow read: if false;
+      // Autoriser uniquement la création et la mise à jour des tokens FCM par les clients
+      allow create, update: if request.resource.data.token is string;
+      
+      // Interdire strictement la lecture et la suppression depuis le navigateur web
+      // (Seule la Cloud Function lira les tokens via Firebase Admin SDK)
+      allow read, delete: if false;
     }
   }
 }

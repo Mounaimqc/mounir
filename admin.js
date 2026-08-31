@@ -12,6 +12,8 @@ let initialUrlCheckDone = false;
 // 📦 ORDERS MANAGEMENT
 // ==========================================
 
+let isFirstLoad = true;
+
 function loadCommandes() {
   const tbody = document.getElementById('ordersTableBody');
   if (!tbody) return;
@@ -21,6 +23,39 @@ function loadCommandes() {
   const q = query(collection(db, "commandes"), orderBy("date", "desc"));
 
   onSnapshot(q, (snapshot) => {
+    // Alerte notification en direct lors de l'ajout d'une nouvelle commande
+    if (!isFirstLoad) {
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'added') {
+          const newCmd = change.doc.data();
+          console.log("🔔 Nouvelle commande détectée en direct:", newCmd);
+          
+          const title = `🔔 Nouvelle commande #${newCmd.orderNumber || ''}`;
+          const body = `Client: ${newCmd.firstName || ''} ${newCmd.lastName || ''}\nTotal: ${(newCmd.grandTotal || 0).toLocaleString()} DA`;
+
+          // Notification navigateur native
+          if ('Notification' in window && Notification.permission === 'granted') {
+            try {
+              new Notification(title, {
+                body: body,
+                icon: 'logo.jpeg',
+                tag: `order-${newCmd.orderNumber}`
+              });
+            } catch (err) {
+              console.error("Erreur notification native:", err);
+            }
+          }
+
+          // Son d'alerte
+          try {
+            const audio = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+            audio.play().catch(() => {});
+          } catch (e) {}
+        }
+      });
+    }
+    isFirstLoad = false;
+
     allCommandes = [];
     snapshot.forEach(docSnap => {
       allCommandes.push({ id: docSnap.id, ...docSnap.data() });
