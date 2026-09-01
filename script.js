@@ -556,11 +556,45 @@ function generateOrderNumber() {
   return `AM${datePart}${count}`;
 }
 
+function renderOrderSummaryInForm() {
+  const container = document.getElementById('orderItemsSummary');
+  if (!container) return;
+
+  if (!cart || cart.length === 0) {
+    container.innerHTML = `<p style="font-size: 0.85rem; color: var(--gb-light-grey); margin-bottom: 15px;">Votre panier est vide.</p>`;
+    return;
+  }
+
+  let html = '<div style="margin-bottom: 20px; padding: 14px; background: rgba(0,0,0,0.25); border: 1px solid rgba(212,175,55,0.3); border-radius: var(--radius);">';
+  html += '<h4 style="font-size: 0.95rem; color: var(--gb-gold); margin-bottom: 10px; font-family:\'Montserrat\', sans-serif; text-transform: uppercase; display:flex; align-items:center; gap:8px;"><i class="fa-solid fa-receipt"></i> Récapitulatif de la commande</h4>';
+  html += '<div style="display: flex; flex-direction: column; gap: 8px;">';
+
+  cart.forEach(item => {
+    const itemTotal = item.price * item.quantity;
+    html += `
+      <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 6px;">
+        <div>
+          <span style="font-weight: 700; color: var(--gb-white);">${item.name}</span>
+          ${item.flavor ? `<span style="font-size: 0.75rem; color: var(--gb-gold); background: rgba(212,175,55,0.15); padding: 2px 6px; border-radius: 4px; margin-left: 6px;">${item.flavor}</span>` : ''}
+          <span style="font-size: 0.8rem; color: var(--gb-light-grey);"> (x${item.quantity})</span>
+        </div>
+        <div style="font-weight: 700; color: var(--gb-gold);">${itemTotal.toFixed(2)} DA</div>
+      </div>
+    `;
+  });
+
+  html += '</div></div>';
+  container.innerHTML = html;
+}
+
 function openOrderForm() {
   const modal = document.getElementById('orderFormModal');
   if (modal) {
+    displayCart();
+    renderOrderSummaryInForm();
     modal.classList.add('active');
     initializeWilayaSelect();
+    updateShippingPrice();
   }
 }
 
@@ -597,7 +631,7 @@ function updateShippingPrice() {
   priceEl.textContent = price + ' DA';
   if (info) info.classList.add('active');
 
-  const cartTotal = parseFloat(document.getElementById('totalPrice')?.textContent || '0');
+  const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   const grandTotalEl = document.getElementById('grandTotal');
   if (grandTotalEl) grandTotalEl.textContent = (cartTotal + price).toFixed(2) + ' DA';
 }
@@ -896,3 +930,4 @@ window.updateQuantity = updateCartQuantity;
 window.removeFromCart = removeCartItem;
 window.openProductDetail = openProductDetail;
 window.displayCart = displayCart;
+window.openOrderForm = openOrderForm;

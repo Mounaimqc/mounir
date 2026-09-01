@@ -126,19 +126,36 @@
         .status-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; margin-bottom: 20px; }
         .in-stock { background: rgba(28, 208, 114, 0.1); color: var(--gb-success); border: 1px solid var(--gb-success); }
         .out-of-stock { background: rgba(255, 204, 0, 0.1); color: var(--gb-danger); border: 1px solid var(--gb-danger); }
-        .add-to-cart-hero {
-            width: 100%; padding: 20px; background: var(--gb-gold); color: var(--gb-black);
-            font-weight: 800; border: none; border-radius: var(--radius); font-size: 1.25rem;
+        .product-actions-group {
+            display: flex; flex-direction: column; gap: 12px; margin-top: 30px; width: 100%;
+        }
+        .buy-now-hero {
+            width: 100%; padding: 18px 24px; background: var(--gb-gold); color: var(--gb-white);
+            font-weight: 800; border: none; border-radius: var(--radius); font-size: 1.15rem;
             cursor: pointer; transition: var(--transition); display: flex;
             align-items: center; justify-content: center; gap: 12px;
             text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(220, 20, 60, 0.4);
         }
-        .add-to-cart-hero:hover:not(:disabled) {
-            background: var(--gb-white); box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+        .buy-now-hero:hover:not(:disabled) {
+            background: var(--gb-gold-dark); color: var(--gb-white);
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.5);
             transform: translateY(-2px);
         }
-        .add-to-cart-hero:disabled {
-            background: var(--gb-grey); color: var(--gb-light-grey); cursor: not-allowed;
+        .add-to-cart-hero {
+            width: 100%; padding: 16px 24px; background: transparent; color: var(--gb-black);
+            font-weight: 700; border: 2px solid var(--gb-black); border-radius: var(--radius); font-size: 1.05rem;
+            cursor: pointer; transition: var(--transition); display: flex;
+            align-items: center; justify-content: center; gap: 10px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .add-to-cart-hero:hover:not(:disabled) {
+            background: var(--gb-black); color: var(--gb-white);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+        .buy-now-hero:disabled, .add-to-cart-hero:disabled {
+            background: var(--gb-grey); color: var(--gb-light-grey); border-color: var(--gb-grey); cursor: not-allowed; opacity: 0.6;
         }
 
         /* ========== MODALS & CART ========== */
@@ -303,6 +320,7 @@
                 <button class="close-modal">&times;</button>
             </div>
             <div class="modal-body">
+                <div id="orderItemsSummary"></div>
                 <form id="orderForm">
                     <div class="form-group">
                         <label class="form-label">MÉTHODE DE LIVRAISON *</label>
@@ -469,9 +487,14 @@
                         : `<div class="status-badge out-of-stock"><i class="fa-solid fa-xmark"></i> RUPTURE DE STOCK</div>`;
 
                     const cartBtnHTML = pQty > 0
-                        ? `<button class="add-to-cart-hero" onclick="addToCartFromPage('${docSnap.id}')">
-                            <i class="fa-solid fa-cart-plus"></i> Ajouter à Panier
-                        </button>`
+                        ? `<div class="product-actions-group">
+                            <button class="buy-now-hero" onclick="buyNowFromPage('${docSnap.id}')">
+                                <i class="fa-solid fa-bolt"></i> Acheter Maintenant
+                            </button>
+                            <button class="add-to-cart-hero" onclick="addToCartFromPage('${docSnap.id}')">
+                                <i class="fa-solid fa-cart-plus"></i> Ajouter au Panier
+                            </button>
+                           </div>`
                         : `<button class="add-to-cart-hero" disabled>
                             <i class="fa-solid fa-ban"></i> Indisponible
                         </button>`;
@@ -555,6 +578,18 @@
                 selectedFlavor = activeBtn.textContent.trim();
             }
             window.addToCart(productId, selectedFlavor);
+        };
+
+        window.buyNowFromPage = function (productId) {
+            let selectedFlavor = null;
+            const activeBtn = document.querySelector('.flavor-selector-btn.active');
+            if (activeBtn) {
+                selectedFlavor = activeBtn.textContent.trim();
+            }
+            window.addToCart(productId, selectedFlavor);
+            if (window.openOrderForm) {
+                window.openOrderForm();
+            }
         };
     </script>
 </body>
